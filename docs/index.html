@@ -4,16 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BACQM-NRS³</title>
-<meta name="description" content="NRS³ on the three-torus: eight results, three topologies, Lean 4.">
-<meta property="og:title" content="BACQM-NRS³">
-<meta property="og:description" content="NRS³ on the three-torus: eight results, three topologies, Lean 4.">
+<meta name="description" content="Uncertainty on the three-torus: nine results on R³, T³ and the fibred box, each with its Lean 4 theorem, in a scientific and a didactic version.">
+<link rel="icon" href="media/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BACQM-NRS³">
+<meta property="og:title" content="BACQM-NRS³ — uncertainty on the three-torus">
+<meta property="og:description" content="Nine results on R³, T³ and the fibred box, each with its Lean 4 theorem, in a scientific and a didactic version.">
+<meta property="og:url" content="https://naype888-cloud.github.io/BACQM-NRS3/">
+<meta property="og:image" content="https://naype888-cloud.github.io/BACQM-NRS3/media/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="shared/css/tokens.css">
 <link rel="stylesheet" href="shared/css/landing.css">
 </head>
 <body class="landing">
 <main class="stage">
-  <video class="intro" id="intro" autoplay muted playsinline controls preload="metadata"
-         poster="media/intro-poster.svg" aria-label="Introduction to BACQM-NRS³">
+  <video class="intro" id="intro" autoplay muted playsinline preload="auto"
+         poster="media/intro-poster.svg" aria-label="Introduction to BACQM-NRS³: the lattice, its hopping and its transparent quanta">
     <source src="media/intro.webm" type="video/webm">
     <source src="media/intro.mp4" type="video/mp4">
   </video>
@@ -23,10 +29,11 @@
   </nav>
 </main>
 <script>
-  // Until the video file is published the poster stays, without dead controls.
+  // The intro plays once and rests on its last frame, the poster; a click plays it again.
+  // With reduced motion it does not start on its own.
   const v = document.getElementById("intro");
-  const srcs = v.querySelectorAll("source");
-  srcs[srcs.length - 1].addEventListener("error", () => v.removeAttribute("controls"));
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { v.removeAttribute("autoplay"); v.pause(); }
+  v.addEventListener("click", () => { v.currentTime = 0; v.play().catch(() => {}); });
 </script>
 </body>
 </html>
