@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Theorem atlas — BACQM-NRS³</title>
-<meta name="description" content="Eight results on three topologies (R³, T³, fibred box), each with its Lean 4 declarations.">
+<meta name="description" content="Nine results on the three-torus, each stated as in its Lean 4 source, with its declarations and status.">
 <link rel="stylesheet" href="../shared/css/tokens.css">
 <link rel="stylesheet" href="../shared/css/scientific.css">
 <script src="../shared/js/theme.js"></script>
 </head>
 <body>
-<div class="wrap">
+<div class="wrap narrow">
   <nav class="bar" aria-label="Site">
     <a class="brand" href="../">BACQM-NRS³ · Theorem atlas</a>
     <a class="pill" href="../didactic/">Didactic ↗</a>
@@ -18,119 +18,77 @@
   </nav>
 
   <h1>Theorem atlas</h1>
-  <p class="scope">Eight results, three topologies, Lean 4 with the standard axioms.
-    <b>R³</b>: every axis open. <b>T³</b>: every axis closed. <b>Fibred box</b>: <code>x</code>, <code>y</code>, <code>z</code> open, the fibre <code>w</code> closed with three positions.</p>
+  <p class="scope"><code>T³ = dx × dy × dz</code>, each axis a ring <code>ZMod d</code> with closed transport <code>T° = (J − I)/2</code>
+    and position <code>P</code>. Lean 4, standard axioms. Each entry states the result as the source does; the page behind it gives definitions, hypotheses and declarations.</p>
 
-  <div class="tw"><table>
-    <tr><th>Block</th><th>R³</th><th>T³</th><th>Fibred box</th><th>Status</th></tr>
+  <ol class="path">
+    <li class="stop"><span class="n">1</span>
+      <h2>Uncertainty relation / covariance determinant</h2>
+      <div class="fact">For every unit state, <code>det Σ ≥ |det Ω|</code>; strict when the three axes are in band; <code>det Σ = (125/64)|det Ω|</code> at the maximal current state.</div>
+      <div class="go"><code class="lean">TorusStrict.robertson_det_torus_lt</code><code class="lean">Torus.det_covMatrix_maxState</code>
+        <a href="https://naype888-cloud.github.io/nava-robertson-schrodinger/">Page →</a><span class="chip lean">Lean</span></div></li>
 
-    <tr><td class="blk">B1<span>uncertainty relation /<br>covariance determinant</span></td>
-      <td><span class="m">NRS, NRS³ in Physlib</span>
-        <a href="https://github.com/leanprover-community/physlib/pull/1723">#1723</a>,
-        <a href="https://github.com/leanprover-community/physlib/pull/1725">#1725</a></td>
-      <td><span class="m">det Σ ≥ |det Ω| for every state; strict with the three axes in band; <code>125/64</code> at the maximal current state</span>
-        <code class="lean">Torus.robertson_det_torus</code><br>
-        <code class="lean">TorusStrict.robertson_det_torus_lt</code><br>
-        <code class="lean">Torus.det_covMatrix_maxState</code></td>
-      <td><span class="m">strict in band</span>
-        <code class="lean">BoxStrict.robertson_det_box_lt</code></td>
-      <td><span class="chip lean">Lean</span></td></tr>
+    <li class="stop"><span class="n">2</span>
+      <h2>Light share / dark share</h2>
+      <div class="fact"><code>lightShare + darkShare = 1</code> on every axis; <code>darkShare &gt; 0</code> in band; <code>4/5</code> and <code>1/5</code> at the maximal current state.</div>
+      <div class="go"><code class="lean">TorusDark.lightShare_add_darkShare</code><code class="lean">TorusDark.lightShare_maxState</code>
+        <a href="https://naype888-cloud.github.io/nrs3-dark/t3.html">Page →</a><span class="chip lean">Lean</span></div></li>
 
-    <tr><td class="blk">B2<span>light share /<br>dark share</span></td>
-      <td><code class="lean">DarkShare.lightShare_maxCurrentState</code></td>
-      <td><span class="m">light + dark = 1 on every axis; <code>4/5</code> and <code>1/5</code> at <code>c</code></span>
-        <code class="lean">TorusDark.lightShare_add_darkShare</code><br>
-        <code class="lean">TorusDark.lightShare_maxState</code><br>
-        <code class="lean">TorusDark.darkShare_maxState</code></td>
-      <td><span class="m">dark share &gt; 0 in band; <code>4/5</code>, <code>1/5</code> at the fibre's <code>c</code></span>
-        <code class="lean">FiberDark.darkShare_pos_of_band</code><br>
-        <code class="lean">FiberDark.lightShare_fiberMaxState</code></td>
-      <td><span class="chip lean">Lean</span></td></tr>
+    <li class="stop"><span class="n">3</span>
+      <h2>Boundary entropy / area law</h2>
+      <div class="fact">The cut <code>{x ≤ c}</code> has <code>2·dy·dz</code> crossing steps; <code>S = 2·dy·dz·log 2</code>, independent of <code>dx</code> and <code>c</code>; <code>Hₛ d ≤ S</code>.</div>
+      <div class="go"><code class="lean">TorusArea.cutEntropy_eq</code><code class="lean">TorusBekenstein.bekenstein_bound</code>
+        <a href="https://naype888-cloud.github.io/nrs3-tritoro/holography.html">Page →</a><span class="chip lean">Lean</span></div></li>
 
-    <tr><td class="blk">B3<span>boundary entropy /<br>area law</span></td>
-      <td><span class="m">one wall: <code>H ≤ dy·dz·log 2</code></span>
-        <code class="lean">OpenCubeBoundary.bekenstein_bound</code></td>
-      <td><span class="m">two walls: <code>S = 2·dy·dz·log 2</code></span>
-        <code class="lean">TorusArea.cutEntropy_eq</code><br>
-        <code class="lean">TorusBekenstein.bekenstein_bound</code><br>
-        <code class="lean">TorusArea.bekensteinHawking_iff</code></td>
-      <td><span class="m"><code>dy·dz·3</code> across <code>x</code>, <code>2·dx·dy·dz</code> across <code>w</code></span>
-        <code class="lean">FiberBoundary.entropy_le_x</code><br>
-        <code class="lean">FiberBoundary.entropy_le_w</code></td>
-      <td><span class="chip lean">Lean</span></td></tr>
+    <li class="stop"><span class="n">4</span>
+      <h2>Saturation / uniform field</h2>
+      <div class="fact"><code>Hₛ d = S</code> iff <code>d</code> is uniform; then each step is open with probability <code>1/2</code> and the mean field is half the open field.</div>
+      <div class="go"><code class="lean">TorusSaturation.saturated_iff_uniform</code><code class="lean">TorusDarkFoam.meanField_uniform</code>
+        <a href="https://naype888-cloud.github.io/nrs3-tritoro/bekenstein.html">Page →</a><span class="chip lean">Lean</span></div></li>
 
-    <tr><td class="blk">B4<span>saturation /<br>uniform field</span></td>
-      <td><span class="m"><code>H = S</code> ⟺ uniform</span>
-        <code class="lean">OpenCubeBoundary.saturated_iff_uniform</code><br>
-        <code class="lean">OpenCubeBoundary.openProb_uniform</code></td>
-      <td><code class="lean">TorusSaturation.saturated_iff_uniform</code><br>
-        <code class="lean">TorusDarkFoam.meanField_uniform</code><br>
-        <span class="m">full ⇒ dark:</span><code class="lean">TorusSaturation.HSaturationDark</code></td>
-      <td><code class="lean">FiberBoundary.saturated_iff_uniform_w</code><br>
-        <code class="lean">FiberBoundary.openProb_uniform_w</code></td>
-      <td><span class="chip lean">Lean</span><span class="chip bridge">Declared bridge</span></td></tr>
+    <li class="stop"><span class="n">5</span>
+      <h2>Bakry–Émery curvature / Ricci lower bound</h2>
+      <div class="fact">The path is <code>CD(0, 2)</code>; <code>T³</code> with sides <code>≥ 5</code> has no positive curvature bound; the 16-cell has <code>K = 4</code>.</div>
+      <div class="go"><code class="lean">TorusBochner.not_curvature_pos</code><code class="lean">BochnerCurvature.cell16_curvature</code>
+        <a href="https://naype888-cloud.github.io/nrs3-tritoro/foam.html">Page →</a><span class="chip lean">Lean</span></div></li>
 
-    <tr><td class="blk">B5<span>Bakry–Émery curvature /<br>Ricci lower bound</span></td>
-      <td><span class="m">flat, <code>CD(0, 2)</code></span>
-        <code class="lean">BakryEmery.path_CD02</code></td>
-      <td><span class="m">flat (sides ≥ 5)</span>
-        <code class="lean">TorusBochner.not_curvature_pos</code></td>
-      <td><span class="m"><code>K = 4</code> (16-cell)</span>
-        <code class="lean">BochnerCurvature.cell16_curvature</code></td>
-      <td><span class="chip lean">Lean</span></td></tr>
+    <li class="stop"><span class="n">6</span>
+      <h2>Lorentz cone / admissible cone</h2>
+      <div class="fact">The axis vector of every state lies in the closed future cone; it is timelike in band.</div>
+      <div class="go"><code class="lean">TorusCone.axisVector_mem_futureCone</code><code class="lean">TorusCone.timelike_of_band</code>
+        <a href="https://naype888-cloud.github.io/nrs3-uncertainty-cone/lorentz-t3.html">Page →</a><span class="chip lean">Lean</span></div></li>
 
-    <tr><td class="blk">B6<span>Lorentz cone /<br>admissible cone</span></td>
-      <td><code class="lean">UncertaintyCone.mem_futureCone</code></td>
-      <td><span class="m">every axis of every state in the closed future cone; timelike in band</span>
-        <code class="lean">TorusCone.axisVector_mem_futureCone</code><br>
-        <code class="lean">TorusCone.timelike_of_band</code></td>
-      <td><code class="lean">BoxCone.axisVector_mem_futureCone</code></td>
-      <td><span class="chip lean">Lean</span></td></tr>
+    <li class="stop"><span class="n">7</span>
+      <h2>Dirac operator / doubler modes</h2>
+      <div class="fact">For the staggered operator <code>D_m² = T_x² + T_y² + T_z² + m²</code>; on even sizes the eight waves <code>(±i)ˣ(±i)ʸ(±i)ᶻ</code> are zero modes of <code>D₀</code>.</div>
+      <div class="go"><code class="lean">TorusDirac3.dirac3_sq</code><code class="lean">TorusDirac3.dirac3_wave</code>
+        <a href="https://naype888-cloud.github.io/nava-robertson-schrodinger/hopping.html">Page →</a><span class="chip lean">Lean</span></div></li>
 
-    <tr><td class="blk">B7<span>Dirac operator /<br>doubler modes</span></td>
-      <td><span class="m"><code>D_m² = T² + m²</code>, every size</span>
-        <code class="lean">OpenDirac.dirac_sq</code></td>
-      <td><span class="m">even sizes, eight doublers</span>
-        <code class="lean">TorusDirac3.dirac3_sq</code><br>
-        <code class="lean">TorusDirac3.dirac3_wave</code></td>
-      <td><span class="m">the fibre is the mass</span>
-        <code class="lean">FiberDirac.dirac_sq</code><br>
-        <code class="lean">FiberDirac.fiberMass_sq</code></td>
-      <td><span class="chip lean">Lean</span></td></tr>
+    <li class="stop"><span class="n">8</span>
+      <h2>Einstein / Unruh flow</h2>
+      <div class="fact">With <code>η = 1/(4ℓ_P²)</code> on every cut, the Clausius relation on each light sheet gives <code>R_kk = 8πℓ_P² T_kk</code>; with the Bianchi identity, <code>Ric − ½R g + Λ g = 8πℓ_P² T</code>.</div>
+      <div class="go"><code class="lean">CutEinstein.clausius_torus</code><code class="lean">CutEinstein.einstein_cut</code>
+        <a href="https://github.com/naype888-cloud/nrs3-tritoro/blob/7ead7cc/NRS3Tritoro/CutEinstein.lean">Source →</a><span class="chip cond">Lean · conditional</span></div></li>
 
-    <tr><td class="blk">B8<span>Einstein /<br>Unruh flow</span></td>
-      <td><span class="m"><code>η = 1/(4ℓ_P²)</code>, <code>R_kk = 8πℓ_P² T_kk</code></span>
-        <code class="lean">CutEinstein.clausius_openCube</code></td>
-      <td><code class="lean">CutEinstein.clausius_torus</code></td>
-      <td><code class="lean">CutEinstein.clausius_fiber</code></td>
-      <td><span class="chip cond">Lean · conditional</span></td></tr>
-  </table></div>
+    <li class="stop"><span class="n">9</span>
+      <h2>Boundary light below capacity / layered boundaries</h2>
+      <div class="fact">Under <code>HWhiteBall</code>, <code>0 &lt; lightShare d ↔ d ≠ uniform</code>; each face of a wall of <code>T³</code> extends in <code>2^(|C|·dy·dz)</code> ways through the walls of <code>C</code> behind it.</div>
+      <div class="go"><code class="lean">HWhiteBall.lightShare_pos_iff</code><code class="lean">TorusLayers.card_interiors_torus</code>
+        <a href="09-white-ball.html">Page →</a><span class="chip lean">Lean</span><span class="chip bridge">Declared hypothesis</span></div></li>
+  </ol>
 
   <div class="legend">
     <div><span class="chip lean">Lean</span> exact theorem, standard axioms</div>
     <div><span class="chip cond">Lean · conditional</span> theorem with its physical hypotheses stated</div>
-    <div><span class="chip bridge">Declared bridge</span> postulate declared in Lean; its consequences proved, its consistency shown</div>
-    <div><span class="chip browser">Browser</span> computed in the page from the Lean matrices</div>
-    <div><span class="chip open">Open</span> not yet in Lean</div>
+    <div><span class="chip bridge">Declared hypothesis</span> a structure in Lean; its consequences proved, its satisfiability shown</div>
   </div>
 
-  <ul class="notes">
-    <li>B4: <code class="lean">TorusSaturation.HSaturationDark</code> declares that a full region is dark;
-      Lean proves what follows from it and that it is satisfiable
-      (<code class="lean">TorusSaturation.hSaturationDark_satisfiable</code>).</li>
-    <li>B8: on every cut <code>η = 1/(4ℓ_P²)</code> (<code class="lean">ClausiusInput.eta_universal</code>).
-      <code class="lean">CutEinstein.einstein_cut</code> gives <code>Ric − ½R g + Λ g = 8πℓ_P² T</code>
-      from the Clausius relation on every light sheet and the Bianchi identity, which it takes as hypotheses.</li>
-  </ul>
-
-  <footer>
-    Sources: <a href="https://github.com/naype888-cloud/nrs3-tritoro/tree/7ead7cc">nrs3-tritoro @ 7ead7cc</a> ·
-    <a href="https://github.com/naype888-cloud/nrs3-hopf/tree/a389bd4">nrs3-hopf @ a389bd4</a> ·
-    <a href="https://github.com/naype888-cloud/nrs3-dark/tree/2f4186a">nrs3-dark @ 2f4186a</a> ·
-    <a href="https://github.com/naype888-cloud/nrs3-uncertainty-cone/tree/b846c42">nrs3-uncertainty-cone @ b846c42</a> ·
-    <a href="https://github.com/naype888-cloud/nava-robertson-schrodinger/tree/03b9fe6">nava-robertson-schrodinger @ 03b9fe6</a><br>
-    NRS Noncommercial License 1.0.0
-  </footer>
+  <footer>Sources: <a href="https://github.com/naype888-cloud/nrs3-tritoro">nrs3-tritoro</a> ·
+    <a href="https://github.com/naype888-cloud/nrs3-hopf">nrs3-hopf</a> ·
+    <a href="https://github.com/naype888-cloud/nrs3-dark">nrs3-dark</a> ·
+    <a href="https://github.com/naype888-cloud/nrs3-uncertainty-cone">nrs3-uncertainty-cone</a> ·
+    <a href="https://github.com/naype888-cloud/nava-robertson-schrodinger">nava-robertson-schrodinger</a><br>
+    NRS Noncommercial License 1.0.0</footer>
 </div>
 </body>
 </html>

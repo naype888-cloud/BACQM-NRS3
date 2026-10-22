@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B9 · Boundary light below capacity, layered boundaries — BACQM-NRS³</title>
+<meta name="description" content="HWhiteBall and HCoreCollapse as declared hypotheses on a finite boundary, the layer counting on T³, and the Chandrasekhar bound from CODATA 2018, with their Lean declarations.">
+<link rel="stylesheet" href="../shared/css/tokens.css">
+<script src="../shared/js/theme.js"></script>
+<script src="../shared/js/yarn-ball.js?v=20261022a"></script>
+<style>
+  :root:not([data-theme="dark"]) { --bg: #fcfcfb; --grid: #e4e3df; --ink2: #52514e; --muted: #8a8985; --blue: #2a78d6; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #111110; --panel: #191918; --grid: #2c2b29; --ink2: #c4c3bf; --blue: #5b9be6; } }
+  * { box-sizing: border-box; }
+  main { max-width: 1080px; margin: 0 auto; padding: 24px 16px 40px; }
+  .top { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; font-size: .85rem; }
+  .top .brand { font-weight: 650; color: var(--ink); text-decoration: none; margin-right: auto; }
+  .pill { font: inherit; font-size: .8rem; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--grid);
+    background: var(--panel); color: var(--ink); text-decoration: none; cursor: pointer; }
+  h1 { font-size: 1.45rem; margin: 0 0 4px; font-weight: 650; } h2 { font-size: 1.1rem; margin: 26px 0 8px; font-weight: 620; }
+  .lead, .note { color: var(--ink2); max-width: 860px; } .note { font-size: .9rem; }
+  .card { background: var(--panel); border: 1px solid var(--grid); border-radius: 10px; padding: 12px; }
+  .controls { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px 18px; align-items: center; margin-bottom: 10px; }
+  @media (max-width: 700px) { .controls { grid-template-columns: 1fr 1fr; } }
+  .sl { display: flex; gap: 10px; align-items: center; font-variant-numeric: tabular-nums; }
+  .sl input { flex: 1; min-width: 0; accent-color: var(--blue); } .sl b { min-width: 2.8em; text-align: right; }
+  .figs { display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; } @media (max-width: 760px) { .figs { grid-template-columns: 1fr; } }
+  #ball { width: 100%; aspect-ratio: 16 / 12; display: block; touch-action: none; }
+  #massChart { width: 100%; height: 170px; display: block; }
+  .readout { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .stat { background: var(--panel); border: 1px solid var(--grid); border-radius: 8px; padding: 8px 10px; }
+  .stat .k { font-size: .78rem; color: var(--muted); } .stat .v { font-size: 1rem; font-variant-numeric: tabular-nums; }
+  .tw { overflow-x: auto; } table { border-collapse: collapse; font-size: .9rem; min-width: 680px; width: 100%; }
+  th, td { border: 1px solid var(--grid); padding: 6px 10px; text-align: left; vertical-align: top; } th { color: var(--ink2); }
+  .st { white-space: nowrap; font-size: .8rem; }
+  .st.lean { color: var(--green); } .st.bridge { color: var(--violet); }
+  footer { color: var(--muted); font-size: .85rem; margin-top: 28px; }
+</style>
+</head>
+<body data-tone="formal">
+<main>
+  <nav class="top" aria-label="Site">
+    <a class="brand" href="./">BACQM-NRS³ · Theorem atlas</a>
+    <a class="pill" href="../didactic/white-ball.html">Guided version ↗</a>
+    <button class="pill" id="theme" type="button" aria-label="Toggle dark mode">Theme</button>
+  </nav>
+
+  <h1>B9 · Boundary light below capacity, and layered boundaries</h1>
+  <p class="lead">Let <code>X</code> be a finite set of boundary steps, <code>Config X = 𝒫(X)</code> and
+    <code>capacity X = |X| log 2</code>, so that <code>Hₛ d ≤ capacity X</code> for every distribution <code>d</code> on
+    <code>Config X</code>, with equality iff <code>d</code> is uniform (<code>BoundaryBits.saturated_iff_uniform</code>).
+    Two hypotheses are declared as structures and shown satisfiable; the layer counting is proved outright.</p>
+
+  <h2>Definitions</h2>
+  <div class="tw"><table>
+    <tr><th>Name</th><th>Content</th></tr>
+    <tr><td><code>TorusWhiteBall.HWhiteBall X</code></td><td>a map <code>darkShare</code> on distributions over <code>Config X</code> with
+      <code>0 &lt; darkShare d ≤ 1</code>, <code>darkShare d = 1</code> if <code>Hₛ d = capacity X</code>, <code>darkShare d &lt; 1</code> if <code>Hₛ d &lt; capacity X</code>;
+      <code>lightShare d = 1 − darkShare d</code></td></tr>
+    <tr><td><code>TorusWhiteBall.HCoreCollapse X</code></td><td>a real <code>collapseMass</code> and a map <code>boundary : ℝ → ProbDistribution (Config X)</code> with
+      <code>Hₛ (boundary M) = capacity X ↔ collapseMass ≤ M</code> and <code>2.08 &lt; collapseMass ≤ 3.2</code></td></tr>
+    <tr><td><code>TorusWhiteBall.chandrasekharSolar</code></td><td><code>ω₃⁰ √(3π) m_P³ / (2 (μ_e m_H)²) / M☉</code> with CODATA 2018 <code>m_P</code>, <code>m_H</code>, IAU 2015 <code>M☉</code>, <code>ω₃⁰ = 2.01824</code>, <code>μ_e = 2</code></td></tr>
+    <tr><td><code>TorusLayers.layerSteps C</code></td><td>for <code>C ⊆ Fin (dx − 1)</code>, the union of the walls <code>x = c | c + 1</code>, <code>c ∈ C</code>, of <code>T³ = dx × dy × dz</code></td></tr>
+  </table></div>
+
+  <h2>Results</h2>
+  <div class="tw"><table>
+    <tr><th>Statement</th><th>Name</th><th>Status</th></tr>
+    <tr><td>For <code>X ∩ Y = ∅</code> and <code>S ⊆ X</code>: <code>#{T ⊆ X ∪ Y : T ∩ X = S} = 2^|Y|</code></td>
+      <td><code class="lean">TorusLayers.card_interiors</code></td><td class="st lean">Lean</td></tr>
+    <tr><td>Walls at <code>c ≠ c'</code> are disjoint; <code>|layerSteps C| = |C| · dy · dz</code>; for <code>c ∉ C</code> each face of the wall at <code>c</code> extends in <code>2^(|C|·dy·dz)</code> ways</td>
+      <td><code class="lean">TorusLayers.disjoint_planeSteps</code><br><code class="lean">TorusLayers.card_layerSteps</code><br><code class="lean">TorusLayers.card_interiors_torus</code></td><td class="st lean">Lean</td></tr>
+    <tr><td><code>darkShare d = 1 ↔ d = uniform</code>; <code>0 &lt; lightShare d ↔ d ≠ uniform</code></td>
+      <td><code class="lean">HWhiteBall.darkShare_eq_one_iff</code><br><code class="lean">HWhiteBall.lightShare_pos_iff</code></td><td class="st bridge">from HWhiteBall</td></tr>
+    <tr><td>For a family <code>(W i, d i)</code>: <code>(∀ i, 0 &lt; lightShare (d i)) ↔ ∀ i, d i ≠ uniform</code>; <code>(∃ i, lightShare (d i) = 0) ↔ ∃ i, d i = uniform</code></td>
+      <td><code class="lean">TorusLayers.lightShare_pos_iff</code><br><code class="lean">TorusLayers.exists_dark_iff</code></td><td class="st bridge">from HWhiteBall</td></tr>
+    <tr><td>Witness: <code>darkShare = 1 − Ω_b (1 − Hₛ/capacity)</code> satisfies <code>HWhiteBall</code> for <code>0 &lt; Ω_b &lt; 1</code>, and <code>lightShare ≤ Ω_b</code></td>
+      <td><code class="lean">TorusWhiteBall.ofModel</code><br><code class="lean">TorusWhiteBall.ofModel_lightShare_le</code></td><td class="st lean">Lean</td></tr>
+    <tr><td><code>1.43 &lt; chandrasekharSolar &lt; 1.44</code></td>
+      <td><code class="lean">TorusWhiteBall.chandrasekharSolar_gt</code><br><code class="lean">TorusWhiteBall.chandrasekharSolar_lt</code></td><td class="st lean">Lean</td></tr>
+    <tr><td><code>0 &lt; lightShare (boundary M) ↔ M &lt; collapseMass</code>; positive for <code>M = 1.018</code> and <code>M = 2.08</code>, zero for <code>M = 21.2</code> and <code>M = 30</code></td>
+      <td><code class="lean">TorusWhiteBall.white_iff</code><br><code class="lean">TorusWhiteBall.siriusB_white</code>, <code class="lean">TorusWhiteBall.psrJ0740_white</code><br><code class="lean">TorusWhiteBall.cygnusX1_dark</code>, <code class="lean">TorusWhiteBall.thirty_dark</code></td><td class="st bridge">from both</td></tr>
+    <tr><td>Both hypotheses hold together on every nonempty <code>X</code>; instances on <code>R³</code>, <code>T³</code> and the fibred box (across <code>x</code> and <code>w</code>)</td>
+      <td><code class="lean">TorusWhiteBall.exists_white_and_dark</code><br><code class="lean">TorusWhiteBall.torus_exists</code></td><td class="st lean">Lean</td></tr>
+    <tr><td>On <code>T³</code>, <code>HWhiteBall (crossSteps)</code> yields <code>TorusSaturation.HSaturationDark</code></td>
+      <td><code class="lean">TorusWhiteBall.toSaturationDark</code></td><td class="st lean">Lean</td></tr>
+  </table></div>
+
+  <h2>Figure</h2>
+  <div class="card">
+    <div class="controls">
+      <label class="sl">dx<input id="dx" type="range" min="4" max="10" value="7"><b id="vdx">7</b></label>
+      <label class="sl">dy<input id="dy" type="range" min="3" max="10" value="5"><b id="vdy">5</b></label>
+      <label class="sl">|C|<input id="layers" type="range" min="0" max="5" value="3"><b id="vlayers">3</b></label>
+      <label class="sl">M / M☉<input id="mass" type="range" min="-0.3" max="1.6" step="0.005" value="0.008"><b id="vmass">1.02</b></label>
+      <input id="dz" type="hidden" value="5"><input id="ss" type="hidden" value="0.6">
+    </div>
+    <div class="figs">
+      <canvas id="ball" aria-label="T³ with the wall at c = dx − 2 and the walls of C behind it"></canvas>
+      <div><canvas id="massChart" aria-label="Core mass with the data of TorusWhiteBall"></canvas>
+        <div class="readout" aria-live="polite">
+          <div class="stat"><div class="k">wall at c = dx − 2</div><div class="v" id="rFace">–</div></div>
+          <div class="stat"><div class="k">|layerSteps C|</div><div class="v" id="rInner">–</div></div>
+          <div class="stat"><div class="k">extensions of each face</div><div class="v" id="rHidden">–</div></div>
+          <div class="stat"><div class="k">lightShare (boundary M)</div><div class="v" id="rRegime">–</div></div>
+        </div></div>
+    </div>
+  </div>
+  <p class="note">The counts in the readouts are the Lean values. The site intensities are the product state <code>|Ψ(s)|²</code> of the hopping
+    <code>H = −2t T°</code> on each axis, and the colouring of the wall follows the sign of <code>lightShare</code> given by the hypotheses;
+    for <code>2.08 &lt; M &lt; 3.2</code> the data do not fix <code>collapseMass</code>, and the page says so.</p>
+
+  <p class="note">Index: <a href="./">theorem atlas</a>.</p>
+  <footer>NRS Noncommercial License 1.0.0 · Lean: <a href="https://github.com/naype888-cloud/nrs3-tritoro">nrs3-tritoro</a>, <code>NRS3Tritoro/TorusWhiteBall.lean</code>, <code>NRS3Tritoro/TorusLayers.lean</code></footer>
+</main>
+</body>
+</html>

@@ -30,3 +30,15 @@ code.lean { display: inline-block; margin: 1px 0; }
 .notes { font-size: 0.84rem; color: var(--ink2); max-width: 900px; }
 .notes li { margin-bottom: 4px; }
 footer { margin-top: 28px; font-size: 0.8rem; color: var(--muted); }
+.wrap.narrow { max-width: 900px; }
+.path { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.stop { display: grid; grid-template-columns: 30px 1fr; gap: 3px 14px; background: var(--panel);
+  border: 1px solid var(--grid); border-left: 3px solid var(--green); border-radius: 10px; padding: 12px 14px; }
+.stop:has(.chip.cond) { border-left-color: var(--orange); }
+.stop:has(.chip.bridge) { border-left-color: var(--violet); }
+.stop .n { grid-row: span 3; font: 600 0.82rem/1 ui-monospace, Menlo, Consolas, monospace; color: var(--muted); padding-top: 4px; }
+.stop .n::before { content: "B"; }
+.stop h2 { font-size: 0.98rem; margin: 0; font-weight: 620; }
+.stop .fact { color: var(--ink2); font-size: 0.9rem; }
+.stop .go { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: 0.84rem; }
+.stop .go a { font-weight: 600; text-decoration: none; margin-left: auto; }
