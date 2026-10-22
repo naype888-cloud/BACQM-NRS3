@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 · Light share / dark share — BACQM-NRS³</title>
+<meta name="description" content="Light share / dark share on the three-torus: definitions, results and Lean declarations.">
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+<style>
+/* Layout: one instrument column — control strip on top, live readouts, three linked plots, then the Lean ledger and the static figures. */
+:root {
+  --bg: #fcfcfb; --panel: #ffffff; --fg: #0b0b0b; --mut: #52514e; --line: #e4e3df;
+  --accent: #2a78d6; --warm: #eb6834; --ok: #1f7a4d; --code: #f1f0ec;
+  --display: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --body: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111110; --panel: #191918; --fg: #f2f1ee; --mut: #c4c3bf; --line: #2c2b29;
+  --accent: #5b9be6; --warm: #f08a5d; --ok: #5cc98f; --code: #1f1f1d; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #111110; --panel: #191918; --fg: #f2f1ee; --mut: #c4c3bf; --line: #2c2b29;
+  --accent: #5b9be6; --warm: #f08a5d; --ok: #5cc98f; --code: #1f1f1d; color-scheme: dark }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.55 var(--body); }
+.meta a { color: var(--accent); }
+.wrap { max-width: 1080px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 56px; display: grid; gap: 28px; }
+h1, h2 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: clamp(1.9rem, 4vw, 2.6rem); font-weight: 700; }
+h2 { font-size: 1.3rem; font-weight: 600; }
+p { margin: 0; max-width: 68ch; }
+.eyebrow { font: 600 .74rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--mut); }
+header { display: grid; gap: 10px; }
+.formula { font-family: var(--mono); font-size: 1.05rem; color: var(--accent); }
+.mut { color: var(--mut); }
+code, .mono { font-family: var(--mono); font-size: .86em; }
+code { background: var(--code); padding: 1px 5px; border-radius: 4px; }
+
+.controls { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 14px; }
+.ctl-row { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: center; }
+.ctl-row label { font-weight: 600; }
+input[type="range"] { flex: 1 1 320px; min-width: 0; accent-color: var(--accent); }
+.sval { font-family: var(--mono); font-variant-numeric: tabular-nums; min-width: 12ch; }
+button, .seg label { font: 600 .9rem var(--body); border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+button:hover, .seg label:hover { border-color: var(--accent); }
+button:focus-visible, input:focus-visible + label, input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.seg { display: inline-flex; gap: 6px; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg input:checked + label { background: var(--accent); border-color: var(--accent); color: var(--panel); }
+
+.readouts { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.ro { background: var(--panel); padding: 12px 14px; display: grid; gap: 2px; min-width: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.ro .k { font: 600 .72rem var(--mono); color: var(--mut); letter-spacing: .04em; }
+.ro .v { font: 500 1.05rem var(--mono); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.ro .u { font-size: .8rem; color: var(--mut); overflow-wrap: anywhere; }
+.ro.check .v { color: var(--ok); }
+
+.plots { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: 18px; }
+.plot { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px; min-width: 0; }
+.plot .cap { font: .78rem var(--mono); color: var(--mut); padding: 2px 6px 6px; overflow-wrap: anywhere; }
+.plot .chart { width: 100%; height: 340px; }
+.plot.wide { grid-column: 1 / -1; }
+
+.ledger { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: .92rem; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font: 600 .74rem var(--mono); letter-spacing: .05em; text-transform: uppercase; color: var(--mut); }
+tr:last-child td { border-bottom: 0; }
+td.name { font-family: var(--mono); font-size: .82rem; color: var(--accent); white-space: nowrap; }
+.pill { font: 600 .72rem var(--mono); color: var(--ok); border: 1px solid var(--ok); border-radius: 999px; padding: 1px 8px; white-space: nowrap; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 18px; font: .82rem var(--mono); color: var(--mut); }
+
+.figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 14px; }
+.figs figure { margin: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 8px; }
+.figs img { display: block; width: 100%; height: auto; border-radius: 6px; }
+.figs figcaption { font-size: .82rem; color: var(--mut); padding: 6px 4px 2px; }
+.note { border-left: 3px solid var(--warm); padding: 4px 0 4px 14px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+<link rel="stylesheet" href="../shared/css/scientific-page.css?v=20261022b">
+</head>
+<body data-tone="formal">
+<main class="wrap">
+  <nav class="navbar" aria-label="Site">
+    <a class="brand" href="./">BACQM-NRS³ · Theorem atlas</a>
+    <a class="pill" href="../didactic/light-dark.html">Guided version ↗</a>
+    <button class="pill" id="theme" type="button" aria-label="Toggle dark mode">Theme</button>
+  </nav>
+  <h1>B2 · Light share / dark share</h1>
+  <p class="lead">For vectors <code>x, y</code> of a Hilbert space, <code>lightShare x y = |⟨x, y⟩|² / (‖x‖‖y‖)²</code> and <code>darkShare x y = gramDefect x y / (‖x‖‖y‖)²</code>. On an axis, <code>x</code> and <code>y</code> are the centered vectors of <code>T°</code> and <code>P</code> at the state.</p>
+
+  <h2>Definitions</h2>
+  <div class="formal"><table><tr><th>Name</th><th>Content</th></tr><tr><td><code>DarkShare.lightShare</code></td><td><code>|⟨x, y⟩|² / (‖x‖‖y‖)²</code></td></tr><tr><td><code>DarkShare.darkShare</code></td><td><code>gramDefect x y / (‖x‖‖y‖)²</code></td></tr><tr><td><code>RingSzego.exists_cState</code></td><td>every ring size has its maximal current state <code>c</code></td></tr></table></div>
+
+  <h2>Results</h2>
+  <div class="formal"><table><tr><th>Statement</th><th>Name</th><th>Status</th></tr><tr><td><code>lightShare + darkShare = 1</code> whenever <code>‖x‖‖y‖ ≠ 0</code></td><td><code class="lean">DarkShare.lightShare_add_darkShare</code>, <code class="lean">TorusDark.lightShare_add_darkShare</code></td><td class="st lean">Lean</td></tr><tr><td><code>darkShare &gt; 0</code> on every axis in its band, every state</td><td><code class="lean">TorusDark.darkShare_pos_of_band</code></td><td class="st lean">Lean</td></tr><tr><td>at <code>maxState</code>: <code>lightShare = 4/5</code>, <code>darkShare = 1/5</code></td><td><code class="lean">TorusDark.lightShare_maxState</code>, <code class="lean">TorusDark.darkShare_maxState</code></td><td class="st lean">Lean</td></tr><tr><td><code>d → ∞</code>: <code>lightShare, darkShare → 1/2</code>, angle <code>→ π/4</code>, <code>det Σ/|det Ω| → 2</code> per axis</td><td><code class="lean">RingSzego.tendsto_lightShare</code>, <code class="lean">RingSzego.tendsto_angle</code>, <code class="lean">RingSzego.tendsto_det_ratio</code></td><td class="st lean">Lean</td></tr><tr><td>exact angle at <code>c</code> for <code>d = 4, 5, …</code></td><td>—</td><td class="st open">open</td></tr></table></div>
+
+  <h2>Figure</h2>
+  <section class="controls" aria-label="Controls">
+    <div class="ctl-row"><label for="dx">d<sub>x</sub></label><input id="dx" type="range" min="3" max="40" step="1" value="3"><span class="sval" id="dxv"></span></div>
+    <div class="ctl-row"><label for="dy">d<sub>y</sub></label><input id="dy" type="range" min="3" max="40" step="1" value="4"><span class="sval" id="dyv"></span></div>
+    <div class="ctl-row"><label for="dz">d<sub>z</sub></label><input id="dz" type="range" min="3" max="40" step="1" value="6"><span class="sval" id="dzv"></span></div>
+  </section>
+
+  <section class="readouts" aria-live="polite">
+    <div class="ro"><span class="k">x · light | dark</span><span class="v" id="ro-x"></span><span class="u" id="ro-xu"></span></div>
+    <div class="ro"><span class="k">y · light | dark</span><span class="v" id="ro-y"></span><span class="u" id="ro-yu"></span></div>
+    <div class="ro"><span class="k">z · light | dark</span><span class="v" id="ro-z"></span><span class="u" id="ro-zu"></span></div>
+    <div class="ro"><span class="k">det Σ / |det Ω| at c</span><span class="v" id="ro-det"></span><span class="u">C°(d<sub>x</sub>)² C°(d<sub>y</sub>)² C°(d<sub>z</sub>)²</span></div>
+    <div class="ro check"><span class="k">window at the ring limit, c = √2</span><span class="v" id="ro-win"></span><span class="u">(1 − 1/c) e^{−1/c} &gt; 0 because c &gt; 1: the limit does not saturate</span></div>
+    <div class="ro"><span class="k">Ω<sub>b</sub> measured (Planck 2018)</span><span class="v" id="ro-ob"></span><span class="u">what light resolves, the datum</span></div>
+    <div class="ro check"><span class="k">1 − Ω<sub>b</sub></span><span class="v" id="ro-dark"></span><span class="u">what light does not resolve</span></div>
+  </section>
+
+  <section class="plots">
+    <div class="plot"><div class="cap">Light β² = 1/C°(d)² and dark 1 − β² of a closed axis at c, against d. Dotted: the open chain. Dashed: 1/2, the Szegő limit of the ring.</div><div class="chart" id="shares"></div></div>
+    <div class="plot"><div class="cap">Three fronts: the measured Ω_b with its 1σ error. Dashed: omegaPi, the window of the open axis (variation).</div><div class="chart" id="fronts"></div></div>
+    <div class="plot wide"><div class="cap">The universe split by resolution: Ω_b resolved by light, 1 − Ω_b the part it does not resolve.</div><div class="chart" id="split" style="height:150px"></div></div>
+  </section>
+
+  <p class="note">At the maximal current state, the c of the closed axis, three positions resolve 4/5 and keep 1/5 dark; the open axis with three
+    positions keeps 0. For larger rings the share is not monotone, it goes to 1/2 from both sides (RingSzego). What the window needs is not a value but c &gt; 1: at the ring limit c = √2 it is 0.1444, positive because the infinite limit does not saturate the Gaussian (angle 45°, not 0). The first two plots are
+    computed live from the matrices of the ring; Ω<sub>b</sub> is the measured datum of each instrument and the spread between fronts is the error
+    of each instrument.</p>
+  <p class="note">The curves against <code>d</code> are computed in the browser; the exact angle at <code>c</code> is a Lean value only for <code>d = 3</code>.</p>
+  <p class="pager"><a href="01-uncertainty.html">← B1</a><a href="./">Theorem atlas</a><a href="03-boundary-entropy.html">B3 →</a></p>
+  <footer>NRS Noncommercial License 1.0.0 · Lean: <a href="https://github.com/naype888-cloud/nrs3-tritoro">nrs3-tritoro</a> and the repositories listed in the <a href="./">atlas</a></footer>
+</main>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  // ---- the closed axis: T° = ring adjacency / 2, P = centred position (ClosedThree: Tc = (J − I)/2, P₃ = diag(−1, 0, 1)) ----
+  function jacobi(M) {
+    const n = M.length, A = M.map(r => r.slice()), V = A.map((r, i) => r.map((_, j) => (i === j ? 1 : 0)));
+    for (let sw = 0; sw < 60; sw++) {
+      let off = 0;
+      for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) off += A[i][j] ** 2;
+      if (off < 1e-24) break;
+      for (let p = 0; p < n; p++) for (let q = p + 1; q < n; q++) {
+        if (Math.abs(A[p][q]) < 1e-300) continue;
+        const th = (A[q][q] - A[p][p]) / (2 * A[p][q]), t = Math.sign(th || 1) / (Math.abs(th) + Math.sqrt(th * th + 1));
+        const c = 1 / Math.sqrt(t * t + 1), s = t * c;
+        for (let k = 0; k < n; k++) { const x = A[k][p], y = A[k][q]; A[k][p] = c * x - s * y; A[k][q] = s * x + c * y; }
+        for (let k = 0; k < n; k++) { const x = A[p][k], y = A[q][k]; A[p][k] = c * x - s * y; A[q][k] = s * x + c * y; }
+        for (let k = 0; k < n; k++) { const x = V[k][p], y = V[k][q]; V[k][p] = c * x - s * y; V[k][q] = s * x + c * y; }
+      }
+    }
+    return { vals: A.map((r, i) => r[i]), V };
+  }
+  const cache = {};
+  function ring(d) {   // light share β² of the maximal current state of the ring of d positions
+    if (cache[d]) return cache[d];
+    const p = Array.from({ length: d }, (_, j) => (2 * (j + 1) - (d + 1)) / (d - 1));
+    const M = Array.from({ length: 2 * d }, () => new Array(2 * d).fill(0));
+    for (let j = 0; j < d; j++) for (const k of [(j + 1) % d, (j + d - 1) % d]) { const b = 0.5 * (p[k] - p[j]); M[j][k + d] -= b; M[j + d][k] += b; }
+    const { vals, V } = jacobi(M);
+    let top = 0; vals.forEach((v, i) => { if (v > vals[top]) top = i; });
+    const re = [], im = []; for (let j = 0; j < d; j++) { re.push(V[j][top]); im.push(V[j + d][top]); }
+    const nn = Math.hypot(...re, ...im); for (let j = 0; j < d; j++) { re[j] /= nn; im[j] /= nn; }
+    const Tr = [], Ti = []; for (let j = 0; j < d; j++) { Tr.push((re[(j + d - 1) % d] + re[(j + 1) % d]) / 2); Ti.push((im[(j + d - 1) % d] + im[(j + 1) % d]) / 2); }
+    let mT = 0, mP = 0; for (let j = 0; j < d; j++) { mT += re[j] * Tr[j] + im[j] * Ti[j]; mP += p[j] * (re[j] ** 2 + im[j] ** 2); }
+    let a = 0, b = 0, ir = 0, ii = 0;
+    for (let j = 0; j < d; j++) {
+      const xr = Tr[j] - mT * re[j], xi = Ti[j] - mT * im[j], yr = (p[j] - mP) * re[j], yi = (p[j] - mP) * im[j];
+      a += xr * xr + xi * xi; b += yr * yr + yi * yi; ir += xr * yr + xi * yi; ii += xr * yi - xi * yr;
+    }
+    const light = (ir * ir + ii * ii) / (a * b);
+    return (cache[d] = { light, dark: 1 - light, C: 1 / Math.sqrt(light) });
+  }
+  // open chain (variation): C_Nava(N)² in closed form (Physlib LongChainLimit.cNavaSqForm at n = N + 1)
+  function C2(N) {
+    if (N <= 3) return 1;
+    const n = N + 1, x = Math.PI / n, s = Math.sin(x) / x;
+    return 2 * (1 - 2 / n) / Math.cos(x) ** 2 * ((Math.PI ** 2 * s * s + 2 * Math.sin(x) ** 2) / 6 - 1);
+  }
+  const Cinf = Math.sqrt(Math.PI ** 2 / 3 - 2), omegaPi = (1 - 1 / Cinf) * Math.exp(-1 / Cinf);
+  const fronts = [
+    { name: "CMB · Planck 2018", w: 0.02237, sw: 0.00015, h: 0.6736, sh: 0.0054 },
+    { name: "BBN · LUNA 2020", w: 0.02233, sw: 0.00036, h: 0.6736, sh: 0.0054 },
+    { name: "BAO · DESI 2024", w: 0.02218, sw: 0.00055, h: 0.6852, sh: 0.0062 }
+  ].map(f => { const O = f.w / (f.h * f.h); return Object.assign(f, { O, sO: O * Math.hypot(f.sw / f.w, 2 * f.sh / f.h) }); });
+  const cfg = { responsive: true, displaylogo: false, modeBarButtonsToRemove: ["lasso2d", "select2d"] };
+  function layout(xt, yt, extra) {
+    const fg = css("--fg"), mut = css("--mut"), line = css("--line");
+    const ax = t => ({ title: { text: t, font: { color: fg, size: 12 } }, gridcolor: line, zerolinecolor: line, linecolor: mut, tickfont: { color: mut, size: 11 } });
+    return Object.assign({ paper_bgcolor: "rgba(0,0,0,0)", plot_bgcolor: "rgba(0,0,0,0)", font: { family: "system-ui, sans-serif", color: fg },
+      margin: { l: 70, r: 20, t: 10, b: 50 }, xaxis: ax(xt), yaxis: ax(yt), showlegend: true,
+      legend: { orientation: "h", y: -0.25, font: { size: 11, color: fg } } }, extra || {});
+  }
+  const Ds = []; for (let d = 3; d <= 40; d++) Ds.push(d);
+  function draw() {
+    const acc = css("--accent"), warm = css("--warm"), ok = css("--ok"), mut = css("--mut");
+    const ds = ["dx", "dy", "dz"].map(id => +$(id).value), rs = ds.map(ring);
+    ["dx", "dy", "dz"].forEach((id, i) => { $(id + "v").textContent = ds[i]; });
+    ["x", "y", "z"].forEach((a, i) => { $("ro-" + a).textContent = rs[i].light.toFixed(4) + " | " + rs[i].dark.toFixed(4); $("ro-" + a + "u").textContent = "d = " + ds[i] + " · C° = " + rs[i].C.toFixed(4); });
+    $("ro-det").textContent = rs.reduce((p, r) => p * r.C * r.C, 1).toFixed(6);
+    const cRing = Math.SQRT2; $("ro-win").textContent = ((1 - 1 / cRing) * Math.exp(-1 / cRing)).toFixed(6);
+    const P = fronts[0]; $("ro-ob").textContent = P.O.toFixed(5) + " ± " + P.sO.toFixed(5); $("ro-dark").textContent = (1 - P.O).toFixed(5);
+
+    Plotly.react("shares", [
+      { type: "scatter", mode: "lines", name: "light β² = 1/C°²", x: Ds, y: Ds.map(d => ring(d).light), line: { color: acc, width: 2 } },
+      { type: "scatter", mode: "lines", name: "dark 1 − β²", x: Ds, y: Ds.map(d => ring(d).dark), line: { color: warm, width: 2 } },
+      { type: "scatter", mode: "lines", name: "open chain: dark", x: Ds, y: Ds.map(d => 1 - 1 / C2(d)), line: { color: mut, width: 1.5, dash: "dot" } },
+      { type: "scatter", mode: "lines", name: "1/2 (Szegő limit of the ring)", x: [3, 40], y: [0.5, 0.5], line: { color: mut, dash: "dash", width: 1 } },
+      { type: "scatter", mode: "markers+text", name: "axes x, y, z (light)", x: ds, y: rs.map(r => r.light), text: ["x", "y", "z"], textposition: "top center",
+        marker: { color: ok, size: 10 }, textfont: { color: ok } }
+    ], layout("d (positions of the ring)", "share"), cfg);
+
+    Plotly.react("fronts", [
+      { type: "scatter", mode: "markers", name: "measured Ω_b ± 1σ", y: fronts.map(f => f.name), x: fronts.map(f => f.O),
+        error_x: { type: "data", array: fronts.map(f => f.sO), color: acc, thickness: 2, width: 6 }, marker: { color: acc, size: 9 },
+        hovertemplate: "%{y}<br>Ω_b = %{x:.5f}<extra></extra>" },
+      { type: "scatter", mode: "lines", name: "omegaPi (open axis, variation)", x: [omegaPi, omegaPi], y: [fronts[0].name, fronts[2].name],
+        line: { color: warm, width: 2, dash: "dash" }, hoverinfo: "skip" }
+    ], layout("Ω_b", "", { margin: { l: 130, r: 20, t: 10, b: 50 }, xaxis: Object.assign(layout("Ω_b", "").xaxis, { range: [0.0425, 0.0535] }) }), cfg);
+
+    Plotly.react("split", [
+      { type: "bar", orientation: "h", name: "Ω_b · resolved by light", x: [P.O], y: [""], marker: { color: warm } },
+      { type: "bar", orientation: "h", name: "1 − Ω_b · not resolved", x: [1 - P.O], y: [""], marker: { color: css("--fg") } }
+    ], layout("fraction of the universe", "", { barmode: "stack", margin: { l: 20, r: 20, t: 6, b: 40 }, legend: { orientation: "h", y: -0.6, font: { size: 11, color: css("--fg") } } }), cfg);
+  }
+  ["dx", "dy", "dz"].forEach(id => $(id).addEventListener("input", draw));
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", draw);
+  new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  if (window.Plotly) draw(); else window.addEventListener("load", draw);
+})();
+</script>
+</body>
+</html>
