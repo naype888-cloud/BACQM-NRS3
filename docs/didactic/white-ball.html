@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The ball of yarn — BACQM-NRS³</title>
+<meta name="description" content="A star that does not reach its collapse mass wraps itself in layers of quanta: from outside only the lit face is seen. Hopping state, layers and core mass, with the Lean theorems.">
+<link rel="stylesheet" href="../shared/css/tokens.css">
+<script src="../shared/js/theme.js"></script>
+<script src="../shared/js/yarn-ball.js?v=20261022a"></script>
+<style>
+  * { box-sizing: border-box; }
+  main { max-width: 1180px; margin: 0 auto; padding: 18px 16px 40px; }
+  .top { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; font-size: .85rem; }
+  .top .brand { font-weight: 650; color: var(--ink); text-decoration: none; margin-right: auto; }
+  .pill { font: inherit; font-size: .8rem; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--grid);
+    background: var(--panel); color: var(--ink); text-decoration: none; cursor: pointer; }
+  h1 { font-size: 1.5rem; margin: 0 0 4px; font-weight: 650; }
+  .lead { color: var(--ink2); margin: 0 0 14px; max-width: 860px; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .bar button { font: inherit; font-size: .88rem; padding: 6px 12px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--grid); background: var(--panel); color: var(--ink); }
+  .bar button[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .sliders { display: grid; grid-template-columns: repeat(3, minmax(150px, 1fr)); gap: 8px 18px; }
+  @media (max-width: 760px) { .sliders { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .sliders { grid-template-columns: 1fr; } }
+  .sl { display: flex; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; }
+  .sl input { flex: 1; min-width: 0; accent-color: var(--blue); } .sl b { min-width: 3em; text-align: right; }
+  .grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 14px; margin-top: 12px; }
+  @media (max-width: 820px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: var(--panel); border: 1px solid var(--grid); border-radius: 12px; padding: 10px; position: relative; }
+  .card h2 { font-size: .95rem; margin: 2px 4px 6px; font-weight: 600; color: var(--ink2); }
+  .card .sub { color: var(--ink2); font-size: .86rem; margin: 0 4px 8px; }
+  #ball { width: 100%; aspect-ratio: 1 / 1; display: block; touch-action: none; cursor: grab; }
+  #massChart { width: 100%; height: 170px; display: block; }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 4px 0; }
+  .stat { border: 1px solid var(--grid); border-radius: 8px; padding: 6px 10px; }
+  .stat .k { font-size: .76rem; color: var(--muted); } .stat .v { font-variant-numeric: tabular-nums; }
+  .bandcard { margin-top: 14px; }
+  .chip { display: inline-block; font-size: .72rem; padding: 1px 8px; border-radius: 999px; border: 1px solid currentColor; }
+  .chip.lean { color: var(--green); } .chip.bridge { color: var(--violet); } .chip.browser { color: var(--blue); }
+  ul.exact { margin: 4px 0 0; padding-left: 20px; color: var(--ink2); } ul.exact li { margin-bottom: 6px; }
+  .tw { overflow-x: auto; } table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: .88rem; }
+  th, td { border-bottom: 1px solid var(--grid); padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { color: var(--ink2); font-weight: 600; }
+  details summary { cursor: pointer; color: var(--ink2); font-weight: 600; margin: 4px; }
+  .note { color: var(--ink2); font-size: .88rem; max-width: 860px; }
+  footer { margin-top: 26px; font-size: .8rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <nav class="top" aria-label="Site">
+    <a class="brand" href="./">BACQM-NRS³ · The path</a>
+    <a class="pill" href="../scientific/09-white-ball.html">Formal version ↗</a>
+    <button class="pill" id="theme" type="button" aria-label="Toggle dark mode">Theme</button>
+  </nav>
+
+  <h1>The ball of yarn — why a star that does not collapse shines on its face</h1>
+  <p class="lead">Everything you see is a field that has been excited and is being measured; the photon is the carrier that brings it to your eye.
+    Where there is no excitation there is nothing to measure: the black of "nothing there" is only a possibility.
+    A star whose core stays below its collapse mass spreads its matter over many quanta and fills none of them. It wraps itself in
+    layers and layers of quanta, stacked on the threads along which the hopping moves the excitations, like a football
+    with a LED on every vertex and clear panels in between. From outside you only see the lit face; the layers behind it stay intact.
+    If too much falls into the same quantum, that quantum fills, collapses, and no light returns.</p>
+
+  <div class="bar">
+    <button type="button" data-mass="1.018">Sirius B</button>
+    <button type="button" data-mass="2.08">PSR J0740+6620</button>
+    <button type="button" data-mass="2.6">2.6 M☉</button>
+    <button type="button" data-mass="21.2">Cygnus X-1</button>
+    <button type="button" id="vacuum" aria-pressed="false">Vacuum (no excitation)</button>
+  </div>
+  <div class="sliders">
+    <label class="sl">d<sub>x</sub><input type="range" id="dx" min="4" max="10" value="7"><b id="vdx">7</b></label>
+    <label class="sl">d<sub>y</sub><input type="range" id="dy" min="3" max="10" value="5"><b id="vdy">5</b></label>
+    <label class="sl">d<sub>z</sub><input type="range" id="dz" min="3" max="10" value="5"><b id="vdz">5</b></label>
+    <label class="sl">layers<input type="range" id="layers" min="0" max="5" value="3"><b id="vlayers">3</b></label>
+    <label class="sl">site → mode<input type="range" id="ss" min="0" max="1" step="0.01" value="0.6"><b id="vss">0.60</b></label>
+    <label class="sl">core M☉<input type="range" id="mass" min="-0.3" max="1.6" step="0.005" value="0.008"><b id="vmass">1.02</b></label>
+  </div>
+
+  <div class="grid">
+    <div class="card"><h2>The ball: threads, layers and the lit face</h2>
+      <p class="sub">Dots: the hopping state |Ψ|² on every position. Clear walls: the layers. Front wall: the face, one LED per step. Drag to turn.</p>
+      <canvas id="ball" aria-label="The torus with the hopping state, the layers and the lit outer face"></canvas></div>
+    <div class="card"><h2>The core mass decides the colour</h2>
+      <p class="sub">Below 2.08 M☉ the face shines; from 3.2 M☉ the quantum is full and dark. In between, the measured stars do not decide where the collapse mass is.</p>
+      <canvas id="massChart" aria-label="Core mass axis with the measured stars"></canvas>
+      <div class="stats" aria-live="polite">
+        <div class="stat"><div class="k">the face</div><div class="v" id="rFace">–</div></div>
+        <div class="stat"><div class="k">the layers behind it</div><div class="v" id="rInner">–</div></div>
+        <div class="stat"><div class="k">interiors hidden behind each face</div><div class="v" id="rHidden">–</div></div>
+        <div class="stat"><div class="k">colour</div><div class="v" id="rRegime">–</div></div>
+      </div></div>
+  </div>
+
+  <div class="card bandcard"><h2>What is exact here</h2>
+    <ul class="exact">
+      <li><span class="chip lean">Lean</span> Every face of the outer wall hides the same number of interiors, <code>2^(layers·dy·dz)</code>: from outside you cannot tell what is inside.</li>
+      <li><span class="chip lean">Lean</span> Spread over the quanta with none full, every layer keeps light; one full layer is one dark quantum.</li>
+      <li><span class="chip lean">Lean</span> The Chandrasekhar mass from CODATA 2018 and IAU 2015 lies between 1.43 and 1.44 M☉.</li>
+      <li><span class="chip bridge">Declared bridge</span> A quantum below capacity shines on its edge, a full one is dark; the core fills its quantum at the collapse mass, somewhere between 2.08 and 3.2 M☉.</li>
+      <li><span class="chip browser">Browser</span> The brightness of each LED is |Ψ|² at the two ends of its step; the drawing and the colours are the page's, not theorems.</li>
+    </ul>
+    <details><summary>Theorem trail</summary>
+      <div class="tw"><table>
+        <tr><th>Statement</th><th>Name</th></tr>
+        <tr><td>every face hides <code>2^|Y|</code> configurations of the layers</td><td><code class="lean">TorusLayers.card_interiors</code></td></tr>
+        <tr><td>on <code>T³</code>: walls at different positions are disjoint; <code>|C|·dy·dz</code> layer steps; <code>2^(|C|·dy·dz)</code> interiors per face</td><td><code class="lean">TorusLayers.disjoint_planeSteps</code>, <code class="lean">TorusLayers.card_layerSteps</code>, <code class="lean">TorusLayers.card_interiors_torus</code></td></tr>
+        <tr><td>every layer keeps light iff no layer is full; a full layer is dark</td><td><code class="lean">TorusLayers.lightShare_pos_iff</code>, <code class="lean">TorusLayers.lightShare_eq_zero_of_full</code>, <code class="lean">TorusLayers.exists_dark_iff</code></td></tr>
+        <tr><td>the white point iff the quantum is not full</td><td><code class="lean">TorusWhiteBall.HWhiteBall</code> (declared), <code class="lean">HWhiteBall.lightShare_pos_iff</code></td></tr>
+        <tr><td><code>1.43 &lt; M_Ch / M☉ &lt; 1.44</code></td><td><code class="lean">TorusWhiteBall.chandrasekharSolar_gt</code>, <code class="lean">TorusWhiteBall.chandrasekharSolar_lt</code></td></tr>
+        <tr><td>white below the collapse mass; Sirius B and PSR J0740 white; Cygnus X-1 and 30 M☉ dark</td><td><code class="lean">TorusWhiteBall.HCoreCollapse</code> (declared), <code class="lean">TorusWhiteBall.siriusB_white</code>, <code class="lean">TorusWhiteBall.psrJ0740_white</code>, <code class="lean">TorusWhiteBall.cygnusX1_dark</code></td></tr>
+        <tr><td>on the vacuum every operator gives zero: nothing to measure</td><td><code class="lean">TorusFock.secondQuant_vacuum</code></td></tr>
+      </table></div>
+    </details>
+  </div>
+
+  <p class="note">Back to <a href="./">the path</a> · the same result written for mathematicians: <a href="../scientific/09-white-ball.html">the formal version</a>.</p>
+  <footer>NRS Noncommercial License 1.0.0 · Lean: <a href="https://github.com/naype888-cloud/nrs3-tritoro">nrs3-tritoro</a> (<code>TorusWhiteBall</code>, <code>TorusLayers</code>)</footer>
+</main>
+</body>
+</html>
