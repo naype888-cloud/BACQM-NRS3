@@ -1,0 +1,27 @@
+/* Didactic: guided path. Warm paper, one reading column, numbered stops. */
+.wrap { max-width: 860px; margin: 0 auto; padding: 18px 16px 48px; }
+.bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 26px; font-size: 0.85rem; }
+.bar .brand { font-weight: 650; text-decoration: none; color: var(--ink); margin-right: auto; }
+.pill { font: inherit; font-size: 0.8rem; padding: 4px 10px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--grid); background: var(--panel); color: var(--ink); text-decoration: none; }
+h1 { font-size: 1.9rem; margin: 0 0 8px; font-weight: 650; letter-spacing: -0.01em; }
+.lead { color: var(--ink2); margin: 0 0 26px; font-size: 1.02rem; max-width: 720px; }
+.path { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; counter-reset: stop; }
+.stop { display: grid; grid-template-columns: 34px 1fr; gap: 4px 14px; background: var(--panel);
+  border: 1px solid var(--grid); border-radius: 14px; padding: 14px 16px; }
+.stop .n { grid-row: span 3; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--blue); color: #fff; font-weight: 650; font-size: 0.9rem; }
+.stop h2 { font-size: 1.04rem; margin: 2px 0 0; font-weight: 620; }
+.stop .fact { color: var(--ink2); font-variant-numeric: tabular-nums; }
+.stop .go { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; font-size: 0.86rem; }
+.stop .go a { font-weight: 600; text-decoration: none; }
+.stop .go a:hover { text-decoration: underline; }
+.chip { display: inline-block; font-size: 0.72rem; padding: 1px 8px; border-radius: 999px;
+  border: 1px solid currentColor; white-space: nowrap; }
+.chip.lean { color: var(--green); }
+.chip.cond { color: var(--orange); }
+.chip.bridge { color: var(--violet); }
+.chip.browser { color: var(--blue); }
+.chip.open { color: var(--muted); }
+.legend { margin: 26px 0 0; font-size: 0.84rem; color: var(--ink2); display: grid; gap: 6px; }
+footer { margin-top: 30px; font-size: 0.8rem; color: var(--muted); }

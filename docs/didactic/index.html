@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The path — BACQM-NRS³</title>
+<meta name="description" content="From uncertainty to curvature, the cone, Dirac and the Einstein equation, in eight stops on the three-torus.">
+<link rel="stylesheet" href="../shared/css/tokens.css">
+<link rel="stylesheet" href="../shared/css/didactic.css">
+<script src="../shared/js/theme.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="bar" aria-label="Site">
+    <a class="brand" href="../">BACQM-NRS³</a>
+    <a class="pill" href="../scientific/">Theorem atlas ↗</a>
+    <button class="pill" id="theme" type="button" aria-label="Toggle dark mode">Theme</button>
+  </nav>
+
+  <h1>Uncertainty on the three-torus, in eight stops</h1>
+  <p class="lead">Three closed axes, <code>x</code>, <code>y</code> and <code>z</code>, and on each one a position and a transport that do not commute.
+    Each stop asks one question, lets you play with it in the browser, and ends with the Lean theorem that answers it.</p>
+
+  <ol class="path">
+    <li class="stop"><span class="n">1</span>
+      <h2>Why can't position and transport both be sharp on a closed axis?</h2>
+      <div class="fact">Every state obeys det Σ ≥ |det Ω|; at the maximal current state of T³, det Σ = (125/64)·|det Ω|.</div>
+      <div class="go"><a href="https://naype888-cloud.github.io/nava-robertson-schrodinger/">Every torus has its star →</a><span class="chip lean">Lean</span></div></li>
+
+    <li class="stop"><span class="n">2</span>
+      <h2>How much of each axis can be resolved?</h2>
+      <div class="fact">Light + dark = 1 on every axis; at the maximal current state each axis resolves 4/5 and keeps 1/5 dark.</div>
+      <div class="go"><a href="https://naype888-cloud.github.io/nrs3-dark/t3.html">Light and dark on T³ →</a><span class="chip lean">Lean</span></div></li>
+
+    <li class="stop"><span class="n">3</span>
+      <h2>Where does a region keep its information?</h2>
+      <div class="fact">On its boundary: a cut of T³ has two walls, the plane and the seam.</div>
+      <div class="go"><a href="https://naype888-cloud.github.io/nrs3-tritoro/holography.html">Holography: open cube and three-torus →</a><span class="chip lean">Lean</span></div></li>
+
+    <li class="stop"><span class="n">4</span>
+      <h2>How many bits fit on the boundary, and what does full look like?</h2>
+      <div class="fact">S = 2·dy·dz·log 2, whatever the depth; it is reached only by the uniform distribution.</div>
+      <div class="go"><a href="https://naype888-cloud.github.io/nrs3-tritoro/bekenstein.html">Bits on the boundary →</a><span class="chip lean">Lean</span><span class="chip bridge">Declared bridge: full ⇒ dark</span></div></li>
+
+    <li class="stop"><span class="n">5</span>
+      <h2>What does a full region look like up close, and is the torus curved?</h2>
+      <div class="fact">Each step is open half of the time and fluctuates 1/4; T³ is flat, the 16-cell has K = 4.</div>
+      <div class="go"><a href="https://naype888-cloud.github.io/nrs3-tritoro/foam.html">The dark foam →</a><span class="chip lean">Lean</span></div></li>
+
+    <li class="stop"><span class="n">6</span>
+      <h2>Why does every axis stay inside a light cone?</h2>
+      <div class="fact">The axis vector of every state lies in the closed future cone, and SL(2, ℂ) never moves it out.</div>
+      <div class="go"><a href="https://naype888-cloud.github.io/nrs3-uncertainty-cone/lorentz-t3.html">SL(2, ℂ) on T³ →</a><span class="chip lean">Lean</span></div></li>
+
+    <li class="stop"><span class="n">7</span>
+      <h2>Why does the Dirac operator on T³ see eight corners?</h2>
+      <div class="fact">D² = T_x² + T_y² + T_z² + m²; on even sizes the eight corners of the momentum cube are its doublers.</div>
+      <div class="go"><a href="https://naype888-cloud.github.io/nava-robertson-schrodinger/hopping.html">The hopping and the eight doublers →</a><span class="chip lean">Lean</span></div></li>
+
+    <li class="stop"><span class="n">8</span>
+      <h2>How does a cut give the Einstein equation?</h2>
+      <div class="fact">Every cut carries η = 1/(4ℓ_P²); with the Clausius relation on every light sheet, R_kk = 8πℓ_P² T_kk.</div>
+      <div class="go"><a href="https://github.com/naype888-cloud/nrs3-tritoro/blob/7ead7cc/NRS3Tritoro/CutEinstein.lean">CutEinstein.lean →</a><span class="chip cond">Lean · conditional</span></div></li>
+  </ol>
+
+  <div class="legend">
+    <div><span class="chip lean">Lean</span> proved in Lean 4, standard axioms</div>
+    <div><span class="chip cond">Lean · conditional</span> proved from physical hypotheses that the theorem states</div>
+    <div><span class="chip bridge">Declared bridge</span> a postulate declared in Lean; what follows from it is proved</div>
+    <div><span class="chip browser">Browser</span> simulations on the pages are random, the counts are exact</div>
+  </div>
+
+  <footer>NRS Noncommercial License 1.0.0 · <a href="https://github.com/naype888-cloud/BACQM-NRS3">github.com/naype888-cloud/BACQM-NRS3</a></footer>
+</div>
+</body>
+</html>
