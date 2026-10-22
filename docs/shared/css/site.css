@@ -1,0 +1,29 @@
+/* Site-wide finish, loaded last on every inner page: navigation, pager, phone reading. */
+.navbar, .bar, .top { row-gap: 6px; }
+.brand .sect { color: var(--muted); font-weight: 500; }
+.pager { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-top: 22px;
+  border-top: 1px solid var(--grid); padding-top: 14px; font-size: .92rem; }
+.pager a { text-decoration: none; font-weight: 600; }
+.pager a:hover { text-decoration: underline; }
+.pager .here { color: var(--muted); font-size: .85em; }
+.stopno, .eyebrow { margin: 0 0 2px; font-size: .78rem; color: var(--muted); letter-spacing: .05em;
+  text-transform: uppercase; }
+code.lean { overflow-wrap: anywhere; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+
+/* Phones: the brand keeps only its name, and every table reads as a list of cards. */
+@media (max-width: 560px) {
+  .brand .sect { display: none; }
+  .formal table, .trail table, .tw table { min-width: 0 !important; border: 0; }
+  .formal table, .formal tbody, .formal tr, .formal td,
+  .trail table, .trail tbody, .trail tr, .trail td,
+  .tw table, .tw tbody, .tw tr, .tw td { display: block; width: 100%; }
+  .formal tr:has(th), .trail tr:has(th), .tw tr:has(th) { display: none; }
+  .formal tr, .trail tr, .tw tr { border: 1px solid var(--grid); border-radius: 10px; background: var(--panel);
+    padding: 8px 10px; margin-bottom: 8px; }
+  .formal td, .trail td, .tw td { border: 0 !important; padding: 2px 0 !important; }
+  .formal td:first-child, .trail td:first-child, .tw td:first-child { color: var(--ink); }
+  .formal td + td, .trail td + td, .tw td + td { color: var(--ink2); font-size: .86em; }
+  .formal td.st, .tw td.st { display: inline-block; width: auto; margin-top: 4px; padding: 0 8px !important;
+    border: 1px solid currentColor !important; border-radius: 999px; }
+}
