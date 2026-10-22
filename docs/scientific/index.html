@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Theorem atlas — BACQM-NRS³</title>
+<meta name="description" content="Eight results on three topologies (R³, T³, fibred box), each with its Lean 4 declarations.">
+<link rel="stylesheet" href="../shared/css/tokens.css">
+<link rel="stylesheet" href="../shared/css/scientific.css">
+<script src="../shared/js/theme.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="bar" aria-label="Site">
+    <a class="brand" href="../">BACQM-NRS³ · Theorem atlas</a>
+    <a class="pill" href="../didactic/">Didactic ↗</a>
+    <button class="pill" id="theme" type="button" aria-label="Toggle dark mode">Theme</button>
+  </nav>
+
+  <h1>Theorem atlas</h1>
+  <p class="scope">Eight results, three topologies, Lean 4 with the standard axioms.
+    <b>R³</b>: every axis open. <b>T³</b>: every axis closed. <b>Fibred box</b>: <code>x</code>, <code>y</code>, <code>z</code> open, the fibre <code>w</code> closed with three positions.</p>
+
+  <div class="tw"><table>
+    <tr><th>Block</th><th>R³</th><th>T³</th><th>Fibred box</th><th>Status</th></tr>
+
+    <tr><td class="blk">B1<span>uncertainty relation /<br>covariance determinant</span></td>
+      <td><span class="m">NRS, NRS³ in Physlib</span>
+        <a href="https://github.com/leanprover-community/physlib/pull/1723">#1723</a>,
+        <a href="https://github.com/leanprover-community/physlib/pull/1725">#1725</a></td>
+      <td><span class="m">det Σ ≥ |det Ω| for every state; strict with the three axes in band; <code>125/64</code> at the maximal current state</span>
+        <code class="lean">Torus.robertson_det_torus</code><br>
+        <code class="lean">TorusStrict.robertson_det_torus_lt</code><br>
+        <code class="lean">Torus.det_covMatrix_maxState</code></td>
+      <td><span class="m">strict in band</span>
+        <code class="lean">BoxStrict.robertson_det_box_lt</code></td>
+      <td><span class="chip lean">Lean</span></td></tr>
+
+    <tr><td class="blk">B2<span>light share /<br>dark share</span></td>
+      <td><code class="lean">DarkShare.lightShare_maxCurrentState</code></td>
+      <td><span class="m">light + dark = 1 on every axis; <code>4/5</code> and <code>1/5</code> at <code>c</code></span>
+        <code class="lean">TorusDark.lightShare_add_darkShare</code><br>
+        <code class="lean">TorusDark.lightShare_maxState</code><br>
+        <code class="lean">TorusDark.darkShare_maxState</code></td>
+      <td><span class="m">dark share &gt; 0 in band; <code>4/5</code>, <code>1/5</code> at the fibre's <code>c</code></span>
+        <code class="lean">FiberDark.darkShare_pos_of_band</code><br>
+        <code class="lean">FiberDark.lightShare_fiberMaxState</code></td>
+      <td><span class="chip lean">Lean</span></td></tr>
+
+    <tr><td class="blk">B3<span>boundary entropy /<br>area law</span></td>
+      <td><span class="m">one wall: <code>H ≤ dy·dz·log 2</code></span>
+        <code class="lean">OpenCubeBoundary.bekenstein_bound</code></td>
+      <td><span class="m">two walls: <code>S = 2·dy·dz·log 2</code></span>
+        <code class="lean">TorusArea.cutEntropy_eq</code><br>
+        <code class="lean">TorusBekenstein.bekenstein_bound</code><br>
+        <code class="lean">TorusArea.bekensteinHawking_iff</code></td>
+      <td><span class="m"><code>dy·dz·3</code> across <code>x</code>, <code>2·dx·dy·dz</code> across <code>w</code></span>
+        <code class="lean">FiberBoundary.entropy_le_x</code><br>
+        <code class="lean">FiberBoundary.entropy_le_w</code></td>
+      <td><span class="chip lean">Lean</span></td></tr>
+
+    <tr><td class="blk">B4<span>saturation /<br>uniform field</span></td>
+      <td><span class="m"><code>H = S</code> ⟺ uniform</span>
+        <code class="lean">OpenCubeBoundary.saturated_iff_uniform</code><br>
+        <code class="lean">OpenCubeBoundary.openProb_uniform</code></td>
+      <td><code class="lean">TorusSaturation.saturated_iff_uniform</code><br>
+        <code class="lean">TorusDarkFoam.meanField_uniform</code><br>
+        <span class="m">full ⇒ dark:</span><code class="lean">TorusSaturation.HSaturationDark</code></td>
+      <td><code class="lean">FiberBoundary.saturated_iff_uniform_w</code><br>
+        <code class="lean">FiberBoundary.openProb_uniform_w</code></td>
+      <td><span class="chip lean">Lean</span><span class="chip bridge">Declared bridge</span></td></tr>
+
+    <tr><td class="blk">B5<span>Bakry–Émery curvature /<br>Ricci lower bound</span></td>
+      <td><span class="m">flat, <code>CD(0, 2)</code></span>
+        <code class="lean">BakryEmery.path_CD02</code></td>
+      <td><span class="m">flat (sides ≥ 5)</span>
+        <code class="lean">TorusBochner.not_curvature_pos</code></td>
+      <td><span class="m"><code>K = 4</code> (16-cell)</span>
+        <code class="lean">BochnerCurvature.cell16_curvature</code></td>
+      <td><span class="chip lean">Lean</span></td></tr>
+
+    <tr><td class="blk">B6<span>Lorentz cone /<br>admissible cone</span></td>
+      <td><code class="lean">UncertaintyCone.mem_futureCone</code></td>
+      <td><span class="m">every axis of every state in the closed future cone; timelike in band</span>
+        <code class="lean">TorusCone.axisVector_mem_futureCone</code><br>
+        <code class="lean">TorusCone.timelike_of_band</code></td>
+      <td><code class="lean">BoxCone.axisVector_mem_futureCone</code></td>
+      <td><span class="chip lean">Lean</span></td></tr>
+
+    <tr><td class="blk">B7<span>Dirac operator /<br>doubler modes</span></td>
+      <td><span class="m"><code>D_m² = T² + m²</code>, every size</span>
+        <code class="lean">OpenDirac.dirac_sq</code></td>
+      <td><span class="m">even sizes, eight doublers</span>
+        <code class="lean">TorusDirac3.dirac3_sq</code><br>
+        <code class="lean">TorusDirac3.dirac3_wave</code></td>
+      <td><span class="m">the fibre is the mass</span>
+        <code class="lean">FiberDirac.dirac_sq</code><br>
+        <code class="lean">FiberDirac.fiberMass_sq</code></td>
+      <td><span class="chip lean">Lean</span></td></tr>
+
+    <tr><td class="blk">B8<span>Einstein /<br>Unruh flow</span></td>
+      <td><span class="m"><code>η = 1/(4ℓ_P²)</code>, <code>R_kk = 8πℓ_P² T_kk</code></span>
+        <code class="lean">CutEinstein.clausius_openCube</code></td>
+      <td><code class="lean">CutEinstein.clausius_torus</code></td>
+      <td><code class="lean">CutEinstein.clausius_fiber</code></td>
+      <td><span class="chip cond">Lean · conditional</span></td></tr>
+  </table></div>
+
+  <div class="legend">
+    <div><span class="chip lean">Lean</span> exact theorem, standard axioms</div>
+    <div><span class="chip cond">Lean · conditional</span> theorem with its physical hypotheses stated</div>
+    <div><span class="chip bridge">Declared bridge</span> postulate declared in Lean; its consequences proved, its consistency shown</div>
+    <div><span class="chip browser">Browser</span> computed in the page from the Lean matrices</div>
+    <div><span class="chip open">Open</span> not yet in Lean</div>
+  </div>
+
+  <ul class="notes">
+    <li>B4: <code class="lean">TorusSaturation.HSaturationDark</code> declares that a full region is dark;
+      Lean proves what follows from it and that it is satisfiable
+      (<code class="lean">TorusSaturation.hSaturationDark_satisfiable</code>).</li>
+    <li>B8: on every cut <code>η = 1/(4ℓ_P²)</code> (<code class="lean">ClausiusInput.eta_universal</code>).
+      <code class="lean">CutEinstein.einstein_cut</code> gives <code>Ric − ½R g + Λ g = 8πℓ_P² T</code>
+      from the Clausius relation on every light sheet and the Bianchi identity, which it takes as hypotheses.</li>
+  </ul>
+
+  <footer>
+    Sources: <a href="https://github.com/naype888-cloud/nrs3-tritoro/tree/7ead7cc">nrs3-tritoro @ 7ead7cc</a> ·
+    <a href="https://github.com/naype888-cloud/nrs3-hopf/tree/a389bd4">nrs3-hopf @ a389bd4</a> ·
+    <a href="https://github.com/naype888-cloud/nrs3-dark/tree/2f4186a">nrs3-dark @ 2f4186a</a> ·
+    <a href="https://github.com/naype888-cloud/nrs3-uncertainty-cone/tree/b846c42">nrs3-uncertainty-cone @ b846c42</a> ·
+    <a href="https://github.com/naype888-cloud/nava-robertson-schrodinger/tree/03b9fe6">nava-robertson-schrodinger @ 03b9fe6</a><br>
+    NRS Noncommercial License 1.0.0
+  </footer>
+</div>
+</body>
+</html>

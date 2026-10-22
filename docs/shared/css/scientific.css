@@ -1,0 +1,32 @@
+/* Scientific: theorem atlas. Table first, cool white, monospace Lean names. */
+:root:not([data-theme="dark"]) { --bg: #fcfcfb; --grid: #e4e3df; --blue: #2a78d6; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #0f0f0e; --grid: #2a2927; --blue: #5b9be6; } }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 18px 16px 40px; }
+.bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 18px;
+  font-size: 0.85rem; }
+.bar .brand { font-weight: 650; text-decoration: none; color: var(--ink); margin-right: auto; }
+.pill { font: inherit; font-size: 0.8rem; padding: 4px 10px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--grid); background: var(--panel); color: var(--ink); text-decoration: none; }
+h1 { font-size: 1.5rem; margin: 0 0 4px; font-weight: 650; }
+.scope { color: var(--ink2); margin: 0 0 18px; }
+.tw { overflow-x: auto; border: 1px solid var(--grid); border-radius: 12px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; min-width: 900px; font-size: 0.86rem; }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--grid); }
+tr:last-child td { border-bottom: 0; }
+th { font-weight: 620; color: var(--ink2); background: color-mix(in srgb, var(--grid) 35%, transparent); }
+td.blk { white-space: nowrap; font-weight: 620; }
+td.blk span { display: block; font-weight: 400; color: var(--muted); font-size: 0.8rem; }
+td .m { display: block; color: var(--ink2); margin-bottom: 3px; font-variant-numeric: tabular-nums; }
+code.lean { display: inline-block; margin: 1px 0; }
+.chip { display: inline-block; font-size: 0.74rem; padding: 2px 8px; border-radius: 999px; white-space: nowrap;
+  border: 1px solid currentColor; margin: 0 4px 4px 0; }
+.chip.lean { color: var(--green); }
+.chip.cond { color: var(--orange); }
+.chip.bridge { color: var(--violet); }
+.chip.browser { color: var(--blue); }
+.chip.open { color: var(--muted); }
+.legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px 18px;
+  margin: 18px 0; font-size: 0.84rem; color: var(--ink2); }
+.notes { font-size: 0.84rem; color: var(--ink2); max-width: 900px; }
+.notes li { margin-bottom: 4px; }
+footer { margin-top: 28px; font-size: 0.8rem; color: var(--muted); }
