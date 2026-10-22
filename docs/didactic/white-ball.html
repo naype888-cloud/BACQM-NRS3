@@ -5,8 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The ball of yarn — BACQM-NRS³</title>
 <meta name="description" content="A star that does not reach its collapse mass wraps itself in layers of quanta: from outside only the lit face is seen. Hopping state, layers and core mass, with the Lean theorems.">
+<link rel="icon" href="../media/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BACQM-NRS³">
+<meta property="og:title" content="The ball of yarn — BACQM-NRS³">
+<meta property="og:description" content="A star that does not reach its collapse mass wraps itself in layers of quanta: from outside only the lit face is seen. Hopping state, layers and core mass, with the Lean theorems.">
+<meta property="og:url" content="https://naype888-cloud.github.io/BACQM-NRS3/didactic/white-ball.html">
+<meta property="og:image" content="https://naype888-cloud.github.io/BACQM-NRS3/media/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script src="../shared/js/theme.js?v=20261022c" data-toggle></script>
 <link rel="stylesheet" href="../shared/css/tokens.css">
-<script src="../shared/js/theme.js"></script>
 <script src="../shared/js/yarn-ball.js?v=20261022a"></script>
 <style>
   * { box-sizing: border-box; }
@@ -47,22 +55,26 @@
   .note { color: var(--ink2); font-size: .88rem; max-width: 860px; }
   footer { margin-top: 26px; font-size: .8rem; color: var(--muted); }
 </style>
+<link rel="stylesheet" href="../shared/css/site.css?v=20261022c">
 </head>
 <body>
 <main>
   <nav class="top" aria-label="Site">
-    <a class="brand" href="./">BACQM-NRS³ · The path</a>
+    <a class="brand" href="./">BACQM-NRS³<span class="sect"> · The path</span></a>
     <a class="pill" href="../scientific/09-white-ball.html">Formal version ↗</a>
     <button class="pill" id="theme" type="button" aria-label="Toggle dark mode">Theme</button>
   </nav>
 
+  <p class="stopno">Stop 9 of 9 · Why does a star that does not collapse shine on its face?</p>
   <h1>The ball of yarn — why a star that does not collapse shines on its face</h1>
   <p class="lead">Everything you see is a field that has been excited and is being measured; the photon is the carrier that brings it to your eye.
-    Where there is no excitation there is nothing to measure: the black of "nothing there" is only a possibility.
-    A star whose core stays below its collapse mass spreads its matter over many quanta and fills none of them. It wraps itself in
-    layers and layers of quanta, stacked on the threads along which the hopping moves the excitations, like a football
-    with a LED on every vertex and clear panels in between. From outside you only see the lit face; the layers behind it stay intact.
-    If too much falls into the same quantum, that quantum fills, collapses, and no light returns.</p>
+    Think of bubble wrap. The plastic that joins the bubbles is the <b>hopping</b>, the transport that moves the excitations. Each bubble is
+    one <b>quantum</b> of NRS³, and it is <b>transparent</b>: the thin film around it is its boundary, and what fills it is a probability.
+    Behind a transparent bubble you see black only where nothing has happened: there is nothing there to measure.</p>
+  <p class="lead">A star whose core stays below its collapse mass spreads its matter over many quanta and fills none of them: it is the sheet
+    crumpled into a ball without popping a single bubble, layers on layers, and from outside you see only light on its face.
+    Keep stacking layers and the face fills up: the bubble pops and the quantum turns dark. That is the <b>inverted quantum</b> —
+    the same black as the background, but full instead of empty, and still a quantum, never a point.</p>
 
   <div class="bar">
     <button type="button" data-mass="1.018">Sirius B</button>
@@ -99,6 +111,11 @@
     <ul class="exact">
       <li><span class="chip lean">Lean</span> Every face of the outer wall hides the same number of interiors, <code>2^(layers·dy·dz)</code>: from outside you cannot tell what is inside.</li>
       <li><span class="chip lean">Lean</span> Spread over the quanta with none full, every layer keeps light; one full layer is one dark quantum.</li>
+      <li><span class="chip lean">Lean</span> Pop the whole sheet and the face is popped: a full ball shows a full face. So a face that still shines hides a ball that is not full.</li>
+      <li><span class="chip bridge">Declared bridge</span> Each layer of light adds a little to what the face holds, until it is full. Then a fixed number of layers,
+        the face's capacity divided by that little, is enough to darken it — on the open cube, on T³ and on the fibred box. The dark face has every
+        step open half of the time: nothing stands out.</li>
+      <li><span class="chip lean">Lean</span> A full quantum is still a quantum, not a point: fixing the position never stops the transport.</li>
       <li><span class="chip lean">Lean</span> The Chandrasekhar mass from CODATA 2018 and IAU 2015 lies between 1.43 and 1.44 M☉.</li>
       <li><span class="chip bridge">Declared bridge</span> A quantum below capacity shines on its edge, a full one is dark; the core fills its quantum at the collapse mass, somewhere between 2.08 and 3.2 M☉.</li>
       <li><span class="chip browser">Browser</span> The brightness of each LED is |Ψ|² at the two ends of its step; the drawing and the colours are the page's, not theorems.</li>
@@ -112,13 +129,17 @@
         <tr><td>the white point iff the quantum is not full</td><td><code class="lean">TorusWhiteBall.HWhiteBall</code> (declared), <code class="lean">HWhiteBall.lightShare_pos_iff</code></td></tr>
         <tr><td><code>1.43 &lt; M_Ch / M☉ &lt; 1.44</code></td><td><code class="lean">TorusWhiteBall.chandrasekharSolar_gt</code>, <code class="lean">TorusWhiteBall.chandrasekharSolar_lt</code></td></tr>
         <tr><td>white below the collapse mass; Sirius B and PSR J0740 white; Cygnus X-1 and 30 M☉ dark</td><td><code class="lean">TorusWhiteBall.HCoreCollapse</code> (declared), <code class="lean">TorusWhiteBall.siriusB_white</code>, <code class="lean">TorusWhiteBall.psrJ0740_white</code>, <code class="lean">TorusWhiteBall.cygnusX1_dark</code></td></tr>
+        <tr><td>a full ball shows a full face, so its face is dark; a face that shines hides a ball that is not full; on <code>T³</code>, a dark wall</td><td><code class="lean">TorusLayers.face_uniform</code>, <code class="lean">TorusLayers.face_dark_of_full</code>, <code class="lean">TorusLayers.not_full_of_face_shines</code>, <code class="lean">TorusLayers.face_dark_torus</code></td></tr>
+        <tr><td>each layer feeds the face; after <code>⌈S/ε⌉</code> layers it is full and dark, with every step open half of the time</td><td><code class="lean">TorusStack.HStack</code> (declared), <code class="lean">HStack.dark_ceil</code>, <code class="lean">HStack.no_gradient</code></td></tr>
+        <tr><td>the same count on the open cube, on <code>T³</code> and on the fibred box</td><td><code class="lean">TorusStack.dark_openCube</code>, <code class="lean">TorusStack.dark_torus</code>, <code class="lean">TorusStack.dark_fiberX</code>, <code class="lean">TorusStack.dark_fiberW</code></td></tr>
+        <tr><td>fixing the position leaves the transport fluctuating: a full quantum, never a point</td><td><code class="lean">PlatformBlindness.variance_T_pos_of_P_eigenvector</code></td></tr>
         <tr><td>on the vacuum every operator gives zero: nothing to measure</td><td><code class="lean">TorusFock.secondQuant_vacuum</code></td></tr>
       </table></div>
     </details>
   </div>
 
-  <p class="note">Back to <a href="./">the path</a> · the same result written for mathematicians: <a href="../scientific/09-white-ball.html">the formal version</a>.</p>
-  <footer>NRS Noncommercial License 1.0.0 · Lean: <a href="https://github.com/naype888-cloud/nrs3-tritoro">nrs3-tritoro</a> (<code>TorusWhiteBall</code>, <code>TorusLayers</code>)</footer>
+  <p class="pager"><a href="einstein.html">← Stop 8</a><a href="./">The path</a><span class="here">Stop 9 of 9</span></p>
+  <footer>NRS Noncommercial License 1.0.0 · Lean: <a href="https://github.com/naype888-cloud/nrs3-tritoro">nrs3-tritoro</a> (<code>TorusWhiteBall</code>, <code>TorusLayers</code>, <code>TorusStack</code>)</footer>
 </main>
 </body>
 </html>

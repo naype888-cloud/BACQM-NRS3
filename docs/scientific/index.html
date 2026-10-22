@@ -5,14 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Theorem atlas — BACQM-NRS³</title>
 <meta name="description" content="Nine results on the three-torus, each stated as in its Lean 4 source, with its declarations and status.">
+<link rel="icon" href="../media/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BACQM-NRS³">
+<meta property="og:title" content="Theorem atlas — BACQM-NRS³">
+<meta property="og:description" content="Nine results on the three-torus, each stated as in its Lean 4 source, with its declarations and status.">
+<meta property="og:url" content="https://naype888-cloud.github.io/BACQM-NRS3/scientific/index.html">
+<meta property="og:image" content="https://naype888-cloud.github.io/BACQM-NRS3/media/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script src="../shared/js/theme.js?v=20261022c" data-toggle></script>
 <link rel="stylesheet" href="../shared/css/tokens.css">
 <link rel="stylesheet" href="../shared/css/scientific.css">
-<script src="../shared/js/theme.js"></script>
+<link rel="stylesheet" href="../shared/css/site.css?v=20261022c">
 </head>
 <body>
 <div class="wrap narrow">
   <nav class="bar" aria-label="Site">
-    <a class="brand" href="../">BACQM-NRS³ · Theorem atlas</a>
+    <a class="brand" href="../">BACQM-NRS³<span class="sect"> · Theorem atlas</span></a>
     <a class="pill" href="../didactic/">Didactic ↗</a>
     <button class="pill" id="theme" type="button" aria-label="Toggle dark mode">Theme</button>
   </nav>
@@ -72,8 +81,8 @@
 
     <li class="stop"><span class="n">9</span>
       <h2>Boundary light below capacity / layered boundaries</h2>
-      <div class="fact">Under <code>HWhiteBall</code>, <code>0 &lt; lightShare d ↔ d ≠ uniform</code>; each face of a wall of <code>T³</code> extends in <code>2^(|C|·dy·dz)</code> ways through the walls of <code>C</code> behind it.</div>
-      <div class="go"><code class="lean">HWhiteBall.lightShare_pos_iff</code><code class="lean">TorusLayers.card_interiors_torus</code>
+      <div class="fact">Under <code>HWhiteBall</code>, <code>0 &lt; lightShare d ↔ d ≠ uniform</code>; each face of a wall of <code>T³</code> extends in <code>2^(|C|·dy·dz)</code> ways through the walls of <code>C</code> behind it; a full ball shows a full face; under <code>HStack</code>, <code>⌈S/ε⌉</code> layers fill the face.</div>
+      <div class="go"><code class="lean">HWhiteBall.lightShare_pos_iff</code><code class="lean">TorusLayers.card_interiors_torus</code><code class="lean">TorusLayers.face_uniform</code><code class="lean">HStack.dark_ceil</code>
         <a href="09-white-ball.html">Page →</a><span class="chip lean">Lean</span><span class="chip bridge">Declared hypothesis</span></div></li>
   </ol>
 

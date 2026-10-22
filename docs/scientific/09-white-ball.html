@@ -5,8 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>B9 · Boundary light below capacity, layered boundaries — BACQM-NRS³</title>
 <meta name="description" content="HWhiteBall and HCoreCollapse as declared hypotheses on a finite boundary, the layer counting on T³, and the Chandrasekhar bound from CODATA 2018, with their Lean declarations.">
+<link rel="icon" href="../media/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BACQM-NRS³">
+<meta property="og:title" content="B9 · Boundary light below capacity, layered boundaries — BACQM-NRS³">
+<meta property="og:description" content="HWhiteBall and HCoreCollapse as declared hypotheses on a finite boundary, the layer counting on T³, and the Chandrasekhar bound from CODATA 2018, with their Lean declarations.">
+<meta property="og:url" content="https://naype888-cloud.github.io/BACQM-NRS3/scientific/09-white-ball.html">
+<meta property="og:image" content="https://naype888-cloud.github.io/BACQM-NRS3/media/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script src="../shared/js/theme.js?v=20261022c" data-toggle></script>
 <link rel="stylesheet" href="../shared/css/tokens.css">
-<script src="../shared/js/theme.js"></script>
 <script src="../shared/js/yarn-ball.js?v=20261022a"></script>
 <style>
   :root:not([data-theme="dark"]) { --bg: #fcfcfb; --grid: #e4e3df; --ink2: #52514e; --muted: #8a8985; --blue: #2a78d6; }
@@ -36,11 +44,12 @@
   .st.lean { color: var(--green); } .st.bridge { color: var(--violet); }
   footer { color: var(--muted); font-size: .85rem; margin-top: 28px; }
 </style>
+<link rel="stylesheet" href="../shared/css/site.css?v=20261022c">
 </head>
 <body data-tone="formal">
 <main>
   <nav class="top" aria-label="Site">
-    <a class="brand" href="./">BACQM-NRS³ · Theorem atlas</a>
+    <a class="brand" href="./">BACQM-NRS³<span class="sect"> · Theorem atlas</span></a>
     <a class="pill" href="../didactic/white-ball.html">Guided version ↗</a>
     <button class="pill" id="theme" type="button" aria-label="Toggle dark mode">Theme</button>
   </nav>
@@ -49,7 +58,9 @@
   <p class="lead">Let <code>X</code> be a finite set of boundary steps, <code>Config X = 𝒫(X)</code> and
     <code>capacity X = |X| log 2</code>, so that <code>Hₛ d ≤ capacity X</code> for every distribution <code>d</code> on
     <code>Config X</code>, with equality iff <code>d</code> is uniform (<code>BoundaryBits.saturated_iff_uniform</code>).
-    Two hypotheses are declared as structures and shown satisfiable; the layer counting is proved outright.</p>
+    Three hypotheses are declared as structures and shown satisfiable; the layer counting and the face of a full ball are
+    proved outright. Read physically: each quantum is transparent, <code>darkShare</code> is the dark field it is made of, and it
+    is black only at saturation; stacked layers of light fill the face, and the full face is the inverted quantum.</p>
 
   <h2>Definitions</h2>
   <div class="tw"><table>
@@ -60,6 +71,9 @@
     <tr><td><code>TorusWhiteBall.HCoreCollapse X</code></td><td>a real <code>collapseMass</code> and a map <code>boundary : ℝ → ProbDistribution (Config X)</code> with
       <code>Hₛ (boundary M) = capacity X ↔ collapseMass ≤ M</code> and <code>2.08 &lt; collapseMass ≤ 3.2</code></td></tr>
     <tr><td><code>TorusWhiteBall.chandrasekharSolar</code></td><td><code>ω₃⁰ √(3π) m_P³ / (2 (μ_e m_H)²) / M☉</code> with CODATA 2018 <code>m_P</code>, <code>m_H</code>, IAU 2015 <code>M☉</code>, <code>ω₃⁰ = 2.01824</code>, <code>μ_e = 2</code></td></tr>
+    <tr><td><code>TorusLayers.face X Y d</code></td><td>for <code>d</code> on <code>Config (X ∪ Y)</code>, the distribution of the face: each <code>S ⊆ X</code> weighs <code>Σ_{T ∩ X = S} d T</code></td></tr>
+    <tr><td><code>TorusStack.HStack X ε</code></td><td>a sequence <code>faceOf : ℕ → ProbDistribution (Config X)</code> and <code>ε &gt; 0</code> with
+      <code>min (capacity X) (Hₛ (faceOf n) + ε) ≤ Hₛ (faceOf (n + 1))</code>: each layer adds at least <code>ε</code> until the face is full</td></tr>
     <tr><td><code>TorusLayers.layerSteps C</code></td><td>for <code>C ⊆ Fin (dx − 1)</code>, the union of the walls <code>x = c | c + 1</code>, <code>c ∈ C</code>, of <code>T³ = dx × dy × dz</code></td></tr>
   </table></div>
 
@@ -84,6 +98,21 @@
       <td><code class="lean">TorusWhiteBall.exists_white_and_dark</code><br><code class="lean">TorusWhiteBall.torus_exists</code></td><td class="st lean">Lean</td></tr>
     <tr><td>On <code>T³</code>, <code>HWhiteBall (crossSteps)</code> yields <code>TorusSaturation.HSaturationDark</code></td>
       <td><code class="lean">TorusWhiteBall.toSaturationDark</code></td><td class="st lean">Lean</td></tr>
+    <tr><td>For <code>X ∩ Y = ∅</code>: <code>face X Y uniform = uniform</code>, a full ball shows a full face</td>
+      <td><code class="lean">TorusLayers.face_uniform</code></td><td class="st lean">Lean</td></tr>
+    <tr><td>The face of a full ball has <code>lightShare = 0</code>; if the face has <code>lightShare &gt; 0</code> the ball is not uniform; on <code>T³</code> for the wall at <code>c ∉ C</code></td>
+      <td><code class="lean">TorusLayers.face_dark_of_full</code><br><code class="lean">TorusLayers.not_full_of_face_shines</code><br><code class="lean">TorusLayers.face_dark_torus</code></td><td class="st bridge">from HWhiteBall</td></tr>
+    <tr><td><code>min (capacity X) (n ε) ≤ Hₛ (faceOf n)</code>; if <code>capacity X ≤ n ε</code> then <code>faceOf n = uniform</code></td>
+      <td><code class="lean">HStack.min_le_entropy</code><br><code class="lean">HStack.full_of_le</code></td><td class="st bridge">from HStack</td></tr>
+    <tr><td>For <code>n ≥ ⌈capacity X / ε⌉</code>, <code>lightShare (faceOf n) = 0</code>; then every step of <code>X</code> is open with probability <code>1/2</code></td>
+      <td><code class="lean">HStack.dark_ceil</code><br><code class="lean">HStack.no_gradient</code></td><td class="st bridge">from both</td></tr>
+    <tr><td>The number of layers on the three topologies: <code>⌈dy·dz·log 2 / ε⌉</code> on <code>R³</code>, <code>⌈2·dy·dz·log 2 / ε⌉</code> on <code>T³</code>,
+      <code>⌈3·dy·dz·log 2 / ε⌉</code> and <code>⌈2·dx·dy·dz·log 2 / ε⌉</code> on the fibred box</td>
+      <td><code class="lean">TorusStack.dark_openCube</code><br><code class="lean">TorusStack.dark_torus</code><br><code class="lean">TorusStack.dark_fiberX</code>, <code class="lean">TorusStack.dark_fiberW</code></td><td class="st bridge">from both</td></tr>
+    <tr><td><code>HStack</code> is satisfiable: one layer with <code>ε = capacity X</code></td>
+      <td><code class="lean">TorusStack.oneLayer</code></td><td class="st lean">Lean</td></tr>
+    <tr><td>A full quantum is not a point: on a closed axis with <code>d ≥ 2</code>, a position eigenvector has <code>Var T &gt; 0</code></td>
+      <td><code class="lean">PlatformBlindness.variance_T_pos_of_P_eigenvector</code></td><td class="st lean">Lean</td></tr>
   </table></div>
 
   <h2>Figure</h2>
@@ -110,8 +139,8 @@
     <code>H = −2t T°</code> on each axis, and the colouring of the wall follows the sign of <code>lightShare</code> given by the hypotheses;
     for <code>2.08 &lt; M &lt; 3.2</code> the data do not fix <code>collapseMass</code>, and the page says so.</p>
 
-  <p class="note">Index: <a href="./">theorem atlas</a>.</p>
-  <footer>NRS Noncommercial License 1.0.0 · Lean: <a href="https://github.com/naype888-cloud/nrs3-tritoro">nrs3-tritoro</a>, <code>NRS3Tritoro/TorusWhiteBall.lean</code>, <code>NRS3Tritoro/TorusLayers.lean</code></footer>
+  <p class="pager"><a href="08-einstein-unruh.html">← B8</a><a href="./">Theorem atlas</a><span class="here">B9 of 9</span></p>
+  <footer>NRS Noncommercial License 1.0.0 · Lean: <a href="https://github.com/naype888-cloud/nrs3-tritoro">nrs3-tritoro</a>, <code>NRS3Tritoro/TorusWhiteBall.lean</code>, <code>NRS3Tritoro/TorusLayers.lean</code>, <code>NRS3Tritoro/TorusStack.lean</code></footer>
 </main>
 </body>
 </html>
