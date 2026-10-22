@@ -1,0 +1,31 @@
+/* Didactic block pages: the look of nava-robertson-schrodinger over each figure's own styles. */
+:root { --bg: #f4f3ef; --panel: #ffffff; --ink: #0b0b0b; --ink2: #3b3a37; --muted: #67665f; --grid: #c9c7c0;
+  --blue: #1f63b8; --orange: #eb6834; --green: #2f8f5b; --red: #d0343a; --violet: #7c5cd6; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #0f0f0e; --panel: #171716; --ink: #f2f1ee;
+  --ink2: #c4c3bf; --muted: #8a8985; --grid: #2a2927; --blue: #5b9be6; --orange: #f08a5d; --green: #4fb37d; --red: #f0605f; --violet: #a48bf0; } }
+:root[data-theme="dark"] { --bg: #0f0f0e; --panel: #171716; --ink: #f2f1ee; --ink2: #c4c3bf; --muted: #8a8985;
+  --grid: #2a2927; --blue: #5b9be6; --orange: #f08a5d; --green: #4fb37d; --red: #f0605f; --violet: #a48bf0; }
+body { background: var(--bg); color: var(--ink); }
+main { max-width: 1180px; margin: 0 auto; padding: 18px 16px 40px; }
+.card { border-radius: 12px; }
+.navbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 16px; font-size: .85rem; }
+.navbar .brand { font-weight: 650; color: var(--ink); text-decoration: none; margin-right: auto; }
+.navbar .pill { font: inherit; font-size: .8rem; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--grid);
+  background: var(--panel); color: var(--ink); text-decoration: none; cursor: pointer; float: none; }
+.stopno { margin: 0 0 2px; font-size: .8rem; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+.exactcard { background: var(--panel); border: 1px solid var(--grid); border-radius: 12px; padding: 12px 14px; margin-top: 16px; }
+.exactcard h2 { font-size: .95rem; margin: 0 0 6px; font-weight: 600; color: var(--ink2); }
+.exactcard ul { margin: 4px 0 6px; padding-left: 20px; color: var(--ink2); } .exactcard li { margin-bottom: 6px; }
+.exactcard summary { cursor: pointer; font-weight: 600; color: var(--ink2); margin: 6px 0; }
+.trail { overflow-x: auto; } .trail table { border-collapse: collapse; width: 100%; min-width: 600px; font-size: .86rem; }
+.trail th, .trail td { border: 0; border-bottom: 1px solid var(--grid); padding: 6px 8px; text-align: left; vertical-align: top; }
+.tag { display: inline-block; font-size: .72rem; padding: 1px 8px; border-radius: 999px; border: 1px solid currentColor;
+  white-space: nowrap; margin-right: 4px; }
+.tag.lean { color: var(--green); } .tag.cond { color: var(--orange); } .tag.bridge { color: var(--violet); }
+.tag.browser { color: var(--blue); } .tag.open { color: var(--muted); }
+.pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 18px; font-size: .92rem; }
+.pager a { text-decoration: none; font-weight: 600; }
+main > footer { margin-top: 24px; font-size: .8rem; color: var(--muted); }
+main > h1 { font-size: 1.5rem; line-height: 1.25; margin: 0 0 4px; font-weight: 650; letter-spacing: normal; }
+main > .lead { font-size: 15px; line-height: 1.5; max-width: 860px; margin: 0 0 14px; color: var(--ink2); }
+.pager, .navbar { max-width: none; width: 100%; }

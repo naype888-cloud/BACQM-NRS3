@@ -1,0 +1,30 @@
+/* Scientific block pages: the look of nrs3-tritoro/holography over each figure's own styles. */
+:root { --bg: #fcfcfb; --panel: #ffffff; --ink: #0b0b0b; --ink2: #52514e; --muted: #8a8985; --grid: #e4e3df;
+  --blue: #2a78d6; --orange: #eb6834; --green: #2f8f5b; --red: #c0392b; --violet: #7c5cd6; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #111110; --panel: #191918; --ink: #f2f1ee;
+  --ink2: #c4c3bf; --muted: #8a8985; --grid: #2c2b29; --blue: #5b9be6; --orange: #f08a5d; --green: #4fb37d; --red: #e07a6c; --violet: #a48bf0; } }
+:root[data-theme="dark"] { --bg: #111110; --panel: #191918; --ink: #f2f1ee; --ink2: #c4c3bf; --muted: #8a8985;
+  --grid: #2c2b29; --blue: #5b9be6; --orange: #f08a5d; --green: #4fb37d; --red: #e07a6c; --violet: #a48bf0; }
+body { background: var(--bg); color: var(--ink); }
+main { max-width: 1080px; margin: 0 auto; padding: 24px 16px 40px; }
+.card { border-radius: 10px; }
+main > h1 { font-size: 1.45rem; margin: 0 0 4px; font-weight: 650; }
+main > h2 { font-size: 1.1rem; margin: 26px 0 8px; font-weight: 620; }
+main h3 { font-size: .98rem; margin: 18px 0 6px; font-weight: 620; color: var(--ink2); }
+.card h3 { font-size: .92rem; margin: 2px 4px 4px; font-weight: 600; }
+.navbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; font-size: .85rem; }
+.navbar .brand { font-weight: 650; color: var(--ink); text-decoration: none; margin-right: auto; }
+.navbar .pill { font: inherit; font-size: .8rem; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--grid);
+  background: var(--panel); color: var(--ink); text-decoration: none; cursor: pointer; float: none; }
+.formal { overflow-x: auto; } .formal table { border-collapse: collapse; width: 100%; min-width: 680px; font-size: .9rem; }
+.formal th, .formal td { border: 1px solid var(--grid); padding: 6px 10px; text-align: left; vertical-align: top; }
+.formal th { color: var(--ink2); font-weight: 600; }
+.st { white-space: nowrap; font-size: .8rem; }
+.st.lean { color: var(--green); } .st.cond { color: var(--orange); } .st.bridge { color: var(--violet); }
+.st.browser { color: var(--blue); } .st.open { color: var(--muted); }
+.pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 18px; font-size: .9rem; }
+.pager a { text-decoration: none; }
+main > footer { color: var(--muted); font-size: .85rem; margin-top: 28px; }
+main > h1 { line-height: 1.25; letter-spacing: normal; }
+main > .lead { font-size: 15px; line-height: 1.5; max-width: 860px; color: var(--ink2); }
+.pager, .navbar { max-width: none; width: 100%; }
