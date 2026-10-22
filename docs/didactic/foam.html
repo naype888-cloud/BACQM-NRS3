@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The dark foam — and why the torus is flat — BACQM-NRS³</title>
+<meta name="description" content="What does a full region look like up close, and is the torus curved?">
+<script src="../shared/js/cone-core.js?v=20261022b"></script>
+<style>
+  :root { --bg:#fcfcfb; --panel:#fff; --ink:#0b0b0b; --ink2:#52514e; --muted:#8a8985; --grid:#e4e3df; --blue:#2a78d6; --orange:#eb6834; --red:#c0392b; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#111110; --panel:#191918; --ink:#f2f1ee; --ink2:#c4c3bf; --grid:#2c2b29; --blue:#5b9be6; --orange:#f08a5d; --red:#e07a6c; } }
+  :root[data-theme="dark"] { --bg:#111110; --panel:#191918; --ink:#f2f1ee; --ink2:#c4c3bf; --grid:#2c2b29; --blue:#5b9be6; --orange:#f08a5d; --red:#e07a6c; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif; }
+  main { max-width:1080px; margin:0 auto; padding:24px 16px 40px; }
+  h1 { font-size:1.45rem; margin:0 0 4px; font-weight:650; } h2 { font-size:1.1rem; margin:26px 0 8px; font-weight:620; }
+  .lead,.note { color:var(--ink2); max-width:860px; } .note { font-size:.9rem; }
+  .theme,button,select { font:inherit; font-size:.9rem; padding:6px 12px; border-radius:999px; border:1px solid var(--grid); background:var(--panel); color:var(--ink); cursor:pointer; }
+  .theme { float:right; font-size:.8rem; }
+  .card { background:var(--panel); border:1px solid var(--grid); border-radius:10px; padding:12px; }
+  .controls { display:grid; grid-template-columns:auto auto 1fr; gap:10px 18px; align-items:center; margin-bottom:10px; }
+  @media (max-width:700px) { .controls { grid-template-columns:1fr; } }
+  .sl { display:flex; gap:10px; align-items:center; font-variant-numeric:tabular-nums; } .sl input { flex:1; min-width:0; accent-color:var(--blue); } .sl b { min-width:2.5em; text-align:right; }
+  canvas { width:100%; display:block; aspect-ratio:2/1; }
+  .readout { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:10px; } @media (max-width:560px) { .readout { grid-template-columns:repeat(2,1fr); } }
+  .stat { background:var(--panel); border:1px solid var(--grid); border-radius:8px; padding:8px 10px; } .stat .k { font-size:.78rem; color:var(--muted); } .stat .v { font-size:1.05rem; font-variant-numeric:tabular-nums; }
+  .tw { overflow-x:auto; } table { border-collapse:collapse; font-size:.9rem; min-width:640px; } th,td { border:1px solid var(--grid); padding:6px 10px; text-align:left; vertical-align:top; } th { color:var(--ink2); }
+  code { font-size:.88em; } a { color:var(--blue); } footer { color:var(--muted); font-size:.85rem; margin-top:28px; }
+</style>
+<link rel="stylesheet" href="../shared/css/didactic-page.css?v=20261022b">
+</head>
+<body>
+<main>
+  <nav class="navbar" aria-label="Site">
+    <a class="brand" href="./">BACQM-NRS³ · The path</a>
+    <a class="pill" href="../scientific/05-curvature.html">Formal version ↗</a>
+    <button class="pill" id="theme" type="button" aria-label="Toggle dark mode">Theme</button>
+  </nav>
+  <p class="stopno">Stop 5 of 9 · What does a full region look like up close, and is the torus curved?</p>
+  <h1>The dark foam — and why the torus is flat</h1>
+  <p class="lead">A region filled to the top is not quiet. Look at one of its walls: every step is open half of the time and flips as much as a bit can, yet the average over time is perfectly flat. Curvature, read the way Bochner did, tests a landscape on the space: on T³ it never bends, the torus is flat, while the 16-cell of the fibred box has curvature 4.</p>
+  <h2>Right now, and on average</h2>
+  <div class="card">
+    <div class="controls">
+      <button type="button" id="run" aria-pressed="true">❚❚ Stop</button>
+      <select id="mode" aria-label="state of the wall">
+        <option value="dark">full (dark): every square ½</option>
+        <option value="slope">not full: the chance grows left to right</option>
+      </select>
+      <label class="sl">squares per side<input id="hn" type="range" min="4" max="28" value="14"><b id="vhn">14</b></label>
+    </div>
+    <canvas id="wall" aria-label="Left: the wall right now. Right: the average of every square."></canvas>
+    <div class="readout" aria-live="polite">
+      <div class="stat"><div class="k">frames averaged</div><div class="v" id="a1">0</div></div>
+      <div class="stat"><div class="k">largest slope in the average</div><div class="v" id="a2">–</div></div>
+      <div class="stat"><div class="k">flip per square (max ¼)</div><div class="v" id="a3">–</div></div>
+      <div class="stat"><div class="k">how full</div><div class="v" id="a4">–</div></div>
+    </div>
+    <p class="note">Left: the wall now (orange = open). Right: the average of each square so far, from white (never open) to orange (always open).
+      In the full state the right side settles to one even colour; with a slope it keeps a gradient, and the region is not full.</p>
+  </div>
+
+  <h2>The torus is flat</h2>
+  <div class="card">
+    <p class="lead" style="margin:0 0 8px">Curvature, read the way Bochner did: put a landscape on the space and look, at every point, at how its steepness changes around that point.
+      On a sphere the reading is always at least some positive amount <code>K</code> times the steepness; on a saddle it goes negative somewhere.
+      On T³ Lean proves the reading is never negative, for any landscape, and a straight ramp gives exactly zero: no <code>K &gt; 0</code> works. The torus is flat.
+      The closed space with a fourth, fibred axis (the 16-cell) reads <code>K = 4</code> instead.</p>
+    <div class="controls">
+      <select id="land" aria-label="landscape">
+        <option value="ramp">straight ramp along x</option>
+        <option value="wave">waves</option>
+        <option value="bump">a hill</option>
+        <option value="rand">random landscape</option>
+      </select>
+      <button type="button" id="reroll">↻ New random</button>
+      <label class="sl">positions per axis<input id="hm" type="range" min="5" max="40" value="20"><b id="vhm">20</b></label>
+    </div>
+    <canvas id="curv" aria-label="Left: the landscape. Right: Bochner's reading at every point."></canvas>
+    <div class="readout" aria-live="polite">
+      <div class="stat"><div class="k">lowest reading on the slice</div><div class="v" id="b1">–</div></div>
+      <div class="stat"><div class="k">reading at the centre</div><div class="v" id="b2">–</div></div>
+      <div class="stat"><div class="k">steepness at the centre</div><div class="v" id="b3">–</div></div>
+      <div class="stat"><div class="k">best K for this landscape</div><div class="v" id="b4">–</div></div>
+    </div>
+    <p class="note">Left: the landscape on one slice of T³ (it does not change along z). Right: Bochner's reading <code>Γ₂</code>, white = 0, blue = large.
+      On a closed axis the ramp must jump back somewhere: the jump sits on the left and right edges, which are the same seam. Away from it the reading is exactly 0.</p>
+  </div>
+
+  <p class="note">What is still open: the conjecture that curvature appears where the field moves away from the even, full state. It is not in Lean yet.
+    Back to <a href="bekenstein.html">bits on the boundary</a> · <a href="holography.html">holography</a>.</p>
+  <section class="exactcard"><h2>What is exact here</h2>
+    <ul><li><span class="tag lean">Lean</span> Under the full (uniform) distribution every step is open with probability 1/2 and fluctuates 1/4, the most a bit can.</li><li><span class="tag lean">Lean</span> The mean field is half the field of the fully open wall: flat on average.</li><li><span class="tag lean">Lean</span> The Bochner form of T³ is a sum of squares: curvature ≥ 0, and no positive bound — T³ is flat.</li><li><span class="tag lean">Lean</span> The 16-cell has curvature 4; the path has <code>CD(0, 2)</code>.</li><li><span class="tag open">Open</span> That curvature appears where the field moves away from the even, full state.</li></ul>
+    <details><summary>Theorem trail</summary><div class="trail"><table><tr><th>Statement</th><th>Name</th></tr><tr><td>open with probability 1/2, variance 1/4</td><td><code class="lean">TorusDarkFoam.openProb_uniform</code>, <code class="lean">TorusDarkFoam.bitVariance_uniform</code></td></tr><tr><td>the mean field is half the open field</td><td><code class="lean">TorusDarkFoam.meanField_uniform</code></td></tr><tr><td>Bochner on T³; flat</td><td><code class="lean">TorusBochner.gam2_eq</code>, <code class="lean">TorusBochner.torus_curvature</code>, <code class="lean">TorusBochner.not_curvature_pos</code></td></tr><tr><td>16-cell <code>K = 4</code>; path <code>CD(0, 2)</code></td><td><code class="lean">BochnerCurvature.cell16_curvature</code>, <code class="lean">BakryEmery.path_CD02</code></td></tr></table></div></details>
+  </section>
+  <p class="pager"><a href="bekenstein.html">← Stop 4</a><a href="./">The path</a><a href="cone.html">Stop 6 →</a></p>
+  <footer>NRS Noncommercial License 1.0.0 · Lean: <a href="https://github.com/naype888-cloud/nrs3-tritoro">nrs3-tritoro</a></footer>
+</main>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id), C = Cone, css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  let rnd = C.rng((Math.random() * 1e9) | 0);
+  const h2 = (p) => (p <= 0 || p >= 1) ? 0 : -(p * Math.log2(p) + (1 - p) * Math.log2(1 - p));
+  const mixc = (a, b, t) => `color-mix(in srgb, ${b} ${Math.round(100 * Math.max(0, Math.min(1, t)))}%, ${a})`;
+
+  // ---------- the wall ----------
+  let now = [], sum = [], frames = 0, running = true;
+  const N = () => +$("hn").value, chance = (i) => $("mode").value === "dark" ? 0.5 : 0.15 + 0.7 * (i + 0.5) / N();
+  function reset() { const n = N(); $("vhn").textContent = n; now = new Array(n * n).fill(0); sum = new Array(n * n).fill(0); frames = 0; draw1(); }
+  function flip() { const n = N(); for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) { const b = rnd() < chance(i) ? 1 : 0; now[j * n + i] = b; sum[j * n + i] += b; } frames++; }
+  function draw1() {
+    const { g, w, h } = C.setup($("wall")), n = N(), side = Math.min(w / 2 - 24, h - 30), cell = side / n, or = css("--orange"), panel = css("--panel"), grid = css("--grid"), muted = css("--muted");
+    [[12, (k) => now[k] ? or : panel, "right now"], [w / 2 + 12, (k) => frames ? mixc("#ffffff", or, sum[k] / frames) : panel, "on average"]].forEach(([x0, col, name]) => {
+      for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) { g.fillStyle = col(j * n + i); g.fillRect(x0 + i * cell, 22 + j * cell, cell, cell); }
+      g.strokeStyle = grid; g.lineWidth = 1; g.strokeRect(x0, 22, side, side);
+      g.fillStyle = muted; g.font = "12px system-ui"; g.fillText(name, x0, 14);
+    });
+    let slope = 0, flipv = 0, H = 0;
+    for (let i = 0; i < n; i++) { const p = chance(i); flipv += p * (1 - p) / n; H += h2(p) / n; }
+    if (frames) { const col = []; for (let i = 0; i < n; i++) { let s = 0; for (let j = 0; j < n; j++) s += sum[j * n + i]; col.push(s / (n * frames)); }
+      slope = Math.max(...col) - Math.min(...col); }
+    $("a1").textContent = frames; $("a2").textContent = frames ? slope.toFixed(3) : "–";
+    $("a3").textContent = flipv.toFixed(3); $("a4").textContent = (100 * H).toFixed(1) + " %";
+  }
+  function tick() { if (!running) return; flip(); draw1(); setTimeout(() => requestAnimationFrame(tick), 60); }
+  $("run").addEventListener("click", () => { running = !running; $("run").setAttribute("aria-pressed", running); $("run").textContent = running ? "❚❚ Stop" : "✦ Run"; tick(); });
+  $("mode").addEventListener("change", reset); $("hn").addEventListener("input", reset);
+
+  // ---------- Bochner on a slice of T³ (f does not depend on z) ----------
+  let seed = 7;
+  function landscape(m) {
+    const kind = $("land").value, r = C.rng(seed), f = [];
+    for (let y = 0; y < m; y++) for (let x = 0; x < m; x++) {
+      f.push(kind === "ramp" ? x : kind === "wave" ? 3 * (Math.cos(2 * Math.PI * x / m) + Math.cos(4 * Math.PI * y / m))
+        : kind === "bump" ? 8 * Math.exp(-((x - m / 2) ** 2 + (y - m / 2) ** 2) / (m * m / 30)) : 4 * r());
+    }
+    return f;
+  }
+  function draw2() {
+    const m = +$("hm").value; $("vhm").textContent = m;
+    const f = landscape(m), at = (a, x, y) => a[((y % m) + m) % m * m + ((x % m) + m) % m], nb = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+    const lap = (a) => a.map((_, k) => { const x = k % m, y = (k / m) | 0; return nb.reduce((s, [u, v]) => s + at(a, x + u, y + v) - a[k], 0); });
+    const gam = (a, b) => a.map((_, k) => { const x = k % m, y = (k / m) | 0;
+      return 0.5 * nb.reduce((s, [u, v]) => s + (at(a, x + u, y + v) - a[k]) * (at(b, x + u, y + v) - b[k]), 0); });
+    const G = gam(f, f), Lf = lap(f), LG = lap(G), Gfl = gam(f, Lf), G2 = G.map((_, k) => 0.5 * LG[k] - Gfl[k]);
+    let lo = Infinity, hi = 0, K = Infinity; G2.forEach((v, k) => { lo = Math.min(lo, v); hi = Math.max(hi, v); if (G[k] > 1e-9) K = Math.min(K, v / G[k]); });
+    const { g, w, h } = C.setup($("curv")), side = Math.min(w / 2 - 24, h - 30), cell = side / m, blue = css("--blue"), or = css("--orange"), grid = css("--grid"), muted = css("--muted");
+    let fl = Math.min(...f), fh = Math.max(...f); if (fh - fl < 1e-9) fh = fl + 1;
+    [[12, (k) => mixc("#ffffff", or, (f[k] - fl) / (fh - fl)), "landscape"], [w / 2 + 12, (k) => mixc("#ffffff", blue, hi > 1e-9 ? Math.sqrt(Math.max(0, G2[k]) / hi) : 0), "Bochner's reading Γ₂"]]
+      .forEach(([x0, col, name]) => {
+        for (let k = 0; k < m * m; k++) { g.fillStyle = col(k); g.fillRect(x0 + (k % m) * cell, 22 + ((k / m) | 0) * cell, cell + 0.5, cell + 0.5); }
+        g.strokeStyle = grid; g.lineWidth = 1; g.strokeRect(x0, 22, side, side); g.fillStyle = muted; g.font = "12px system-ui"; g.fillText(name, x0, 14);
+      });
+    const c = ((m / 2) | 0) * m + ((m / 2) | 0);
+    $("b1").textContent = (Math.abs(lo) < 1e-9 ? 0 : lo).toFixed(3) + (lo > -1e-9 ? "  (≥ 0)" : "");
+    $("b2").textContent = (Math.abs(G2[c]) < 1e-9 ? 0 : G2[c]).toFixed(3); $("b3").textContent = G[c].toFixed(3);
+    $("b4").textContent = isFinite(K) ? (Math.abs(K) < 1e-9 ? 0 : K).toFixed(3) : "–";
+  }
+  ["land", "hm"].forEach((i) => $(i).addEventListener("input", draw2));
+  $("reroll").addEventListener("click", () => { seed = (Math.random() * 1e9) | 0; $("land").value = "rand"; draw2(); });
+
+  $("theme").addEventListener("click", () => { const r = document.documentElement, dk = matchMedia("(prefers-color-scheme: dark)").matches;
+    r.dataset.theme = (r.dataset.theme || (dk ? "dark" : "light")) === "dark" ? "light" : "dark"; setTimeout(() => { draw1(); draw2(); }, 0); });
+  window.addEventListener("resize", () => { draw1(); draw2(); });
+  reset(); draw2(); tick();
+})();
+</script>
+</body>
+</html>
