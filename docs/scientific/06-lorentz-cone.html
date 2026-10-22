@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B6 · Lorentz cone / admissible cone — BACQM-NRS³</title>
+<meta name="description" content="Lorentz cone / admissible cone on the three-torus: definitions, results and Lean declarations.">
+
+<style>
+  :root {
+    --bg: #fcfcfb; --panel: #ffffff; --ink: #0b0b0b; --ink2: #52514e; --muted: #8a8985;
+    --grid: #e4e3df; --blue: #2a78d6; --orange: #eb6834; --green: #2f8f5b; --red: #d0343a; --violet: #7c5cd6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f0f0e; --panel: #171716; --ink: #f2f1ee; --ink2: #c4c3bf; --muted: #8a8985;
+      --grid: #2a2927; --blue: #5b9be6; --orange: #f08a5d; --green: #4fb37d; --red: #f0605f; --violet: #a48bf0;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f0f0e; --panel: #171716; --ink: #f2f1ee; --ink2: #c4c3bf; --muted: #8a8985;
+    --grid: #2a2927; --blue: #5b9be6; --orange: #f08a5d; --green: #4fb37d; --red: #f0605f; --violet: #a48bf0;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 1180px; margin: 0 auto; padding: 22px 16px 40px; }
+  h1 { font-size: 1.5rem; margin: 0 0 4px; font-weight: 650; }
+  .lead { color: var(--ink2); margin: 0 0 14px; max-width: 860px; }
+  .top { display: flex; gap: 8px; float: right; }
+  .theme, .navlink { font: inherit; font-size: 0.8rem; padding: 4px 10px; border-radius: 999px;
+    border: 1px solid var(--grid); background: var(--panel); color: var(--ink); cursor: pointer; text-decoration: none; }
+  .bar { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 10px 0; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  button.chip, button.act { font: inherit; font-size: 0.88rem; padding: 6px 12px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--grid); background: var(--panel); color: var(--ink); }
+  button[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+  button:focus-visible, input:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+  .sliders { display: grid; grid-template-columns: repeat(3, minmax(170px, 1fr)); gap: 8px 18px; }
+  @media (max-width: 760px) { .sliders { grid-template-columns: 1fr; } }
+  .sl { display: flex; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; font-size: 0.92rem; }
+  .sl input { flex: 1; min-width: 0; accent-color: var(--blue); }
+  .sl b { min-width: 3.2em; text-align: right; }
+  .group { font-size: 0.8rem; color: var(--muted); margin: 10px 0 2px; text-transform: uppercase; letter-spacing: .04em; }
+  .verdict { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; }
+  .pill { border-radius: 999px; padding: 5px 12px; font-size: 0.86rem; border: 1.5px solid var(--grid); }
+  .pill.ok { border-color: var(--green); color: var(--green); background: color-mix(in srgb, var(--green) 9%, transparent); }
+  .pill.null { border-color: var(--red); color: var(--red); background: color-mix(in srgb, var(--red) 9%, transparent); }
+  .pill.info { border-color: var(--violet); color: var(--violet); }
+  .grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 14px; margin-top: 12px; }
+  @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: var(--panel); border: 1px solid var(--grid); border-radius: 12px; padding: 10px; position: relative; }
+  .card h2 { font-size: 0.95rem; margin: 2px 4px 4px; font-weight: 600; color: var(--ink2); }
+  .card .hint { position: absolute; right: 12px; top: 10px; font-size: 0.75rem; color: var(--muted); }
+  .card .sub { color: var(--ink2); font-size: .86rem; margin: 0 4px 6px; }
+  canvas { width: 100%; display: block; touch-action: none; }
+  #ball { aspect-ratio: 1 / 0.95; cursor: grab; }
+  #ball:active { cursor: grabbing; }
+  #hyp { aspect-ratio: 1 / 0.95; }
+  .mats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
+  @media (max-width: 860px) { .mats { grid-template-columns: 1fr; } }
+  .mat { display: inline-grid; grid-template-columns: auto auto; gap: 2px 16px; padding: 4px 10px; margin: 4px 0;
+    border-left: 1.5px solid var(--ink2); border-right: 1.5px solid var(--ink2); border-radius: 6px;
+    font-size: 0.86rem; font-variant-numeric: tabular-nums; }
+  .k { color: var(--muted); font-size: 0.8rem; }
+  .num { font-variant-numeric: tabular-nums; font-size: 0.9rem; }
+  .note { color: var(--ink2); font-size: 0.88rem; margin-top: 14px; max-width: 900px; }
+  code { font-size: 0.86em; }
+  a { color: var(--blue); }
+</style>
+<link rel="stylesheet" href="../shared/css/scientific-page.css?v=20261022b">
+</head>
+<body data-tone="formal">
+<main>
+  <nav class="navbar" aria-label="Site">
+    <a class="brand" href="./">BACQM-NRS³ · Theorem atlas</a>
+    <a class="pill" href="../didactic/cone.html">Guided version ↗</a>
+    <button class="pill" id="theme" type="button" aria-label="Toggle dark mode">Theme</button>
+  </nav>
+  <h1>B6 · Lorentz cone / admissible cone</h1>
+  <p class="lead">On <code>T^k</code> (closed axes of three positions), for an axis with centered vectors <code>x, y</code> of <code>T°</code> and <code>P</code>, the Gram matrix <code>G = [[‖x‖², ⟨x,y⟩], [⟨y,x⟩, ‖y‖²]]</code> is Hermitian, <code>G = v₀1 + v₁σ₁ + v₂σ₂ + v₃σ₃</code>, and <code>v = axisVector Φ i</code> (<code>UncertaintyCone.coneVector</code>). The Minkowski interval of <code>v</code> is <code>det G</code>.</p>
+
+  <h2>Definitions</h2>
+  <div class="formal"><table><tr><th>Name</th><th>Content</th></tr><tr><td><code>TorusCone.axisVector</code></td><td>the four-vector of the Gram matrix of an axis</td></tr><tr><td>future cone</td><td><code>v₀ ≥ 0</code> and <code>v₀² − |𝐯|² ≥ 0</code></td></tr></table></div>
+
+  <h2>Results</h2>
+  <div class="formal"><table><tr><th>Statement</th><th>Name</th><th>Status</th></tr><tr><td><code>axisVector ∈ futureCone</code>, every axis, every state</td><td><code class="lean">TorusCone.axisVector_mem_futureCone</code></td><td class="st lean">Lean</td></tr><tr><td><code>η(v, v) = gramDefect</code></td><td><code class="lean">TorusCone.interval_axisVector</code></td><td class="st lean">Lean</td></tr><tr><td>in the band <code>η(v, v) &gt; 0</code>; proper time <code>&gt; 0</code></td><td><code class="lean">TorusCone.timelike_of_band</code>, <code class="lean">TorusCone.properTime_pos_of_band</code></td><td class="st lean">Lean</td></tr><tr><td>null exactly at the maximal current state of the open chain with <code>N = 2, 3</code></td><td><code class="lean">UncertaintyCone.null_maxCurrentState_iff</code></td><td class="st lean">Lean</td></tr></table></div>
+
+  <h2>Figure</h2>
+  <div class="bar">
+    <div class="chips" role="group" aria-label="Start">
+      <button class="chip" type="button" data-s="3,-1">start: saturating state, d = 3 (null)</button>
+      <button class="chip" type="button" data-s="3,0">start: max current, d = 3</button>
+      <button class="chip" type="button" data-s="4,0">start: max current, d = 4</button>
+      <button class="chip" type="button" data-s="12,0">start: max current, d = 12</button>
+      <button class="chip" type="button" data-s="40,0">start: max current, d = 40 (Szegő limit)</button>
+    </div>
+    <button class="act" type="button" id="walk" aria-pressed="false">✦ Random walk in SL(2, ℂ)</button>
+    <button class="act" type="button" id="reset">M = 1</button>
+  </div>
+  <div class="group">boosts (rapidity)</div>
+  <div class="sliders">
+    <label class="sl">η₁<input type="range" id="e1" min="-2.5" max="2.5" step="0.01" value="0"><b id="ve1">0</b></label>
+    <label class="sl">η₂<input type="range" id="e2" min="-2.5" max="2.5" step="0.01" value="0"><b id="ve2">0</b></label>
+    <label class="sl">η₃ (units, λ = e^(η₃/2))<input type="range" id="e3" min="-2.5" max="2.5" step="0.01" value="0"><b id="ve3">0</b></label>
+  </div>
+  <div class="group">rotations (angle)</div>
+  <div class="sliders">
+    <label class="sl">about axis 1<input type="range" id="r1" min="-3.14" max="3.14" step="0.01" value="0"><b id="vr1">0</b></label>
+    <label class="sl">about axis 3<input type="range" id="r3" min="-3.14" max="3.14" step="0.01" value="0"><b id="vr3">0</b></label>
+  </div>
+  <div class="verdict" id="verdict" aria-live="polite"></div>
+
+  <div class="grid">
+    <div class="card"><h3>The speed ball: 𝐯 / v₀ inside the unit sphere</h3><span class="hint">drag to turn</span>
+      <p class="sub">The sphere is the light cone seen at v₀ = 1: its surface is β = 1. Grey: where the vector started;
+        orange: where M sends it; the trail follows the sliders. It can get close to the sphere, never through it.</p>
+      <canvas id="ball" aria-label="The spatial part of the four-vector divided by v0, inside the unit sphere"></canvas></div>
+    <div class="card"><h3>The hyperbola: v₀² − |𝐯|² = det G</h3>
+      <p class="sub">Every M moves the point along the same hyperbola; the light line |𝐯| = v₀ is its asymptote. A
+        null vector (the saturating state of the closed axis, d = 3) lives on the light line and stays there.</p>
+      <canvas id="hyp" aria-label="The point on its hyperbola in the plane of |v| and v0"></canvas></div>
+  </div>
+
+  <div class="mats">
+    <div class="card"><h3>G (start)</h3><div id="mG"></div><div class="num" id="dG"></div></div>
+    <div class="card"><h3>M ∈ SL(2, ℂ)</h3><div id="mM"></div><div class="num" id="dM"></div></div>
+    <div class="card"><h3>M G M<sup>†</sup></h3><div id="mG2"></div><div class="num" id="dG2"></div></div>
+  </div>
+  <p class="note">The ball, the hyperbola and the matrices are computed in the browser for the chosen <code>M ∈ SL(2, ℂ)</code>.</p>
+  <p class="pager"><a href="05-curvature.html">← B5</a><a href="./">Theorem atlas</a><a href="07-dirac.html">B7 →</a></p>
+  <footer>NRS Noncommercial License 1.0.0 · Lean: <a href="https://github.com/naype888-cloud/nrs3-tritoro">nrs3-tritoro</a> and the repositories listed in the <a href="./">atlas</a></footer>
+</main>
+<script src="../shared/js/cone-core.js?v=20261022b"></script>
+<script src="../shared/js/cone-t3.js?v=20261022b"></script>
+<script>
+(() => {
+  const C = window.Cone, $ = (id) => document.getElementById(id);
+  // 2×2 complex matrices as [[re, im] × 4] in row order a, b, c, d
+  const cm = (a, b) => [a[0] * b[0] - a[1] * b[1], a[0] * b[1] + a[1] * b[0]];
+  const ca = (a, b) => [a[0] + b[0], a[1] + b[1]];
+  const cc = (a) => [a[0], -a[1]];
+  const mul = (A, B) => [ca(cm(A[0], B[0]), cm(A[1], B[2])), ca(cm(A[0], B[1]), cm(A[1], B[3])),
+    ca(cm(A[2], B[0]), cm(A[3], B[2])), ca(cm(A[2], B[1]), cm(A[3], B[3]))];
+  const dag = (A) => [cc(A[0]), cc(A[2]), cc(A[1]), cc(A[3])];
+  const det = (A) => { const p = cm(A[0], A[3]), q = cm(A[1], A[2]); return [p[0] - q[0], p[1] - q[1]]; };
+  const I = [[1, 0], [0, 0], [0, 0], [1, 0]];
+  // σ₁, σ₂, σ₃
+  const S = [[[0, 0], [1, 0], [1, 0], [0, 0]], [[0, 0], [0, -1], [0, 1], [0, 0]], [[1, 0], [0, 0], [0, 0], [-1, 0]]];
+  const lin = (a, A, b, B) => A.map((z, i) => ca(cm(a, z), cm(b, B[i])));
+  const boost = (k, e) => lin([Math.cosh(e / 2), 0], I, [Math.sinh(e / 2), 0], S[k]);
+  const rot = (k, t) => lin([Math.cos(t / 2), 0], I, [0, -Math.sin(t / 2)], S[k]);
+  const herm = (v) => [[v[0] + v[3], 0], [v[1], -v[2]], [v[1], v[2]], [v[0] - v[3], 0]];
+  const coords = (G) => [(G[0][0] + G[3][0]) / 2, G[2][0], G[2][1], (G[0][0] - G[3][0]) / 2];
+
+  const st = { d: 3, eps: 0, e: [0, 0, 0], r1: 0, r3: 0 };
+  const view = { yaw: -0.7, pitch: 0.35, user: false };
+  let trail = [];
+  const f = (x, n = 4) => (Math.abs(x) < 5e-13 ? "0" : x.toFixed(n));
+  const cz = (z) => `${f(z[0])} ${z[1] < 0 ? "−" : "+"} ${f(Math.abs(z[1]))}i`;
+  const matHtml = (A) => `<span class="mat"><span>${cz(A[0])}</span><span>${cz(A[1])}</span><span>${cz(A[2])}</span><span>${cz(A[3])}</span></span>`;
+
+  function start() {
+    return C.ringStart(st.d, st.eps);
+  }
+  function M() {
+    let A = rot(0, st.r1);
+    A = mul(A, rot(2, st.r3));
+    A = mul(A, boost(0, st.e[0]));
+    A = mul(A, boost(1, st.e[1]));
+    return mul(A, boost(2, st.e[2]));
+  }
+  function state() {
+    const v = start(), G = herm(v), m = M(), G2 = mul(mul(m, G), dag(m)), w = coords(G2);
+    return { v, G, m, G2, w };
+  }
+
+  function render() {
+    const s = state();
+    const iv = s.v[0] ** 2 - s.v[1] ** 2 - s.v[2] ** 2 - s.v[3] ** 2;
+    const iw = s.w[0] ** 2 - s.w[1] ** 2 - s.w[2] ** 2 - s.w[3] ** 2;
+    $("mG").innerHTML = matHtml(s.G); $("mM").innerHTML = matHtml(s.m); $("mG2").innerHTML = matHtml(s.G2);
+    $("dG").innerHTML = `det G = ${iv.toExponential(6)}<br><span class="k">v = (${s.v.map((x) => f(x)).join(", ")})</span>`;
+    const dm = det(s.m);
+    $("dM").innerHTML = `det M = ${cz(dm)}`;
+    $("dG2").innerHTML = `det M G M† = ${iw.toExponential(6)}<br><span class="k">v′ = (${s.w.map((x) => f(x)).join(", ")})</span>`;
+    const bw = Math.hypot(s.w[1], s.w[2], s.w[3]) / s.w[0], bv = Math.hypot(s.v[1], s.v[2], s.v[3]) / s.v[0];
+    const isNull = iv <= 1e-12 * s.v[0] ** 2;
+    const pills = [`<span class="pill ok">interval kept: ${iv.toExponential(3)} → ${iw.toExponential(3)}</span>`,
+      `<span class="pill ok">future kept: v₀′ = ${f(s.w[0])} > 0</span>`,
+      isNull ? `<span class="pill null">null stays null: |𝐯′|/v₀′ = ${f(bw, 6)}</span>`
+             : `<span class="pill ok">timelike stays timelike: |𝐯′|/v₀′ = ${f(bw, 6)} < 1</span>`,
+      `<span class="pill info">start: |𝐯|/v₀ = ${f(bv, 6)}</span>`];
+    $("verdict").innerHTML = pills.join("");
+    const u = [s.w[1] / s.w[0], s.w[2] / s.w[0], s.w[3] / s.w[0]];
+    const last = trail[trail.length - 1];
+    if (!last || Math.hypot(u[0] - last[0], u[1] - last[1], u[2] - last[2]) > 0.004) trail.push(u);
+    if (trail.length > 400) trail.shift();
+    drawBall(s, u); drawHyp(s, iv);
+  }
+
+  function drawBall(s, u) {
+    const { g, w, h } = C.setup($("ball"));
+    const P = C.projector(w, h, view, 0.34, 0.0);
+    const blue = C.css("--blue"), muted = C.css("--muted"), orange = C.css("--orange"), grid = C.css("--grid"),
+      ink = C.css("--ink"), red = C.css("--red");
+    // the sphere |𝐯|/v₀ = 1 as meridians and parallels; points: (v₁, v₂, v₃) shown as (x, y, z)
+    for (let k = -2; k <= 2; k++) {
+      const z = k / 3, r = Math.sqrt(1 - z * z), ring = [];
+      for (let t = 0; t <= 64; t++) ring.push([r * Math.cos(t * Math.PI / 32), r * Math.sin(t * Math.PI / 32), z]);
+      C.poly(g, P, ring, C.mix(blue, k === 0 ? 0.7 : 0.3), k === 0 ? 1.3 : 1);
+    }
+    for (let m = 0; m < 6; m++) {
+      const a = m * Math.PI / 6, ring = [];
+      for (let t = 0; t <= 64; t++) { const p = t * Math.PI / 32; ring.push([Math.sin(p) * Math.cos(a), Math.sin(p) * Math.sin(a), Math.cos(p)]); }
+      C.poly(g, P, ring, C.mix(blue, 0.22), 1);
+    }
+    [[1.25, 0, 0, "v₁"], [0, 1.25, 0, "v₂"], [0, 0, 1.25, "v₃"]].forEach(([a, b, c, t]) => {
+      C.line(g, P, [-a, -b, -c], [a, b, c], grid); C.label(g, P, [a, b, c], t, muted);
+    });
+    if (trail.length > 1) C.poly(g, P, trail, C.mix(orange, 0.5), 1.4);
+    const u0 = [s.v[1] / s.v[0], s.v[2] / s.v[0], s.v[3] / s.v[0]];
+    C.line(g, P, [0, 0, 0], u0, muted, 1.6, [4, 3]); C.dot(g, P, u0, 3.5, muted);
+    C.line(g, P, [0, 0, 0], u, orange, 2.6); C.dot(g, P, u, 5, orange);
+    const b = Math.hypot(...u);
+    C.label(g, P, u, `|𝐯|/v₀ = ${b.toFixed(4)}`, ink, 9, -8, "600 12px system-ui");
+    C.label(g, P, [0, 0, -1.05], "sphere: β = 1 (light)", red, 6, 14, "11px system-ui");
+  }
+
+  function drawHyp(s, iv) {
+    const { g, w, h } = C.setup($("hyp"));
+    const blue = C.css("--blue"), red = C.css("--red"), orange = C.css("--orange"), muted = C.css("--muted"),
+      ink = C.css("--ink"), grid = C.css("--grid");
+    // in units of the proper length τ = √det G (or of v₀ for a null vector)
+    const tau = Math.sqrt(Math.max(0, iv)), u = tau > 1e-9 * s.v[0] ? tau : s.v[0];
+    const r0 = Math.hypot(s.v[1], s.v[2], s.v[3]) / u, r1 = Math.hypot(s.w[1], s.w[2], s.w[3]) / u;
+    const a0 = s.v[0] / u, a1 = s.w[0] / u, t = tau / u;
+    const L = Math.min(Math.max(4, a0 * 1.15, a1 * 1.15), 60), pad = 36;
+    const S = Math.min((w - 2 * pad) / L, (h - 2 * pad) / L);
+    const X = (r) => pad + r * S, Y = (v0) => h - pad - v0 * S;
+    g.strokeStyle = grid; g.beginPath(); g.moveTo(X(0), Y(0)); g.lineTo(X(L), Y(0)); g.moveTo(X(0), Y(0)); g.lineTo(X(0), Y(L)); g.stroke();
+    g.strokeStyle = red; g.setLineDash([4, 4]); g.beginPath(); g.moveTo(X(0), Y(0)); g.lineTo(X(L), Y(L)); g.stroke(); g.setLineDash([]);
+    g.strokeStyle = blue; g.lineWidth = 2.2; g.beginPath();
+    for (let k = 0; k <= 400; k++) { const r = L * k / 400, v0 = Math.sqrt(r * r + t * t); if (v0 > L) break; k ? g.lineTo(X(r), Y(v0)) : g.moveTo(X(r), Y(v0)); }
+    g.stroke(); g.lineWidth = 1;
+    const clip = (r, v0) => (v0 <= L ? [X(r), Y(v0)] : null);
+    const p0 = clip(r0, a0), p1 = clip(r1, a1);
+    if (p0) { g.fillStyle = muted; g.beginPath(); g.arc(p0[0], p0[1], 4, 0, 7); g.fill(); }
+    if (p1) { g.fillStyle = orange; g.beginPath(); g.arc(p1[0], p1[1], 6, 0, 7); g.fill(); }
+    g.font = "12px system-ui"; g.fillStyle = muted;
+    g.fillText(tau > 1e-9 * s.v[0] ? "|𝐯| / τ" : "|𝐯| / v₀", w - pad - 40, Y(0) - 6);
+    g.fillText(tau > 1e-9 * s.v[0] ? "v₀ / τ" : "v₀ / v₀", X(0) + 6, pad - 10);
+    g.fillStyle = red; g.fillText("light line |𝐯| = v₀", X(L * 0.6) + 8, Y(L * 0.6) + 4);
+    const chi = (b) => 0.5 * Math.log((1 + b) / (1 - b));
+    const b0 = r0 / a0, b1 = r1 / a1;
+    g.fillStyle = ink;
+    g.fillText(`τ² = det G = ${iv.toExponential(4)}`, pad + 6, pad + 6);
+    if (t > 0) {
+      g.fillText(`rapidity: ${chi(b0).toFixed(3)} → ${chi(b1).toFixed(3)} (finite: never the light line)`, pad + 6, pad + 24);
+      if (!p1) { g.fillStyle = orange; g.fillText(`the point is at v₀/τ = ${a1.toFixed(1)}, beyond the frame`, pad + 6, pad + 42); }
+    } else {
+      g.fillText("null: τ = 0, the point rides the light line", pad + 6, pad + 24);
+    }
+  }
+
+  function sync() {
+    ["e1", "e2", "e3"].forEach((id, i) => { $(id).value = st.e[i]; $("v" + id).textContent = st.e[i].toFixed(2); });
+    $("r1").value = st.r1; $("vr1").textContent = st.r1.toFixed(2);
+    $("r3").value = st.r3; $("vr3").textContent = st.r3.toFixed(2);
+  }
+  ["e1", "e2", "e3"].forEach((id, i) => $(id).addEventListener("input", (e) => { st.e[i] = +e.target.value; sync(); render(); }));
+  $("r1").addEventListener("input", (e) => { st.r1 = +e.target.value; sync(); render(); });
+  $("r3").addEventListener("input", (e) => { st.r3 = +e.target.value; sync(); render(); });
+  $("reset").addEventListener("click", () => { st.e = [0, 0, 0]; st.r1 = 0; st.r3 = 0; trail = []; sync(); render(); });
+  document.querySelectorAll("[data-s]").forEach((b) => b.addEventListener("click", () => {
+    const [d, e] = b.dataset.s.split(",").map(Number); st.d = d; st.eps = e; trail = []; render();
+  }));
+  let walkT = null, ph = 0;
+  $("walk").addEventListener("click", () => {
+    if (walkT) { cancelAnimationFrame(walkT); walkT = null; $("walk").setAttribute("aria-pressed", "false"); return; }
+    $("walk").setAttribute("aria-pressed", "true");
+    const step = () => {
+      ph += 0.012;
+      st.e = [1.6 * Math.sin(ph * 1.3), 1.5 * Math.sin(ph * 0.9 + 1), 1.8 * Math.sin(ph * 0.7 + 2)];
+      st.r1 = 2.5 * Math.sin(ph * 0.5); st.r3 = 3 * Math.sin(ph * 0.37 + 0.5);
+      sync(); render(); walkT = requestAnimationFrame(step);
+    };
+    walkT = requestAnimationFrame(step);
+  });
+  C.view3d($("ball"), view, render);
+  C.themeToggle($("theme"), render);
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", render);
+  window.addEventListener("resize", render);
+  sync(); render();
+})();
+</script>
+</body>
+</html>
