@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+<rect width="1920" height="1080" fill="#0f0f0e"/>
+<g stroke="#5b9be6" stroke-width="2" stroke-opacity="0.55">
+<line x1="960.0" y1="430.0" x2="1167.8" y2="550.0"/>
+<line x1="960.0" y1="430.0" x2="752.2" y2="550.0"/>
+<line x1="960.0" y1="430.0" x2="960.0" y2="190.0"/>
+<line x1="960.0" y1="310.0" x2="1167.8" y2="430.0"/>
+<line x1="960.0" y1="310.0" x2="752.2" y2="430.0"/>
+<line x1="856.1" y1="490.0" x2="856.1" y2="250.0"/>
+<line x1="960.0" y1="190.0" x2="1167.8" y2="310.0"/>
+<line x1="960.0" y1="190.0" x2="752.2" y2="310.0"/>
+<line x1="752.2" y1="550.0" x2="752.2" y2="310.0"/>
+<line x1="856.1" y1="490.0" x2="1063.9" y2="610.0"/>
+<line x1="1063.9" y1="490.0" x2="856.1" y2="610.0"/>
+<line x1="1063.9" y1="490.0" x2="1063.9" y2="250.0"/>
+<line x1="856.1" y1="370.0" x2="1063.9" y2="490.0"/>
+<line x1="1063.9" y1="370.0" x2="856.1" y2="490.0"/>
+<line x1="960.0" y1="550.0" x2="960.0" y2="310.0"/>
+<line x1="856.1" y1="250.0" x2="1063.9" y2="370.0"/>
+<line x1="1063.9" y1="250.0" x2="856.1" y2="370.0"/>
+<line x1="856.1" y1="610.0" x2="856.1" y2="370.0"/>
+<line x1="752.2" y1="550.0" x2="960.0" y2="670.0"/>
+<line x1="1167.8" y1="550.0" x2="960.0" y2="670.0"/>
+<line x1="1167.8" y1="550.0" x2="1167.8" y2="310.0"/>
+<line x1="752.2" y1="430.0" x2="960.0" y2="550.0"/>
+<line x1="1167.8" y1="430.0" x2="960.0" y2="550.0"/>
+<line x1="1063.9" y1="610.0" x2="1063.9" y2="370.0"/>
+<line x1="752.2" y1="310.0" x2="960.0" y2="430.0"/>
+<line x1="1167.8" y1="310.0" x2="960.0" y2="430.0"/>
+<line x1="960.0" y1="670.0" x2="960.0" y2="430.0"/>
+</g><g fill="#f2f1ee">
+<circle cx="960.0" cy="430.0" r="7"/>
+<circle cx="960.0" cy="310.0" r="7"/>
+<circle cx="960.0" cy="190.0" r="7"/>
+<circle cx="856.1" cy="490.0" r="7"/>
+<circle cx="856.1" cy="370.0" r="7"/>
+<circle cx="856.1" cy="250.0" r="7"/>
+<circle cx="752.2" cy="550.0" r="7"/>
+<circle cx="752.2" cy="430.0" r="7"/>
+<circle cx="752.2" cy="310.0" r="7"/>
+<circle cx="1063.9" cy="490.0" r="7"/>
+<circle cx="1063.9" cy="370.0" r="7"/>
+<circle cx="1063.9" cy="250.0" r="7"/>
+<circle cx="960.0" cy="550.0" r="7"/>
+<circle cx="960.0" cy="430.0" r="7"/>
+<circle cx="960.0" cy="310.0" r="7"/>
+<circle cx="856.1" cy="610.0" r="7"/>
+<circle cx="856.1" cy="490.0" r="7"/>
+<circle cx="856.1" cy="370.0" r="7"/>
+<circle cx="1167.8" cy="550.0" r="7"/>
+<circle cx="1167.8" cy="430.0" r="7"/>
+<circle cx="1167.8" cy="310.0" r="7"/>
+<circle cx="1063.9" cy="610.0" r="7"/>
+<circle cx="1063.9" cy="490.0" r="7"/>
+<circle cx="1063.9" cy="370.0" r="7"/>
+<circle cx="960.0" cy="670.0" r="7"/>
+<circle cx="960.0" cy="550.0" r="7"/>
+<circle cx="960.0" cy="430.0" r="7"/>
+</g>
+<text x="960" y="830" text-anchor="middle" fill="#f2f1ee" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="96" font-weight="650" letter-spacing="2">BACQM-NRS³</text>
+<text x="960" y="900" text-anchor="middle" fill="#8a8985" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="36">uncertainty on the three-torus · Lean 4</text>
+</svg>

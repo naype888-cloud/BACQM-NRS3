@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BACQM-NRS³</title>
+<meta name="description" content="NRS³ on the three-torus: eight results, three topologies, Lean 4.">
+<meta property="og:title" content="BACQM-NRS³">
+<meta property="og:description" content="NRS³ on the three-torus: eight results, three topologies, Lean 4.">
+<link rel="stylesheet" href="shared/css/tokens.css">
+<link rel="stylesheet" href="shared/css/landing.css">
+</head>
+<body class="landing">
+<main class="stage">
+  <video class="intro" id="intro" autoplay muted playsinline controls preload="metadata"
+         poster="media/intro-poster.svg" aria-label="Introduction to BACQM-NRS³">
+    <source src="media/intro.webm" type="video/webm">
+    <source src="media/intro.mp4" type="video/mp4">
+  </video>
+  <nav class="doors" aria-label="Choose a version">
+    <a class="door" href="scientific/">Scientific</a>
+    <a class="door" href="didactic/">Didactic</a>
+  </nav>
+</main>
+<script>
+  // Until the video file is published the poster stays, without dead controls.
+  const v = document.getElementById("intro");
+  const srcs = v.querySelectorAll("source");
+  srcs[srcs.length - 1].addEventListener("error", () => v.removeAttribute("controls"));
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+/* Landing: the intro video and the two doors, nothing else. */
+html, body { height: 100%; }
+body.landing { overflow: hidden; }
+.stage { height: 100vh; height: 100svh; display: grid; grid-template-rows: 1fr minmax(96px, 20svh); }
+.intro { width: 100%; height: 100%; min-height: 0; object-fit: contain; background: #0f0f0e; display: block; }
+.doors { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--grid); }
+.door { display: grid; place-items: center; text-decoration: none; color: var(--ink);
+  font-size: clamp(1.1rem, 3.2vw, 2rem); font-weight: 650; letter-spacing: 0.14em; text-transform: uppercase;
+  background: var(--panel); transition: background 0.15s, color 0.15s; }
+.door + .door { border-left: 1px solid var(--grid); }
+.door:hover, .door:focus-visible { background: var(--blue); color: #fff; outline: none; }
+@media (prefers-reduced-motion: reduce) { .door { transition: none; } }

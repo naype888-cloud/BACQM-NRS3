@@ -1,0 +1,24 @@
+/* Palette shared by the landing, the scientific and the didactic pages
+   (the same tokens as nava-robertson-schrodinger and nrs3-uncertainty-cone). */
+:root {
+  --bg: #f4f3ef; --panel: #ffffff; --ink: #0b0b0b; --ink2: #3b3a37; --muted: #67665f;
+  --grid: #c9c7c0; --blue: #1f63b8; --orange: #eb6834; --green: #2f8f5b; --red: #d0343a; --violet: #7c5cd6;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f0f0e; --panel: #171716; --ink: #f2f1ee; --ink2: #c4c3bf; --muted: #8a8985;
+    --grid: #2a2927; --blue: #5b9be6; --orange: #f08a5d; --green: #4fb37d; --red: #f0605f; --violet: #a48bf0;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f0f0e; --panel: #171716; --ink: #f2f1ee; --ink2: #c4c3bf; --muted: #8a8985;
+  --grid: #2a2927; --blue: #5b9be6; --orange: #f08a5d; --green: #4fb37d; --red: #f0605f; --violet: #a48bf0;
+  color-scheme: dark;
+}
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+a { color: var(--blue); }
+code { font: 0.86em/1.4 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
