@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>From a cut to the Einstein equation — BACQM-NRS³</title>
+<meta name="description" content="How does a cut give the Einstein equation?">
+
+<style>  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  h1 { font-size: 1.5rem; margin: 0 0 4px; font-weight: 650; }
+  .lead { color: var(--ink2); margin: 0 0 14px; max-width: 860px; }
+  .note { color: var(--ink2); font-size: .9rem; max-width: 860px; }
+  .act { font: inherit; font-size: .88rem; padding: 6px 12px; border-radius: 999px; cursor: pointer; border: 1px solid var(--grid); background: var(--panel); color: var(--ink); }
+  .act[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .sl { display: flex; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; }
+  .sl input { flex: 1; min-width: 0; accent-color: var(--blue); } .sl b { min-width: 3em; text-align: right; }
+  .card { background: var(--panel); border: 1px solid var(--grid); padding: 10px; }
+  .card h2 { font-size: .95rem; margin: 2px 4px 6px; font-weight: 600; color: var(--ink2); }
+  .stat { border: 1px solid var(--grid); border-radius: 8px; padding: 6px 10px; background: var(--panel); }
+  .stat .k { font-size: .76rem; color: var(--muted); } .stat .v { font-variant-numeric: tabular-nums; }
+  @media (max-width: 760px) { .grid, .sliders { grid-template-columns: 1fr !important; } .readout { grid-template-columns: 1fr 1fr !important; } }
+  code { font-size: .88em; } a { color: var(--blue); }
+</style>
+<link rel="stylesheet" href="../shared/css/didactic-page.css?v=20261022b">
+</head>
+<body>
+<main>
+  <nav class="navbar" aria-label="Site">
+    <a class="brand" href="./">BACQM-NRS³ · The path</a>
+    <a class="pill" href="../scientific/08-einstein-unruh.html">Formal version ↗</a>
+    <button class="pill" id="theme" type="button" aria-label="Toggle dark mode">Theme</button>
+  </nav>
+  <p class="stopno">Stop 8 of 9 · How does a cut give the Einstein equation?</p>
+  <h1>From a cut to the Einstein equation</h1>
+  <p class="lead">Every cut carries one bit per step, so its entropy per unit area is <code>η = log 2 / a²</code>, the same for every cut, on T³ and on the open cube. With one bit of area, <code>a² = 4ℓ_P² log 2</code>, this is <code>η = 1/(4ℓ_P²)</code>. An accelerated observer sees the Unruh temperature; asking the Clausius relation <code>δQ = T dS</code> on every light sheet then gives <code>R_kk = 8πℓ_P² T_kk</code>, and with the Bianchi identity the Einstein equation. Move the area per step: only the bit of area gives 8π.</p>
+  <div class="bar" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px">
+    <button type="button" class="act" id="topoT3" aria-pressed="true">T³: two walls</button>
+    <button type="button" class="act" id="topoR3" aria-pressed="false">R³: one wall</button>
+  </div>
+  <div class="sliders" style="display:grid;grid-template-columns:repeat(3,minmax(150px,1fr));gap:8px 18px">
+    <label class="sl">d<sub>y</sub><input type="range" id="ey" min="2" max="16" value="4"><b id="vey">4</b></label>
+    <label class="sl">d<sub>z</sub><input type="range" id="ez" min="2" max="16" value="5"><b id="vez">5</b></label>
+    <label class="sl">a² / ℓ_P²<input type="range" id="ea" min="0.5" max="8" step="0.01" value="2.77"><b id="vea">2.77</b></label>
+  </div>
+  <div class="grid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px">
+    <div class="card"><h2>The cut and its steps</h2><canvas id="ecut" style="width:100%;aspect-ratio:4/3;display:block" aria-label="The walls of the cut, one square per step"></canvas></div>
+    <div class="card"><h2>The coupling 2π/η against the area per step</h2><canvas id="ecoup" style="width:100%;aspect-ratio:4/3;display:block" aria-label="2π/η against a²/ℓ_P², with 8π marked"></canvas></div>
+  </div>
+  <div class="readout" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px" aria-live="polite">
+    <div class="stat"><div class="k">steps n</div><div class="v" id="en">–</div></div>
+    <div class="stat"><div class="k">S = n log 2</div><div class="v" id="eS">–</div></div>
+    <div class="stat"><div class="k">η = S / A, in 1/ℓ_P²</div><div class="v" id="eeta">–</div></div>
+    <div class="stat"><div class="k">2π/η, in ℓ_P²</div><div class="v" id="ek">–</div></div>
+  </div>
+
+  <section class="exactcard"><h2>What is exact here</h2>
+    <ul><li><span class="tag lean">Lean</span> <code>η = log 2 / a²</code> on every cut; with the bit of area <code>η = 1/(4ℓ_P²)</code>, the same on T³ and on the open cube.</li><li><span class="tag lean">Lean</span> The Unruh temperature times the imaginary-time period is 1.</li><li><span class="tag cond">Lean · conditional</span> Given the Clausius relation on every light sheet, <code>R_kk = 8πℓ_P² T_kk</code>; with the Bianchi identity, <code>Ric − ½R g + Λ g = 8πℓ_P² T</code>. These two are hypotheses of the theorem.</li><li><span class="tag browser">Browser</span> The plot is the formula <code>2π/η = 2π a² / log 2</code> drawn on this page.</li></ul>
+    <details><summary>Theorem trail</summary><div class="trail"><table><tr><th>Statement</th><th>Name</th></tr><tr><td><code>η = log 2/a²</code>; <code>η = 1/(4ℓ_P²)</code>; every cut</td><td><code class="lean">ClausiusInput.entropyPerArea_eq</code>, <code class="lean">ClausiusInput.entropyPerArea_eta</code>, <code class="lean">ClausiusInput.eta_universal</code></td></tr><tr><td>Unruh</td><td><code class="lean">Rindler.unruhTemperature_mul_period</code></td></tr><tr><td>Clausius ⇒ <code>R_kk = 8πℓ_P² T_kk</code></td><td><code class="lean">LightSheet.eight_pi</code>, <code class="lean">CutEinstein.clausius_cut</code></td></tr><tr><td>the Einstein equation</td><td><code class="lean">CutEinstein.einstein_cut</code>, <code class="lean">Einstein.einstein_equation</code></td></tr><tr><td>the three topologies</td><td><code class="lean">CutEinstein.clausius_openCube</code>, <code class="lean">CutEinstein.clausius_torus</code>, <code class="lean">CutEinstein.clausius_fiber</code></td></tr></table></div></details>
+  </section>
+  <p class="pager"><a href="doublers.html">← Stop 7</a><a href="./">The path</a><a href="white-ball.html">Stop 9 →</a></p>
+  <footer>NRS Noncommercial License 1.0.0 · Lean: <a href="https://github.com/naype888-cloud/nrs3-tritoro">nrs3-tritoro</a></footer>
+</main>
+<script src="../shared/js/einstein-cut.js?v=20261022b"></script>
+</body>
+</html>

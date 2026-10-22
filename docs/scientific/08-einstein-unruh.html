@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B8 · Einstein / Unruh flow — BACQM-NRS³</title>
+<meta name="description" content="Einstein / Unruh flow on the three-torus: definitions, results and Lean declarations.">
+
+<style>  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  h1 { font-size: 1.5rem; margin: 0 0 4px; font-weight: 650; }
+  .lead { color: var(--ink2); margin: 0 0 14px; max-width: 860px; }
+  .note { color: var(--ink2); font-size: .9rem; max-width: 860px; }
+  .act { font: inherit; font-size: .88rem; padding: 6px 12px; border-radius: 999px; cursor: pointer; border: 1px solid var(--grid); background: var(--panel); color: var(--ink); }
+  .act[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .sl { display: flex; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; }
+  .sl input { flex: 1; min-width: 0; accent-color: var(--blue); } .sl b { min-width: 3em; text-align: right; }
+  .card { background: var(--panel); border: 1px solid var(--grid); padding: 10px; }
+  .card h2 { font-size: .95rem; margin: 2px 4px 6px; font-weight: 600; color: var(--ink2); }
+  .stat { border: 1px solid var(--grid); border-radius: 8px; padding: 6px 10px; background: var(--panel); }
+  .stat .k { font-size: .76rem; color: var(--muted); } .stat .v { font-variant-numeric: tabular-nums; }
+  @media (max-width: 760px) { .grid, .sliders { grid-template-columns: 1fr !important; } .readout { grid-template-columns: 1fr 1fr !important; } }
+  code { font-size: .88em; } a { color: var(--blue); }
+</style>
+<link rel="stylesheet" href="../shared/css/scientific-page.css?v=20261022b">
+</head>
+<body data-tone="formal">
+<main>
+  <nav class="navbar" aria-label="Site">
+    <a class="brand" href="./">BACQM-NRS³ · Theorem atlas</a>
+    <a class="pill" href="../didactic/einstein.html">Guided version ↗</a>
+    <button class="pill" id="theme" type="button" aria-label="Toggle dark mode">Theme</button>
+  </nav>
+  <h1>B8 · Einstein / Unruh flow</h1>
+  <p class="lead">For a nonempty boundary of <code>n</code> steps with area <code>a²</code> per step, <code>entropyPerArea = n log 2 / (n a²)</code>. <code>LightSheet.Clausius η κ R_kk T_kk A l₀</code> states <code>δQ = T dS</code> on a local light sheet with Unruh temperature <code>κ/2π</code>.</p>
+
+  <h2>Definitions</h2>
+  <div class="formal"><table><tr><th>Name</th><th>Content</th></tr><tr><td><code>ClausiusInput.entropyPerArea</code></td><td><code>S / A</code> of a cut</td></tr><tr><td><code>Rindler.unruhTemperature a</code></td><td><code>a / 2π</code></td></tr><tr><td><code>LightSheet.Clausius</code></td><td>the Clausius relation on a light sheet of area <code>A</code> and length <code>l₀</code></td></tr></table></div>
+
+  <h2>Results</h2>
+  <div class="formal"><table><tr><th>Statement</th><th>Name</th><th>Status</th></tr><tr><td><code>entropyPerArea = log 2 / a²</code>; with <code>a² = 4ℓ_P² log 2</code>, <code>= 1/(4ℓ_P²)</code>, every cut</td><td><code class="lean">ClausiusInput.entropyPerArea_eq</code>, <code class="lean">ClausiusInput.entropyPerArea_eta</code>, <code class="lean">ClausiusInput.eta_universal</code></td><td class="st lean">Lean</td></tr><tr><td><code>unruhTemperature a · (2π/a) = 1</code></td><td><code class="lean">Rindler.unruhTemperature_mul_period</code></td><td class="st lean">Lean</td></tr><tr><td><code>Clausius</code> with this <code>η</code> <code>↔ R_kk = 8πℓ_P² T_kk</code></td><td><code class="lean">LightSheet.eight_pi</code>, <code class="lean">CutEinstein.clausius_cut</code></td><td class="st lean">Lean</td></tr><tr><td>Clausius on every null <code>k</code> and Bianchi <code>⇒ Ric − ½R g + Λ g = 8πℓ_P² T</code></td><td><code class="lean">CutEinstein.einstein_cut</code></td><td class="st cond">conditional</td></tr><tr><td>instances on <code>R³</code>, <code>T³</code>, the fibred box</td><td><code class="lean">CutEinstein.clausius_openCube</code>, <code class="lean">CutEinstein.clausius_torus</code>, <code class="lean">CutEinstein.clausius_fiber</code></td><td class="st lean">Lean</td></tr></table></div>
+
+  <h2>Figure</h2>
+  <div class="bar" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px">
+    <button type="button" class="act" id="topoT3" aria-pressed="true">T³: two walls</button>
+    <button type="button" class="act" id="topoR3" aria-pressed="false">R³: one wall</button>
+  </div>
+  <div class="sliders" style="display:grid;grid-template-columns:repeat(3,minmax(150px,1fr));gap:8px 18px">
+    <label class="sl">d<sub>y</sub><input type="range" id="ey" min="2" max="16" value="4"><b id="vey">4</b></label>
+    <label class="sl">d<sub>z</sub><input type="range" id="ez" min="2" max="16" value="5"><b id="vez">5</b></label>
+    <label class="sl">a² / ℓ_P²<input type="range" id="ea" min="0.5" max="8" step="0.01" value="2.77"><b id="vea">2.77</b></label>
+  </div>
+  <div class="grid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px">
+    <div class="card"><h3>The cut and its steps</h3><canvas id="ecut" style="width:100%;aspect-ratio:4/3;display:block" aria-label="The walls of the cut, one square per step"></canvas></div>
+    <div class="card"><h3>The coupling 2π/η against the area per step</h3><canvas id="ecoup" style="width:100%;aspect-ratio:4/3;display:block" aria-label="2π/η against a²/ℓ_P², with 8π marked"></canvas></div>
+  </div>
+  <div class="readout" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px" aria-live="polite">
+    <div class="stat"><div class="k">steps n</div><div class="v" id="en">–</div></div>
+    <div class="stat"><div class="k">S = n log 2</div><div class="v" id="eS">–</div></div>
+    <div class="stat"><div class="k">η = S / A, in 1/ℓ_P²</div><div class="v" id="eeta">–</div></div>
+    <div class="stat"><div class="k">2π/η, in ℓ_P²</div><div class="v" id="ek">–</div></div>
+  </div>
+
+  <p class="note">The steps and <code>S</code> are the Lean counts; the curve is <code>2π/η</code> as a function of <code>a²/ℓ_P²</code>.</p>
+  <p class="pager"><a href="07-dirac.html">← B7</a><a href="./">Theorem atlas</a><a href="09-white-ball.html">B9 →</a></p>
+  <footer>NRS Noncommercial License 1.0.0 · Lean: <a href="https://github.com/naype888-cloud/nrs3-tritoro">nrs3-tritoro</a> and the repositories listed in the <a href="./">atlas</a></footer>
+</main>
+<script src="../shared/js/einstein-cut.js?v=20261022b"></script>
+</body>
+</html>
