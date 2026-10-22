@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Position and transport on a closed axis — every torus has its star — BACQM-NRS³</title>
 <meta name="description" content="Why can&#x27;t position and transport both be sharp on a closed axis?">
+<link rel="icon" href="../media/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BACQM-NRS³">
+<meta property="og:title" content="Position and transport on a closed axis — every torus has its star — BACQM-NRS³">
+<meta property="og:description" content="Why can&#x27;t position and transport both be sharp on a closed axis?">
+<meta property="og:url" content="https://naype888-cloud.github.io/BACQM-NRS3/didactic/uncertainty.html">
+<meta property="og:image" content="https://naype888-cloud.github.io/BACQM-NRS3/media/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script src="../shared/js/theme.js?v=20261022c"></script>
 
 <style>
   :root {
@@ -103,11 +112,12 @@
   .card.full .minis canvas { height: auto; aspect-ratio: 1 / 1; }
 </style>
 <link rel="stylesheet" href="../shared/css/didactic-page.css?v=20261022b">
+<link rel="stylesheet" href="../shared/css/site.css?v=20261022c">
 </head>
 <body>
 <main>
   <nav class="navbar" aria-label="Site">
-    <a class="brand" href="./">BACQM-NRS³ · The path</a>
+    <a class="brand" href="./">BACQM-NRS³<span class="sect"> · The path</span></a>
     <a class="pill" href="../scientific/01-uncertainty.html">Formal version ↗</a>
     <button class="pill" id="theme" type="button" aria-label="Toggle dark mode">Theme</button>
   </nav>
@@ -196,7 +206,7 @@
     <ul><li><span class="tag lean">Lean</span> For every state on the torus, <code>det Σ ≥ |det Ω|</code>.</li><li><span class="tag lean">Lean</span> With the three axes in their band the inequality is strict, for every unit state, entangled or not.</li><li><span class="tag lean">Lean</span> At the maximal current state with three positions per axis, <code>det Σ = (5/4)³ |det Ω| = 125/64 |det Ω|</code>; the ladder open cube 1, box 5/4, T³ 125/64, T⁴ 625/256.</li><li><span class="tag browser">Browser</span> With four or more positions per axis the numbers on this page are numerical, computed from the same matrices.</li></ul>
     <details><summary>Theorem trail</summary><div class="trail"><table><tr><th>Statement</th><th>Name</th></tr><tr><td>Robertson 1934 on the torus, every state</td><td><code class="lean">Torus.robertson_det_torus</code></td></tr><tr><td>strict with every axis in its band</td><td><code class="lean">TorusStrict.robertson_det_torus_lt</code></td></tr><tr><td>on every axis, tension above 1 forces a positive defect</td><td><code class="lean">Torus.gramDefect_pos</code></td></tr><tr><td><code>(5/4)^k</code> at the maximal current state; <code>125/64</code>; the ladder</td><td><code class="lean">Torus.det_covMatrix_maxState</code>, <code class="lean">Torus.three_torus</code>, <code class="lean">Torus.ladder</code></td></tr><tr><td>different axes commute</td><td><code class="lean">TorusCommute.torusPairs_comm</code></td></tr></table></div></details>
   </section>
-  <p class="pager"><a href="./">← index</a><a href="./">The path</a><a href="light-dark.html">Stop 2 →</a></p>
+  <p class="pager"><span></span><a href="./">The path</a><a href="light-dark.html">Stop 2 →</a></p>
   <footer>NRS Noncommercial License 1.0.0 · Lean: <a href="https://github.com/naype888-cloud/nrs3-tritoro">nrs3-tritoro</a></footer>
 </main>
 <script src="../shared/js/t3-draw.js?v=20261022b"></script>
