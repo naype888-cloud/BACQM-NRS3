@@ -26,49 +26,49 @@
       <h2>Uncertainty relation / covariance determinant</h2>
       <div class="fact">For every unit state, <code>det Σ ≥ |det Ω|</code>; strict when the three axes are in band; <code>det Σ = (125/64)|det Ω|</code> at the maximal current state.</div>
       <div class="go"><code class="lean">TorusStrict.robertson_det_torus_lt</code><code class="lean">Torus.det_covMatrix_maxState</code>
-        <a href="https://naype888-cloud.github.io/nava-robertson-schrodinger/">Page →</a><span class="chip lean">Lean</span></div></li>
+        <a href="01-uncertainty.html">Page →</a><span class="chip lean">Lean</span></div></li>
 
     <li class="stop"><span class="n">2</span>
       <h2>Light share / dark share</h2>
       <div class="fact"><code>lightShare + darkShare = 1</code> on every axis; <code>darkShare &gt; 0</code> in band; <code>4/5</code> and <code>1/5</code> at the maximal current state.</div>
       <div class="go"><code class="lean">TorusDark.lightShare_add_darkShare</code><code class="lean">TorusDark.lightShare_maxState</code>
-        <a href="https://naype888-cloud.github.io/nrs3-dark/t3.html">Page →</a><span class="chip lean">Lean</span></div></li>
+        <a href="02-light-dark.html">Page →</a><span class="chip lean">Lean</span></div></li>
 
     <li class="stop"><span class="n">3</span>
       <h2>Boundary entropy / area law</h2>
       <div class="fact">The cut <code>{x ≤ c}</code> has <code>2·dy·dz</code> crossing steps; <code>S = 2·dy·dz·log 2</code>, independent of <code>dx</code> and <code>c</code>; <code>Hₛ d ≤ S</code>.</div>
       <div class="go"><code class="lean">TorusArea.cutEntropy_eq</code><code class="lean">TorusBekenstein.bekenstein_bound</code>
-        <a href="https://naype888-cloud.github.io/nrs3-tritoro/holography.html">Page →</a><span class="chip lean">Lean</span></div></li>
+        <a href="03-boundary-entropy.html">Page →</a><span class="chip lean">Lean</span></div></li>
 
     <li class="stop"><span class="n">4</span>
       <h2>Saturation / uniform field</h2>
       <div class="fact"><code>Hₛ d = S</code> iff <code>d</code> is uniform; then each step is open with probability <code>1/2</code> and the mean field is half the open field.</div>
       <div class="go"><code class="lean">TorusSaturation.saturated_iff_uniform</code><code class="lean">TorusDarkFoam.meanField_uniform</code>
-        <a href="https://naype888-cloud.github.io/nrs3-tritoro/bekenstein.html">Page →</a><span class="chip lean">Lean</span></div></li>
+        <a href="04-saturation.html">Page →</a><span class="chip lean">Lean</span></div></li>
 
     <li class="stop"><span class="n">5</span>
       <h2>Bakry–Émery curvature / Ricci lower bound</h2>
       <div class="fact">The path is <code>CD(0, 2)</code>; <code>T³</code> with sides <code>≥ 5</code> has no positive curvature bound; the 16-cell has <code>K = 4</code>.</div>
       <div class="go"><code class="lean">TorusBochner.not_curvature_pos</code><code class="lean">BochnerCurvature.cell16_curvature</code>
-        <a href="https://naype888-cloud.github.io/nrs3-tritoro/foam.html">Page →</a><span class="chip lean">Lean</span></div></li>
+        <a href="05-curvature.html">Page →</a><span class="chip lean">Lean</span></div></li>
 
     <li class="stop"><span class="n">6</span>
       <h2>Lorentz cone / admissible cone</h2>
       <div class="fact">The axis vector of every state lies in the closed future cone; it is timelike in band.</div>
       <div class="go"><code class="lean">TorusCone.axisVector_mem_futureCone</code><code class="lean">TorusCone.timelike_of_band</code>
-        <a href="https://naype888-cloud.github.io/nrs3-uncertainty-cone/lorentz-t3.html">Page →</a><span class="chip lean">Lean</span></div></li>
+        <a href="06-lorentz-cone.html">Page →</a><span class="chip lean">Lean</span></div></li>
 
     <li class="stop"><span class="n">7</span>
       <h2>Dirac operator / doubler modes</h2>
       <div class="fact">For the staggered operator <code>D_m² = T_x² + T_y² + T_z² + m²</code>; on even sizes the eight waves <code>(±i)ˣ(±i)ʸ(±i)ᶻ</code> are zero modes of <code>D₀</code>.</div>
       <div class="go"><code class="lean">TorusDirac3.dirac3_sq</code><code class="lean">TorusDirac3.dirac3_wave</code>
-        <a href="https://naype888-cloud.github.io/nava-robertson-schrodinger/hopping.html">Page →</a><span class="chip lean">Lean</span></div></li>
+        <a href="07-dirac.html">Page →</a><span class="chip lean">Lean</span></div></li>
 
     <li class="stop"><span class="n">8</span>
       <h2>Einstein / Unruh flow</h2>
       <div class="fact">With <code>η = 1/(4ℓ_P²)</code> on every cut, the Clausius relation on each light sheet gives <code>R_kk = 8πℓ_P² T_kk</code>; with the Bianchi identity, <code>Ric − ½R g + Λ g = 8πℓ_P² T</code>.</div>
       <div class="go"><code class="lean">CutEinstein.clausius_torus</code><code class="lean">CutEinstein.einstein_cut</code>
-        <a href="https://github.com/naype888-cloud/nrs3-tritoro/blob/7ead7cc/NRS3Tritoro/CutEinstein.lean">Source →</a><span class="chip cond">Lean · conditional</span></div></li>
+        <a href="08-einstein-unruh.html">Page →</a><span class="chip cond">Lean · conditional</span></div></li>
 
     <li class="stop"><span class="n">9</span>
       <h2>Boundary light below capacity / layered boundaries</h2>
