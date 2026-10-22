@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B4 · Saturation / uniform field — BACQM-NRS³</title>
+<meta name="description" content="Saturation / uniform field on the three-torus: definitions, results and Lean declarations.">
+<script src="../shared/js/cone-core.js?v=20261022b"></script>
+<style>
+  :root { --bg:#fcfcfb; --panel:#fff; --ink:#0b0b0b; --ink2:#52514e; --muted:#8a8985; --grid:#e4e3df; --blue:#2a78d6; --orange:#eb6834; --red:#c0392b; --dark:#23222a; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#111110; --panel:#191918; --ink:#f2f1ee; --ink2:#c4c3bf; --grid:#2c2b29; --blue:#5b9be6; --orange:#f08a5d; --red:#e07a6c; --dark:#000; } }
+  :root[data-theme="dark"] { --bg:#111110; --panel:#191918; --ink:#f2f1ee; --ink2:#c4c3bf; --grid:#2c2b29; --blue:#5b9be6; --orange:#f08a5d; --red:#e07a6c; --dark:#000; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif; }
+  main { max-width:1080px; margin:0 auto; padding:24px 16px 40px; }
+  h1 { font-size:1.45rem; margin:0 0 4px; font-weight:650; } h2 { font-size:1.1rem; margin:26px 0 8px; font-weight:620; }
+  .lead,.note { color:var(--ink2); max-width:860px; } .note { font-size:.9rem; }
+  .theme,button { font:inherit; font-size:.9rem; padding:6px 12px; border-radius:999px; border:1px solid var(--grid); background:var(--panel); color:var(--ink); cursor:pointer; }
+  .theme { float:right; font-size:.8rem; }
+  .card { background:var(--panel); border:1px solid var(--grid); border-radius:10px; padding:12px; }
+  .controls { display:grid; grid-template-columns:auto 1fr 1fr 1fr; gap:10px 18px; align-items:center; margin-bottom:10px; }
+  @media (max-width:700px) { .controls { grid-template-columns:1fr !important; } }
+  .sl { display:flex; gap:10px; align-items:center; font-variant-numeric:tabular-nums; } .sl input { flex:1; min-width:0; accent-color:var(--blue); } .sl b { min-width:2.5em; text-align:right; }
+  canvas { width:100%; display:block; aspect-ratio:16/10; touch-action:none; }
+  .readout { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:10px; } @media (max-width:560px) { .readout { grid-template-columns:repeat(2,1fr); } }
+  .stat { background:var(--panel); border:1px solid var(--grid); border-radius:8px; padding:8px 10px; } .stat .k { font-size:.78rem; color:var(--muted); } .stat .v { font-size:1.05rem; font-variant-numeric:tabular-nums; }
+  .tw { overflow-x:auto; } table { border-collapse:collapse; font-size:.9rem; min-width:640px; } th,td { border:1px solid var(--grid); padding:6px 10px; text-align:left; vertical-align:top; } th { color:var(--ink2); }
+  code { font-size:.88em; } a { color:var(--blue); } footer { color:var(--muted); font-size:.85rem; margin-top:28px; }
+  .leg span { margin-right:14px; font-size:.85rem; color:var(--ink2); } .dot { display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:4px; vertical-align:-1px; }
+  .meter { height:16px; border-radius:999px; background:var(--grid); overflow:hidden; margin-top:10px; } .meter i { display:block; height:100%; background:var(--orange); width:0; transition:width .2s; }
+  .full { font-weight:620; color:var(--orange); }
+</style>
+<link rel="stylesheet" href="../shared/css/scientific-page.css?v=20261022b">
+</head>
+<body data-tone="formal">
+<main>
+  <nav class="navbar" aria-label="Site">
+    <a class="brand" href="./">BACQM-NRS³ · Theorem atlas</a>
+    <a class="pill" href="../didactic/bekenstein.html">Guided version ↗</a>
+    <button class="pill" id="theme" type="button" aria-label="Toggle dark mode">Theme</button>
+  </nav>
+  <h1>B4 · Saturation / uniform field</h1>
+  <p class="lead">For a finite set <code>X</code> of boundary steps, <code>Config X = 𝒫(X)</code>. For a probability distribution <code>d</code> on <code>Config X</code>, <code>Hₛ d ≤ |X| log 2</code>, with equality exactly at the uniform distribution.</p>
+
+  <h2>Definitions</h2>
+  <div class="formal"><table><tr><th>Name</th><th>Content</th></tr><tr><td><code>BoundaryBits.Config X</code></td><td><code>𝒫(X)</code></td></tr><tr><td><code>BoundaryBits.openProb d s</code></td><td>probability that step <code>s</code> is open under <code>d</code></td></tr><tr><td><code>TorusSaturation.HSaturationDark</code></td><td>declared: a map <code>darkShare ≤ 1</code> equal to <code>1</code> at saturation</td></tr></table></div>
+
+  <h2>Results</h2>
+  <div class="formal"><table><tr><th>Statement</th><th>Name</th><th>Status</th></tr><tr><td><code>Hₛ d ≤ |X| log 2</code></td><td><code class="lean">BoundaryBits.entropy_le</code></td><td class="st lean">Lean</td></tr><tr><td><code>Hₛ d = |X| log 2 ↔ d = uniform</code></td><td><code class="lean">BoundaryBits.saturated_iff_uniform</code>, <code class="lean">TorusSaturation.saturated_iff_uniform</code></td><td class="st lean">Lean</td></tr><tr><td><code>H ≤ A/(4ℓ_P²)</code>, attained</td><td><code class="lean">TorusBekenstein.bekenstein_bound</code>, <code class="lean">TorusBekenstein.exists_saturating</code></td><td class="st lean">Lean</td></tr><tr><td><code>S ↦ F(S)</code> is injective; <code>2^(2·dy·dz)</code> configurations</td><td><code class="lean">TorusBoundaryField.configField_injective</code>, <code class="lean">TorusBoundaryField.card_fieldConfigs</code></td><td class="st lean">Lean</td></tr><tr><td>under <code>HSaturationDark</code>, saturation gives <code>lightShare = 0</code></td><td><code class="lean">TorusSaturation.HSaturationDark</code>, <code class="lean">TorusSaturation.hSaturationDark_satisfiable</code></td><td class="st bridge">declared hypothesis</td></tr></table></div>
+
+  <h2>Figure</h2>
+  <h3>The walls of a region</h3>
+  <div class="card">
+    <div class="controls">
+      <button type="button" id="shuffle" aria-pressed="false">✦ Shuffle bits (auto)</button>
+      <label class="sl">dy<input id="hy" type="range" min="2" max="12" value="4"><b id="vhy">4</b></label>
+      <label class="sl">dz<input id="hz" type="range" min="2" max="12" value="4"><b id="vhz">4</b></label>
+      <label class="sl">depth dx<input id="hx" type="range" min="3" max="16" value="6"><b id="vhx">6</b></label>
+      <span></span>
+      <label class="sl">plane c<input id="hc" type="range" min="0" max="4" value="2"><b id="vhc">2</b></label>
+      <span class="leg"><span><i class="dot" style="background:var(--orange)"></i>open (1)</span><span><i class="dot" style="border:1px solid var(--muted)"></i>closed (0)</span></span>
+      <span></span>
+    </div>
+    <canvas id="box" aria-label="The region of the torus and the bits on its two walls"></canvas>
+    <div class="readout" aria-live="polite">
+      <div class="stat"><div class="k">bits on the walls (2·dy·dz)</div><div class="v" id="r1">–</div></div>
+      <div class="stat"><div class="k">possible patterns</div><div class="v" id="r2">–</div></div>
+      <div class="stat"><div class="k">capacity S = bits × log 2</div><div class="v" id="r3">–</div></div>
+      <div class="stat"><div class="k">positions inside (does not count)</div><div class="v" id="r4">–</div></div>
+    </div>
+    <p class="note">With each square of area <code>4ℓ_P² log 2</code> (one bit of area, as on the open cube) the capacity is the Bekenstein–Hawking value
+      <code>A / 4ℓ_P²</code> of the picture "bits on the boundary": area, not volume.</p>
+  </div>
+
+  <h3>Fill it up</h3>
+  <div class="card">
+    <div class="controls" style="grid-template-columns:auto 1fr">
+      <button type="button" id="fill" aria-pressed="false">✦ Animate</button>
+      <label class="sl">chance that a bit is 1<input id="hp" type="range" min="0" max="100" value="12"><b id="vhp">0.12</b></label>
+    </div>
+    <canvas id="fillbox" aria-label="The region filling up"></canvas>
+    <div class="meter" aria-hidden="true"><i id="bar"></i></div>
+    <div class="readout" aria-live="polite">
+      <div class="stat"><div class="k">information held (bits)</div><div class="v" id="f1">–</div></div>
+      <div class="stat"><div class="k">capacity (bits)</div><div class="v" id="f2">–</div></div>
+      <div class="stat"><div class="k">how full</div><div class="v" id="f3">–</div></div>
+      <div class="stat"><div class="k">state</div><div class="v" id="f4">–</div></div>
+    </div>
+    <p class="note">The region turns dark only when it is full: that is Nava's postulate, declared in Lean as a bridge (<code>HSaturationDark</code>), not derived.
+      Below the top the postulate says nothing, so the page does not shade the region in between.</p>
+  </div>
+
+  <p class="note">The animation draws independent bits; the counts and the bound are the Lean values.</p>
+  <p class="pager"><a href="03-boundary-entropy.html">← B3</a><a href="./">Theorem atlas</a><a href="05-curvature.html">B5 →</a></p>
+  <footer>NRS Noncommercial License 1.0.0 · Lean: <a href="https://github.com/naype888-cloud/nrs3-tritoro">nrs3-tritoro</a> and the repositories listed in the <a href="./">atlas</a></footer>
+</main>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id), C = Cone, css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const rnd = C.rng((Math.random() * 1e9) | 0), L2 = Math.log(2);
+  const h2 = (p) => (p <= 0 || p >= 1) ? 0 : -(p * Math.log2(p) + (1 - p) * Math.log2(1 - p));
+  const patterns = (n) => n <= 50 ? (2n ** BigInt(n)).toLocaleString("en-US") : "2^" + n + " ≈ 10^" + (n * Math.log10(2)).toFixed(1);
+
+  // ---------- the box: x is depth (closed axis), y and z the walls ----------
+  function drawBox(canvas, view, s) {
+    const { g, w, h } = C.setup(canvas), P = C.projector(w, h, view, 0.62, 0), grid = css("--grid"), muted = css("--muted"), or = css("--orange"), ink = css("--ink2");
+    const X = (x) => x - 0.5, Y = (y) => y - 0.5, Z = (z) => z - 0.5, xp = (s.c + 1) / s.dx;
+    const corners = [[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0], [0, 0, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1]].map((q) => [X(q[0]), Y(q[1]), Z(q[2])]);
+    [[0, 1], [1, 2], [2, 3], [3, 0], [4, 5], [5, 6], [6, 7], [7, 4], [0, 4], [1, 5], [2, 6], [3, 7]].forEach(([i, j]) => C.line(g, P, corners[i], corners[j], grid, 1.2));
+    if (s.dark) C.poly(g, P, [[X(0), Y(0), Z(0)], [X(xp), Y(0), Z(0)], [X(xp), Y(1), Z(0)], [X(0), Y(1), Z(0)], [X(0), Y(0), Z(0)]], grid, 1, null, css("--dark"));
+    for (let i = 1; i < s.dx; i++) C.line(g, P, [X(i / s.dx), Y(0), Z(0)], [X(i / s.dx), Y(1), Z(0)], C.mix(muted, 0.35));
+    const wall = (x, off, name) => {
+      for (let j = 0; j < s.dy; j++) for (let k = 0; k < s.dz; k++) {
+        const on = s.bits[off + j * s.dz + k], a = j / s.dy, b = (j + 1) / s.dy, u = k / s.dz, v = (k + 1) / s.dz;
+        const q = [[X(x), Y(a), Z(u)], [X(x), Y(b), Z(u)], [X(x), Y(b), Z(v)], [X(x), Y(a), Z(v)], [X(x), Y(a), Z(u)]];
+        C.poly(g, P, q, C.mix(muted, 0.6), 1, null, s.dark ? css("--dark") : (on ? C.mix(or, 0.85) : C.mix(css("--panel"), 0.6)));
+        if (s.dy <= 6 && s.dz <= 6) C.label(g, P, [X(x), Y((a + b) / 2), Z((u + v) / 2)], on ? "1" : "0", s.dark ? muted : ink, -3, 4, "11px system-ui");
+      }
+      C.label(g, P, [X(x), Y(0), Z(1.08)], name, muted, -12, 0);
+    };
+    wall(0, 0, "seam"); wall(xp, s.dy * s.dz, "plane");
+    C.label(g, P, [X(0.5), Y(1.1), Z(0)], "depth dx = " + s.dx, muted);
+    if (s.dark) C.label(g, P, [X(xp / 2), Y(0.5), Z(1.2)], "full → dark", or, -30, 0, "600 13px system-ui");
+  }
+
+  // ---------- section 1 ----------
+  const v1 = { yaw: -0.45, pitch: 0.4, user: false };
+  let s1 = null, auto1 = false;
+  function fresh1() {
+    const dy = +$("hy").value, dz = +$("hz").value, dx = +$("hx").value;
+    $("hc").max = dx - 2; if (+$("hc").value > dx - 2) $("hc").value = dx - 2;
+    const c = +$("hc").value, n = 2 * dy * dz;
+    if (!s1 || s1.bits.length !== n) s1 = { bits: Array.from({ length: n }, () => rnd() < 0.5 ? 1 : 0) };
+    Object.assign(s1, { dy, dz, dx, c, dark: false });
+    ["hy", "hz", "hx", "hc"].forEach((i) => $("v" + i).textContent = $(i).value);
+    $("r1").textContent = n; $("r2").textContent = patterns(n); $("r3").textContent = (n * L2).toFixed(3); $("r4").textContent = (c + 1) * dy * dz;
+  }
+  const draw1 = () => drawBox($("box"), v1, s1);
+  ["hy", "hz", "hx", "hc"].forEach((i) => $(i).addEventListener("input", () => { fresh1(); draw1(); }));
+  function tick1() { if (!auto1) return; s1.bits = s1.bits.map(() => rnd() < 0.5 ? 1 : 0); draw1(); setTimeout(tick1, 450); }
+  $("shuffle").addEventListener("click", () => { auto1 = !auto1; $("shuffle").setAttribute("aria-pressed", auto1);
+    $("shuffle").textContent = auto1 ? "❚❚ Stop" : "✦ Shuffle bits (auto)"; tick1(); });
+  C.view3d($("box"), v1, draw1);
+
+  // ---------- section 2 ----------
+  const v2 = { yaw: -0.45, pitch: 0.4, user: false };
+  const s2 = { dy: 6, dz: 6, dx: 6, c: 2, bits: [], dark: false };
+  let auto2 = false;
+  function sample2() { const p = +$("hp").value / 100; s2.bits = Array.from({ length: 2 * s2.dy * s2.dz }, () => rnd() < p ? 1 : 0); }
+  function read2() {
+    const p = +$("hp").value / 100, n = 2 * s2.dy * s2.dz, H = n * h2(p), full = $("hp").value === "50";
+    s2.dark = full; $("vhp").textContent = p.toFixed(2);
+    $("f1").textContent = H.toFixed(2); $("f2").textContent = n; $("f3").textContent = (100 * H / n).toFixed(1) + " %";
+    $("f4").innerHTML = full ? '<span class="full">full → dark</span>' : "not full"; $("bar").style.width = (100 * H / n) + "%";
+  }
+  const draw2 = () => drawBox($("fillbox"), v2, s2);
+  $("hp").addEventListener("input", () => { sample2(); read2(); draw2(); });
+  function tick2() { if (!auto2) return; sample2(); draw2(); setTimeout(tick2, 350); }
+  $("fill").addEventListener("click", () => { auto2 = !auto2; $("fill").setAttribute("aria-pressed", auto2);
+    $("fill").textContent = auto2 ? "❚❚ Stop" : "✦ Animate"; tick2(); });
+  C.view3d($("fillbox"), v2, draw2);
+
+  $("theme").addEventListener("click", () => { const r = document.documentElement, dk = matchMedia("(prefers-color-scheme: dark)").matches;
+    r.dataset.theme = (r.dataset.theme || (dk ? "dark" : "light")) === "dark" ? "light" : "dark"; setTimeout(() => { draw1(); draw2(); }, 0); });
+  fresh1(); sample2(); read2();
+  (function spin() { if (!v1.user) v1.yaw += 0.002; if (!v2.user) v2.yaw += 0.002; draw1(); draw2(); requestAnimationFrame(spin); })();
+})();
+</script>
+</body>
+</html>
