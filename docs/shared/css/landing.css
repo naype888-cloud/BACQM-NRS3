@@ -73,6 +73,7 @@ html:not(.js) .progress { display: none; }
 
 .spaces { margin: clamp(22px, 5vh, 52px) 0 0; font: 12px/1.6 var(--mono); letter-spacing: .12em;
   text-transform: uppercase; color: #8a8985; }
+.spaces .v { text-transform: none; }   /* the fibre w is a variable */
 
 /* entrance */
 .js .kicker, .js h1, .js .sub, .js .rule, .js .ticker, .js .progress, .js .spaces, .js .doors {
