@@ -107,7 +107,7 @@
   .card.full .minis canvas { height: auto; aspect-ratio: 1 / 1; }
 </style>
 <link rel="stylesheet" href="../shared/css/scientific-page.css?v=20261022b">
-<link rel="stylesheet" href="../shared/css/site.css?v=20261022c">
+<link rel="stylesheet" href="../shared/css/site.css?v=20261022d">
 </head>
 <body data-tone="formal">
 <main>
@@ -117,13 +117,20 @@
     <button class="pill" id="theme" type="button" aria-label="Toggle dark mode">Theme</button>
   </nav>
   <h1>B7 · Dirac operator / doubler modes</h1>
-  <p class="lead">On <code>T³ = ZMod a × ZMod b × ZMod c</code> with even sizes put the closed transports <code>T_x, T_y, T_z</code> and the Kogut–Susskind signs <code>A_y = (−1)^x T_y</code>, <code>A_z = (−1)^(x+y) T_z</code>, <code>ε = (−1)^(x+y+z)</code>. The massive operator is <code>D_m = T_x + A_y + A_z + m ε</code>.</p>
+  <p class="lead">On <code>T³ = ZMod a × ZMod b × ZMod c</code> with even sizes put the closed transports <code>T_x, T_y, T_z</code> and the Kogut–Susskind signs <code>A_y = (−1)^x T_y</code>, <code>A_z = (−1)^(x+y) T_z</code>, <code>ε = (−1)^(x+y+z)</code>. The massive operator is <code>D_m = T_x + A_y + A_z + m ε</code>. On <code>T³ × w</code> the fibre of three positions takes the place of the mass, <code>D₄ = T_x + A_y + A_z + M_w</code> with <code>M_w = ε T°_w</code>: its modes give the mass <code>½</code>, a gap <code>|E| ≥ ½</code> and, because the axes are closed, a speed limit <code>1/φ</code>.</p>
 
   <h2>Definitions</h2>
-  <div class="formal"><table><tr><th>Name</th><th>Content</th></tr><tr><td><code>TorusDirac3.dirac3 m</code></td><td><code>Tx + Ay + Az + m • eps</code></td></tr><tr><td><code>TorusDirac3.wave3 u v w</code></td><td>the wave <code>u^x v^y w^z</code>; for <code>u, v, w ∈ {i, −i}</code> (4 divides every size) the corners <code>(±π/2)³</code></td></tr><tr><td><code>OpenDirac.stagger</code></td><td>the sign <code>σ</code> with <code>σ T_d = −T_d σ</code> on every open axis</td></tr></table></div>
+  <div class="formal"><table><tr><th>Name</th><th>Content</th></tr><tr><td><code>TorusDirac3.dirac3 m</code></td><td><code>Tx + Ay + Az + m • eps</code></td></tr><tr><td><code>TorusDirac3.wave3 u v w</code></td><td>the wave <code>u^x v^y w^z</code>; for <code>u, v, w ∈ {i, −i}</code> (4 divides every size) the corners <code>(±π/2)³</code></td></tr><tr><td><code>OpenDirac.stagger</code></td><td>the sign <code>σ</code> with <code>σ T_d = −T_d σ</code> on every open axis</td></tr><tr><td><code>TorusFiberDirac.dirac</code></td><td><code>Tx + Ay + Az + Mw</code> on <code>ZMod a × ZMod b × ZMod c × ZMod 3</code>; <code>Mw</code> is the hop around the fibre with the sign <code>(−1)^(x+y+z)</code></td></tr><tr><td>speed limit</td><td><code>r(m) = √(1 + m²) − |m|</code>, the root of <code>r² + 2|m| r = 1</code></td></tr></table></div>
 
   <h2>Results</h2>
   <div class="formal"><table><tr><th>Statement</th><th>Name</th><th>Status</th></tr><tr><td><code>T_x, A_y, A_z, ε</code> pairwise anticommute</td><td><code class="lean">TorusDirac3.Tx_Ay</code>, <code class="lean">TorusDirac3.Tx_Az</code>, <code class="lean">TorusDirac3.Ay_Az</code>, <code class="lean">TorusDirac3.eps_Tx</code></td><td class="st lean">Lean</td></tr><tr><td><code>D_m² = T_x² + T_y² + T_z² + m²</code></td><td><code class="lean">TorusDirac3.dirac3_sq</code></td><td class="st lean">Lean</td></tr><tr><td><code>D_m e_{uvw} = m e_{−u,−v,−w}</code>; for <code>m = 0</code> the eight doublers are zero modes</td><td><code class="lean">TorusDirac3.dirac3_wave</code></td><td class="st lean">Lean</td></tr><tr><td>the open cube: <code>σT_d = −T_dσ</code>, <code>D_m²</code> for every size</td><td><code class="lean">OpenDirac.stagger_mul_Td</code>, <code class="lean">OpenDirac.dirac_sq</code></td><td class="st lean">Lean</td></tr><tr><td>eigenvalues of <code>T°</code> on a ring: <code>cos(2πm/d)</code></td><td><code class="lean">TorusSpectrum.eq_cos_of_eigenvector</code></td><td class="st lean">Lean</td></tr></table></div>
+
+  <h3>Mass gap and speed limit</h3>
+  <div class="formal"><table><tr><th>Statement</th><th>Name</th><th>Status</th></tr><tr><td>any Hilbert space: <code>D = A + B</code>, <code>A</code>, <code>B</code> symmetric and anticommuting, <code>‖Bχ‖ ≥ |m| ‖χ‖</code> ⇒ every eigenvalue has <code>|E| ≥ |m|</code></td><td><code class="lean">DiracSpeed.norm_sq_add_of_anticomm</code>, <code class="lean">DiracSpeed.abs_energy_ge</code></td><td class="st lean">Lean</td></tr><tr><td>… and every unit eigenvector has <code>|⟨V⟩| ≤ r = √(1 + m²) − |m|</code>, with no condition on <code>A²</code></td><td><code class="lean">DiracSpeed.abs_velocity_le</code></td><td class="st lean">Lean</td></tr><tr><td><code>r = 1/φ</code> at <code>|m| = ½</code>, <code>√2 − 1</code> at <code>|m| = 1</code>; <code>m = sinh θ</code> ⇒ <code>r = e^{−θ}</code>, and <code>sinh(log φ) = ½</code></td><td><code class="lean">DiracSpeed.speedLimit_half</code>, <code class="lean">DiracSpeed.speedLimit_one</code>, <code class="lean">DiracSpeed.speedLimit_sinh</code>, <code class="lean">DiracSpeed.sinh_log_goldenRatio</code></td><td class="st lean">Lean</td></tr><tr><td>one closed axis with mass <code>m</code>: <code>|⟨K⟩| ≤ √(1 + m²) − |m| &lt; 1</code></td><td><code class="lean">TorusUniverse.abs_velocity_le_of_dirac</code></td><td class="st lean">Lean</td></tr><tr><td>the limit is reached only at <code>cos²k = |m| r</code> (<code>= 1/(2φ)</code> at <code>m = ½</code>); every speed <code>0 ≤ t ≤ r</code> has its state</td><td><code class="lean">DiracQubit.eq_of_velocity_eq_speedLimit</code>, <code class="lean">DiracQubit.velocity_speedState_param</code></td><td class="st lean">Lean</td></tr><tr><td><code>T³ × w</code>: <code>D₄² = T_x² + T_y² + T_z² + T°_w²</code> (even sizes)</td><td><code class="lean">TorusFiberDirac.dirac_sq</code></td><td class="st lean">Lean</td></tr><tr><td>the fibre is a mass: <code>D(ψ ⊗ v) = (D_λ ψ) ⊗ v</code> when <code>T°_w v = λ v</code>; <code>λ = 1</code> on the uniform mode, <code>−½</code> on the two rotating ones</td><td><code class="lean">TorusFiberDirac.dirac_tensor</code>, <code class="lean">FiberDirac.Tc_uniform</code>, <code class="lean">FiberDiracAxis.transport_rotating</code></td><td class="st lean">Lean</td></tr><tr><td><b>mass gap</b>: every eigenvalue has <code>|E| ≥ ½</code>, on the fibred box and on <code>T³ × w</code>, for every state</td><td><code class="lean">FiberDirac.abs_energy_ge</code>, <code class="lean">TorusFiberDirac.abs_energy_ge</code></td><td class="st lean">Lean</td></tr><tr><td>the doublers reach the gap: in the rotating mode a pair of opposite doublers has <code>E = −½</code></td><td><code class="lean">TorusFiberDirac.dirac_doublers</code></td><td class="st lean">Lean</td></tr><tr><td><b>speed limit</b> on <code>T³ × w</code>: every unit eigenvector moves at most at <code>1/φ</code> along <code>x</code>, <code>y</code> and <code>z</code></td><td><code class="lean">TorusFiberDirac.abs_velocity_le_inv_goldenRatio_axes</code></td><td class="st lean">Lean</td></tr><tr><td>the <code>1/φ</code> of minimum uncertainty on <code>H₄</code> is this limit: <code>r = ρ⁻¹ ↔ ρ − ρ⁻¹ = 2m</code>, and <code>ρ₄ − ρ₄⁻¹ = 2·½</code></td><td><code class="lean">DiracSpeed.speedLimit_eq_inv_iff</code>, <code class="lean">MinUncertaintyFiber.isGreatest_minUncertaintyTension</code></td><td class="st lean">Lean</td></tr><tr><td>the index count of the doublers (Nielsen–Ninomiya); the limit on <code>T³</code> with a mass on all three axes; <code>cos²k = 1/(2φ)</code> is the momentum of no finite ring</td><td>—</td><td class="st open">open</td></tr></table></div>
+
+  <h3>Four topologies</h3>
+  <div class="formal topo"><table><tr><th></th><th>R³</th><th>T³</th><th>fibred box</th><th>T³ × w</th></tr><tr><td><code>D²</code></td><td data-h="R³"><code class="lean">OpenDirac.dirac_sq</code></td><td data-h="T³"><code class="lean">TorusDirac3.dirac3_sq</code></td><td data-h="fibred box"><code class="lean">FiberDirac.dirac_sq</code></td><td data-h="T³ × w"><code class="lean">TorusFiberDirac.dirac_sq</code></td></tr><tr><td>mass</td><td data-h="R³">a parameter <code>m</code></td><td data-h="T³">a parameter <code>m</code></td><td data-h="fibred box">the fibre: <code>1</code> and <code>½</code></td><td data-h="T³ × w">the fibre: <code>1</code> and <code>½</code></td></tr><tr><td>mass gap</td><td data-h="R³">—</td><td data-h="T³">—</td><td data-h="fibred box"><code>|E| ≥ ½</code> <code class="lean">FiberDirac.abs_energy_ge</code></td><td data-h="T³ × w"><code>|E| ≥ ½</code> <code class="lean">TorusFiberDirac.abs_energy_ge</code>; the doublers reach it</td></tr><tr><td>speed limit</td><td data-h="R³">none: on an open axis <code>K² + T² ≠ 1</code></td><td data-h="T³">one axis: <code>√(1 + m²) − |m|</code> <code class="lean">TorusUniverse.abs_velocity_le_of_dirac</code></td><td data-h="fibred box">none: the axes are open</td><td data-h="T³ × w"><code>1/φ</code> on <code>x</code>, <code>y</code>, <code>z</code> <code class="lean">TorusFiberDirac.abs_velocity_le_inv_goldenRatio_axes</code></td></tr><tr><td>links of a position</td><td data-h="R³">one axis at a time <code class="lean">SiteEventsTopologies.openCube_linkFlow_eq_zero</code></td><td data-h="T³">six <code class="lean">SiteEventsTopologies.rate_torus</code></td><td data-h="fibred box">box and fibre <code class="lean">SiteEventsTopologies.rate_box</code></td><td data-h="T³ × w">eight <code class="lean">TorusFiberDirac.rate_torusFiber</code></td></tr></table></div>
+  <p class="note">The fibre gives a mass on both fibred spaces; only where the axes are closed does the mass become a speed limit.</p>
 
   <h2>Figure</h2>
   <div class="bar">
@@ -169,7 +176,7 @@
       where the eight doublers <code>(±π/2)³</code> sit. The square root turns the zero plane of the hopping into the zero point
       of Dirac. Below, their sum: in the squares <code>(cos², cos², cos²)</code> the Dirac energy squared is the sum of the
       three axes, <code>D² = T<sub>x</sub>² + T<sub>y</sub>² + T<sub>z</sub>² + m²</code>. The fibre of 3 positions gives the mass
-      <code>½</code>.</p>
+      <code>½</code> (<code>TorusFiberDirac.dirac_tensor</code>): the origin opens into the gap <code>|E| ≥ ½</code>.</p>
     <div class="bar">
       <label class="sl" style="min-width:260px">mass m<input type="range" id="hmass" min="0" max="1" step="0.01" value="0"><b id="vhmass">0.00</b></label>
       <button class="act" type="button" id="hfiber" aria-pressed="false">+ fibre w (4D)</button>
@@ -190,8 +197,15 @@
       <code>Tx_Ay</code>, <code>Tx_Az</code>, <code>Ay_Az</code>, <code>eps_Tx</code>, <code>eps_Ay</code>, <code>eps_Az</code>, and
       <code>dirac3_wave</code> (the eight waves <code>(±i)<sup>x</sup>(±i)<sup>y</sup>(±i)<sup>z</sup></code> are zero modes of
       <code>D₀</code>, and the mass sends each to the opposite corner). The spectrum of each ring is the Lean
-      <code>TorusSpectrum.eq_cos_of_eigenvector</code>. The fibre and its mass are numerical.</p>
+      <code>TorusSpectrum.eq_cos_of_eigenvector</code>. The fibre as fourth axis is <code>TorusFiberDirac.dirac_sq</code>; its rotating modes give the mass <code>½</code> and the gap
+      (<code>TorusFiberDirac.dirac_doublers</code>, <code>TorusFiberDirac.abs_energy_ge</code>).</p>
   </div>
+
+  <div class="card bandcard" id="speedcard"><h3>The mass gap and the speed limit</h3>
+    <p class="sub">One closed axis at momentum <code>k</code>: the transport is <code>cos k</code>, the energy <code>E = ±√(cos²k + m²)</code> and the velocity of each
+      eigenstate is the slope of its band. No eigenvalue enters <code>|E| &lt; m</code>, and no slope exceeds <code>r = √(1 + m²) − m</code>; the orange points
+      reach it, at <code>cos²k = m r</code>. Move over a panel to follow one state. On <code>T³ × w</code> the same <code>1/φ</code> holds on each axis for every eigenvector.</p>
+    <div id="dspeed"></div></div>
 
   <div class="card bandcard"><h3>The hopping band of every ring</h3>
     <p class="sub">Each ring of <code>d</code> positions has hopping eigenvalues <code>−2t cos(2πm/d)</code>,
@@ -243,11 +257,12 @@
     <tbody id="rows"></tbody>
   </table></div>
 
-  <p class="note">The torus, the spectral star and the doubler panels are computed in the browser; the fibre mass is numerical.</p>
+  <p class="note">The torus, the spectral star and the doubler panels are computed in the browser; the fibre mass <code>½</code> is the Lean value; the speed panel draws the formulas of the table.</p>
   <p class="pager"><a href="06-lorentz-cone.html">← B6</a><a href="./">Theorem atlas</a><a href="08-einstein-unruh.html">B8 →</a></p>
   <footer>NRS Noncommercial License 1.0.0 · Lean: <a href="https://github.com/naype888-cloud/nrs3-tritoro">nrs3-tritoro</a> and the repositories listed in the <a href="./">atlas</a></footer>
 </main>
-<script src="../shared/js/hopping.js?v=20261022b"></script>
+<script src="../shared/js/hopping.js?v=20261022d"></script>
 <script src="../shared/js/hopping-doublers.js?v=20261022b"></script>
+<script src="../shared/js/dirac-speed.js?v=20261022d"></script>
 </body>
 </html>

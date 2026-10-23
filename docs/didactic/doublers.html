@@ -107,7 +107,7 @@
   .card.full .minis canvas { height: auto; aspect-ratio: 1 / 1; }
 </style>
 <link rel="stylesheet" href="../shared/css/didactic-page.css?v=20261022b">
-<link rel="stylesheet" href="../shared/css/site.css?v=20261022c">
+<link rel="stylesheet" href="../shared/css/site.css?v=20261022d">
 </head>
 <body>
 <main>
@@ -119,6 +119,9 @@
   <p class="stopno">Stop 7 of 9 · Why does the Dirac operator on T³ see eight corners?</p>
   <h1>The eight doublers — hopping, Dirac and their sum</h1>
   <p class="lead">The hopping <code>H = −2t T°</code> moves an excitation from site to site; its energy <code>−2t Σ cos</code> vanishes on a whole plane of momenta. With the Kogut–Susskind signs the three axes anticommute and the energy becomes a length, <code>±√(Σ cos² + m²)</code>: it vanishes at one point only, where the <b>eight doublers</b> sit, the corners <code>(±π/2)³</code>. The square is the sum of the three axes, <code>D² = T_x² + T_y² + T_z² + m²</code>.</p>
+  <p class="lead">Now close a fourth, small axis: a ring of three positions, the fibre <code>w</code>. Its turning modes act as a mass of <b>½</b>.
+    Two things follow: no energy is ever smaller than <b>½</b> (a mass gap), and, because the other axes are closed too,
+    no state of definite energy moves faster than <b>1/φ = 0.618…</b> of the light cone. Further down, slide the mass and watch both appear.</p>
   <div class="bar">
     <div class="chips" role="group" aria-label="Tori">
       <button class="chip" type="button" data-box="3,3,3">T³ = 3×3×3</button>
@@ -162,7 +165,7 @@
       where the eight doublers <code>(±π/2)³</code> sit. The square root turns the zero plane of the hopping into the zero point
       of Dirac. Below, their sum: in the squares <code>(cos², cos², cos²)</code> the Dirac energy squared is the sum of the
       three axes, <code>D² = T<sub>x</sub>² + T<sub>y</sub>² + T<sub>z</sub>² + m²</code>. The fibre of 3 positions gives the mass
-      <code>½</code>.</p>
+      <code>½</code>: the origin opens into the gap <code>|E| ≥ ½</code>.</p>
     <div class="bar">
       <label class="sl" style="min-width:260px">mass m<input type="range" id="hmass" min="0" max="1" step="0.01" value="0"><b id="vhmass">0.00</b></label>
       <button class="act" type="button" id="hfiber" aria-pressed="false">+ fibre w (4D)</button>
@@ -183,8 +186,16 @@
       <code>Tx_Ay</code>, <code>Tx_Az</code>, <code>Ay_Az</code>, <code>eps_Tx</code>, <code>eps_Ay</code>, <code>eps_Az</code>, and
       <code>dirac3_wave</code> (the eight waves <code>(±i)<sup>x</sup>(±i)<sup>y</sup>(±i)<sup>z</sup></code> are zero modes of
       <code>D₀</code>, and the mass sends each to the opposite corner). The spectrum of each ring is the Lean
-      <code>TorusSpectrum.eq_cos_of_eigenvector</code>. The fibre and its mass are numerical.</p>
+      <code>TorusSpectrum.eq_cos_of_eigenvector</code>. The fibre as fourth axis is <code>TorusFiberDirac.dirac_sq</code>; its rotating modes give the mass <code>½</code> and the gap
+      (<code>TorusFiberDirac.dirac_doublers</code>, <code>TorusFiberDirac.abs_energy_ge</code>).</p>
   </div>
+
+  <div class="card bandcard" id="speedcard"><h2>The mass gap and the speed limit</h2>
+    <p class="sub">Take one closed axis and a mass <code>m</code>. Each state has a momentum <code>k</code> and an energy on one of two bands,
+      <code>E = ±√(cos²k + m²)</code>. Its velocity is the <b>slope</b> of its band. With <code>m = 0</code> the bands touch (the doublers) and the slope reaches
+      the light cone. With a mass a gap opens, the bands round off, and no slope can exceed <code>r = √(1 + m²) − m</code>. The fibre gives
+      <code>m = ½</code>, and then <code>r = 1/φ</code>: the same number as the largest tension of a minimum-uncertainty state of four positions.</p>
+    <div id="dspeed"></div></div>
 
   <div class="card bandcard"><h2>The hopping band of every ring</h2>
     <p class="sub">Each ring of <code>d</code> positions has hopping eigenvalues <code>−2t cos(2πm/d)</code>,
@@ -237,13 +248,14 @@
   </table></div>
 
   <section class="exactcard"><h2>What is exact here</h2>
-    <ul><li><span class="tag lean">Lean</span> The four operators of the staggered Dirac operator anticommute.</li><li><span class="tag lean">Lean</span> <code>D_m² = T_x² + T_y² + T_z² + m²</code> on T³ with even sizes, and on the open cube for every size.</li><li><span class="tag lean">Lean</span> When 4 divides every size, the eight waves <code>(±i)ˣ(±i)ʸ(±i)ᶻ</code> are zero modes of <code>D₀</code>; the mass sends each to the opposite corner.</li><li><span class="tag lean">Lean</span> The spectrum of each ring is <code>cos(2πm/d)</code>.</li><li><span class="tag browser">Browser</span> The fibre and its mass are numerical on this page.</li></ul>
-    <details><summary>Theorem trail</summary><div class="trail"><table><tr><th>Statement</th><th>Name</th></tr><tr><td>anticommutation</td><td><code class="lean">TorusDirac3.Tx_Ay</code>, <code class="lean">TorusDirac3.Tx_Az</code>, <code class="lean">TorusDirac3.Ay_Az</code></td></tr><tr><td><code>D_m²</code> on T³ and on the open cube</td><td><code class="lean">TorusDirac3.dirac3_sq</code>, <code class="lean">OpenDirac.dirac_sq</code></td></tr><tr><td>the eight doublers</td><td><code class="lean">TorusDirac3.dirac3_wave</code></td></tr><tr><td>the spectrum of the ring</td><td><code class="lean">TorusSpectrum.eq_cos_of_eigenvector</code></td></tr></table></div></details>
+    <ul><li><span class="tag lean">Lean</span> The four operators of the staggered Dirac operator anticommute.</li><li><span class="tag lean">Lean</span> <code>D_m² = T_x² + T_y² + T_z² + m²</code> on T³ with even sizes, and on the open cube for every size.</li><li><span class="tag lean">Lean</span> When 4 divides every size, the eight waves <code>(±i)ˣ(±i)ʸ(±i)ᶻ</code> are zero modes of <code>D₀</code>; the mass sends each to the opposite corner.</li><li><span class="tag lean">Lean</span> The spectrum of each ring is <code>cos(2πm/d)</code>.</li><li><span class="tag lean">Lean</span> With the fibre as a fourth closed axis, <code>D₄² = T_x² + T_y² + T_z² + T°_w²</code>, and the fibre acts as a mass: <code>½</code> on its turning modes, <code>1</code> on the uniform one.</li><li><span class="tag lean">Lean</span> Mass gap: every energy has <code>|E| ≥ ½</code>, on the fibred box and on <code>T³ × w</code>, for every state; the doublers reach it.</li><li><span class="tag lean">Lean</span> Speed limit: a state of definite energy and mass <code>m</code> moves at most at <code>√(1 + m²) − |m|</code>; on <code>T³ × w</code> that is <code>1/φ</code> along each axis.</li><li><span class="tag lean">Lean</span> That <code>1/φ</code> is the largest tension of a minimum-uncertainty state of four positions, for one exact reason: <code>φ − 1/φ = 2·½</code>.</li><li><span class="tag open">Open</span> The index count of the doublers (Nielsen–Ninomiya) is the classical theorem, not yet in Lean.</li></ul>
+    <details><summary>Theorem trail</summary><div class="trail"><table><tr><th>Statement</th><th>Name</th></tr><tr><td>anticommutation</td><td><code class="lean">TorusDirac3.Tx_Ay</code>, <code class="lean">TorusDirac3.Tx_Az</code>, <code class="lean">TorusDirac3.Ay_Az</code></td></tr><tr><td><code>D_m²</code> on T³ and on the open cube</td><td><code class="lean">TorusDirac3.dirac3_sq</code>, <code class="lean">OpenDirac.dirac_sq</code></td></tr><tr><td>the eight doublers</td><td><code class="lean">TorusDirac3.dirac3_wave</code></td></tr><tr><td>the spectrum of the ring</td><td><code class="lean">TorusSpectrum.eq_cos_of_eigenvector</code></td></tr><tr><td>the fibre as fourth axis</td><td><code class="lean">TorusFiberDirac.dirac_sq</code>, <code class="lean">TorusFiberDirac.dirac_tensor</code></td></tr><tr><td>mass gap <code>|E| ≥ ½</code></td><td><code class="lean">FiberDirac.abs_energy_ge</code>, <code class="lean">TorusFiberDirac.abs_energy_ge</code>, <code class="lean">TorusFiberDirac.dirac_doublers</code></td></tr><tr><td>speed limit <code>√(1 + m²) − |m|</code>, any space</td><td><code class="lean">DiracSpeed.abs_velocity_le</code>, <code class="lean">DiracSpeed.speedLimit_half</code>, <code class="lean">DiracSpeed.speedLimit_sinh</code></td></tr><tr><td><code>1/φ</code> on the three axes of <code>T³ × w</code></td><td><code class="lean">TorusFiberDirac.abs_velocity_le_inv_goldenRatio_axes</code></td></tr><tr><td>the same <code>1/φ</code> as minimum uncertainty</td><td><code class="lean">MinUncertaintyFiber.isGreatest_minUncertaintyTension</code></td></tr></table></div></details>
   </section>
   <p class="pager"><a href="cone.html">← Stop 6</a><a href="./">The path</a><a href="einstein.html">Stop 8 →</a></p>
   <footer>NRS Noncommercial License 1.0.0 · Lean: <a href="https://github.com/naype888-cloud/nrs3-tritoro">nrs3-tritoro</a></footer>
 </main>
-<script src="../shared/js/hopping.js?v=20261022b"></script>
+<script src="../shared/js/hopping.js?v=20261022d"></script>
 <script src="../shared/js/hopping-doublers.js?v=20261022b"></script>
+<script src="../shared/js/dirac-speed.js?v=20261022d"></script>
 </body>
 </html>

@@ -27,3 +27,9 @@ code.lean { overflow-wrap: anywhere; }
   .formal td.st, .tw td.st { display: inline-block; width: auto; margin-top: 4px; padding: 0 8px !important;
     border: 1px solid currentColor !important; border-radius: 999px; }
 }
+
+/* A table whose columns are topologies keeps the column name on each cell when it reads as cards. */
+@media (max-width: 560px) {
+  .formal td[data-h]::before { content: attr(data-h); display: block; color: var(--muted); font-size: .76rem;
+    font-weight: 600; margin-top: 4px; }
+}

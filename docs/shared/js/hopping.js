@@ -162,9 +162,9 @@
       g.setLineDash([]);
       g.fillStyle = col; g.beginPath(); g.arc(T[0], T[1], 3.4 * T[3], 0, 2 * Math.PI); g.fill();
       const txt = `${"xyz"[i]}: ⟨cos⟩ ${a.lam.toFixed(3)} · mode ${a.cos.toFixed(3)}`;
-      g.font = "12px system-ui, sans-serif";
-      const lab = P(e.map((v) => v * 1.05));
-      g.fillStyle = css("--ink2"); g.fillText(txt, Math.max(6, Math.min(w - 180, lab[0])), Math.max(16, lab[1]));
+      // the readouts sit in a fixed column, so they never cross the axis names or each other
+      g.font = "12px system-ui, sans-serif"; g.textAlign = "left";
+      g.fillStyle = css("--ink2"); g.fillText(txt, 10, 18 + 17 * i);
     });
     g.fillStyle = css("--muted"); g.font = "11.5px system-ui, sans-serif";
     g.fillText("ray: ⟨cos⟩    dashed: σ_H / (2|t|)    cube: the band of one cosine", 10, h - 10);
@@ -175,7 +175,7 @@
     const edge = 2 * Math.abs(tHop);
     for (let a = 0; a < 3; a++) {
       const d = box[a];
-      const top = 28 + a * ((h - 36) / 3), base = top + (h - 36) / 3 - 18;
+      const top = 28 + a * ((h - 36) / 3), base = top + (h - 36) / 3 - 26;
       const L = 36, R = w - 16;
       const X = (e) => L + (e + edge) / (2 * edge || 1) * (R - L);
       g.strokeStyle = css("--grid"); g.lineWidth = 1;
