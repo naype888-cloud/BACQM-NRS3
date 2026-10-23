@@ -15,8 +15,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <script src="../shared/js/theme.js?v=20261022c" data-toggle></script>
 <link rel="stylesheet" href="../shared/css/tokens.css">
-<link rel="stylesheet" href="../shared/css/scientific.css">
-<link rel="stylesheet" href="../shared/css/site.css?v=20261022c">
+<link rel="stylesheet" href="../shared/css/scientific.css?v=20261022d">
+<link rel="stylesheet" href="../shared/css/site.css?v=20261022d">
 </head>
 <body>
 <div class="wrap narrow">
@@ -28,13 +28,13 @@
 
   <h1>Theorem atlas</h1>
   <p class="scope"><code>T³ = dx × dy × dz</code>, each axis a ring <code>ZMod d</code> with closed transport <code>T° = (J − I)/2</code>
-    and position <code>P</code>. Lean 4, standard axioms. Each entry states the result as the source does; the page behind it gives definitions, hypotheses and declarations.</p>
+    and position <code>P</code>; <code>R³</code> opens every axis, the fibred box and <code>T³ × w</code> add a closed fibre <code>w</code> of three positions. Lean 4, standard axioms. Each entry states the result as the source does; the page behind it gives definitions, hypotheses and declarations.</p>
 
   <ol class="path">
     <li class="stop"><span class="n">1</span>
       <h2>Uncertainty relation / covariance determinant</h2>
-      <div class="fact">For every unit state, <code>det Σ ≥ |det Ω|</code>; strict when the three axes are in band; <code>det Σ = (125/64)|det Ω|</code> at the maximal current state.</div>
-      <div class="go"><code class="lean">TorusStrict.robertson_det_torus_lt</code><code class="lean">Torus.det_covMatrix_maxState</code>
+      <div class="fact">For every unit state, <code>det Σ ≥ |det Ω|</code>; strict when the three axes are in band; <code>det Σ = (125/64)|det Ω|</code> at the maximal current state. Position events: <code>rate_j = F_{j−1} − F_j</code>, <code>Σ rate = 0</code>, <code>rate_j² ≤ 4 Var T° · p_j(1 − p_j)</code> on all four spaces.</div>
+      <div class="go"><code class="lean">TorusStrict.robertson_det_torus_lt</code><code class="lean">Torus.det_covMatrix_maxState</code><code class="lean">SiteEvents.rate_site_sq_le</code>
         <a href="01-uncertainty.html">Page →</a><span class="chip lean">Lean</span></div></li>
 
     <li class="stop"><span class="n">2</span>
@@ -51,8 +51,8 @@
 
     <li class="stop"><span class="n">4</span>
       <h2>Saturation / uniform field</h2>
-      <div class="fact"><code>Hₛ d = S</code> iff <code>d</code> is uniform; then each step is open with probability <code>1/2</code> and the mean field is half the open field.</div>
-      <div class="go"><code class="lean">TorusSaturation.saturated_iff_uniform</code><code class="lean">TorusDarkFoam.meanField_uniform</code>
+      <div class="fact"><code>Hₛ d = S</code> iff <code>d</code> is uniform; then each step is open with probability <code>1/2</code> and the mean field is half the open field. The boundary bits are commuting events: a Kolmogorov space on every cut.</div>
+      <div class="go"><code class="lean">TorusSaturation.saturated_iff_uniform</code><code class="lean">TorusDarkFoam.meanField_uniform</code><code class="lean">EventsTopology.openEvent_comm</code>
         <a href="04-saturation.html">Page →</a><span class="chip lean">Lean</span></div></li>
 
     <li class="stop"><span class="n">5</span>
@@ -69,8 +69,8 @@
 
     <li class="stop"><span class="n">7</span>
       <h2>Dirac operator / doubler modes</h2>
-      <div class="fact">For the staggered operator <code>D_m² = T_x² + T_y² + T_z² + m²</code>; on even sizes the eight waves <code>(±i)ˣ(±i)ʸ(±i)ᶻ</code> are zero modes of <code>D₀</code>.</div>
-      <div class="go"><code class="lean">TorusDirac3.dirac3_sq</code><code class="lean">TorusDirac3.dirac3_wave</code>
+      <div class="fact">For the staggered operator <code>D_m² = T_x² + T_y² + T_z² + m²</code>; on even sizes the eight waves <code>(±i)ˣ(±i)ʸ(±i)ᶻ</code> are zero modes of <code>D₀</code>. On <code>T³ × w</code>, <code>D₄² = T_x² + T_y² + T_z² + T°_w²</code>: every eigenvalue has <code>|E| ≥ ½</code> and every eigenvector moves at most at <code>1/φ</code> on each axis.</div>
+      <div class="go"><code class="lean">TorusDirac3.dirac3_wave</code><code class="lean">TorusFiberDirac.abs_energy_ge</code><code class="lean">TorusFiberDirac.abs_velocity_le_inv_goldenRatio_axes</code>
         <a href="07-dirac.html">Page →</a><span class="chip lean">Lean</span></div></li>
 
     <li class="stop"><span class="n">8</span>

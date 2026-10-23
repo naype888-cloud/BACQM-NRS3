@@ -25,3 +25,13 @@ h1 { font-size: 1.9rem; margin: 0 0 8px; font-weight: 650; letter-spacing: -0.01
 .chip.open { color: var(--muted); }
 .legend { margin: 26px 0 0; font-size: 0.84rem; color: var(--ink2); display: grid; gap: 6px; }
 footer { margin-top: 30px; font-size: 0.8rem; color: var(--muted); }
+/* The stops read as one path: a line joins the numbers, and the whole card opens its stop. */
+.path { position: relative; }
+.path::before { content: ""; position: absolute; left: 32px; top: 30px; bottom: 30px; width: 2px;
+  background: linear-gradient(var(--blue), var(--violet)); opacity: 0.4; }
+.stop { position: relative; transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s; }
+.stop .go a::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.stop:hover, .stop:focus-within { transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--blue) 45%, var(--grid));
+  box-shadow: 0 10px 24px -16px color-mix(in srgb, var(--blue) 70%, transparent); }
+@media (prefers-reduced-motion: reduce) { .stop { transition: none; } .stop:hover, .stop:focus-within { transform: none; } }

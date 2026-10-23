@@ -42,3 +42,9 @@ footer { margin-top: 28px; font-size: 0.8rem; color: var(--muted); }
 .stop .fact { color: var(--ink2); font-size: 0.9rem; }
 .stop .go { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: 0.84rem; }
 .stop .go a { font-weight: 600; text-decoration: none; margin-left: auto; }
+/* The whole entry opens its page. */
+.stop { position: relative; transition: border-color 0.15s, box-shadow 0.15s; }
+.stop .go a::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.stop:hover, .stop:focus-within { box-shadow: 0 8px 22px -16px color-mix(in srgb, var(--ink) 60%, transparent); }
+.stop .go code.lean { position: relative; z-index: 1; }
+@media (prefers-reduced-motion: reduce) { .stop { transition: none; } }
