@@ -112,7 +112,7 @@
   .card.full .minis canvas { height: auto; aspect-ratio: 1 / 1; }
 </style>
 <link rel="stylesheet" href="../shared/css/scientific-page.css?v=20261022b">
-<link rel="stylesheet" href="../shared/css/site.css?v=20261022c">
+<link rel="stylesheet" href="../shared/css/site.css?v=20261022d">
 </head>
 <body data-tone="formal">
 <main>
@@ -129,6 +129,9 @@
 
   <h2>Results</h2>
   <div class="formal"><table><tr><th>Statement</th><th>Name</th><th>Status</th></tr><tr><td><code>|det Ω| ≤ det Σ</code> for every <code>Φ</code></td><td><code class="lean">Torus.robertson_det_torus</code></td><td class="st lean">Lean</td></tr><tr><td><code>|det Ω| &lt; det Σ</code> for every unit <code>Φ</code> with every axis in its band</td><td><code class="lean">TorusStrict.robertson_det_torus_lt</code></td><td class="st lean">Lean</td></tr><tr><td><code>[[T°, P₃], w₀T° + w₁P₃] ≠ 0</code> for <code>w ≠ 0</code></td><td><code class="lean">TorusStrict.lie_lie_ne_zero</code></td><td class="st lean">Lean</td></tr><tr><td><code>det Σ = (5/4)^k |det Ω|</code> at <code>maxState</code>; <code>k = 3</code>: <code>125/64</code></td><td><code class="lean">Torus.det_covMatrix_maxState</code>, <code class="lean">Torus.three_torus</code></td><td class="st lean">Lean</td></tr><tr><td><code>1, 5/4, 125/64, 625/256</code> for the open cube, the box, <code>T³</code>, <code>T⁴</code></td><td><code class="lean">Torus.ladder</code></td><td class="st lean">Lean</td></tr><tr><td>the same strictness for rings of every size</td><td>—</td><td class="st open">open</td></tr></table></div>
+
+  <h3>Position events: continuity, conservation, Robertson for bits</h3>
+  <div class="formal"><table><tr><th>Statement</th><th>Name</th><th>Status</th></tr><tr><td>any space, any symmetric generator <code>G</code>: the rate of the event <code>Π_p</code> is <code>⟨i[G, Π_p]⟩ = −2 Im(conj((Gψ)_p) ψ_p)</code>; the rates add up to <code>0</code></td><td><code class="lean">SiteEvents.rate_site</code>, <code class="lean">SiteEvents.sum_rate_site</code></td><td class="st lean">Lean</td></tr><tr><td>Robertson for bits at each position: <code>rate_p² ≤ 4 Var G · p_p (1 − p_p)</code>; a decided position does not change</td><td><code class="lean">SiteEvents.rate_site_sq_le</code>, <code class="lean">SiteEvents.rate_eq_zero_of_decided</code></td><td class="st lean">Lean</td></tr><tr><td>for a Hermitian matrix the rate is a sum of link flows, antisymmetric and zero where <code>G_pq = 0</code>: which positions are linked is the support of <code>G</code></td><td><code class="lean">SiteEvents.rate_matrix</code>, <code class="lean">SiteEvents.linkFlow_antisymm</code>, <code class="lean">SiteEvents.linkFlow_eq_zero</code></td><td class="st lean">Lean</td></tr><tr><td>one closed axis: <code>rate_j = F_{j−1} − F_j</code>, <code>F_j = Im(conj ψ_{j+1} ψ_j)</code>; <code>Σ rate_j = 0</code>; <code>⟨K⟩ = Σ F_j</code></td><td><code class="lean">EventsTopology.rate_siteEvent</code>, <code class="lean">EventsTopology.sum_rate_siteEvent</code>, <code class="lean">EventsTopology.velocity_eq_sum_flow</code></td><td class="st lean">Lean</td></tr><tr><td><code>R³</code>: links along one axis at a time; <code>T³</code>: six per position; the fibred box; <code>T³ × w</code>: eight</td><td><code class="lean">SiteEventsTopologies.rate_openCube</code>, <code class="lean">SiteEventsTopologies.openCube_linkFlow_eq_zero</code>, <code class="lean">SiteEventsTopologies.rate_torus</code>, <code class="lean">SiteEventsTopologies.rate_box</code>, <code class="lean">TorusFiberDirac.rate_torusFiber</code></td><td class="st lean">Lean</td></tr></table></div>
 
   <h2>Figure</h2>
   <div class="bar">
@@ -209,11 +212,18 @@
       <th>1/cos θ at c</th><th>σ<sub>T</sub></th><th>σ<sub>P</sub>(t)</th><th>⟨P⟩(t)</th></tr></thead>
     <tbody id="rows"></tbody>
   </table></div>
+  <div class="card bandcard" id="flowcard"><h3>Position by position: continuity</h3>
+    <p class="sub">The event "the excitation is at <code>j</code>" is the projection <code>Π_j</code>, with <code>p_j = |ψ_j|²</code>. Under <code>T°</code> its rate is the flow
+      through its two links, <code>rate_j = F_{j−1} − F_j</code>; the rates add up to <code>0</code>, the flows add up to <code>⟨K⟩</code>, and every rate stays
+      inside its Robertson bound <code>2 ΔT° √(p_j (1 − p_j))</code>. A state of definite energy has <code>ΔT° = 0</code>: nothing moves.</p>
+    <div id="sflow"></div></div>
+
   <p class="note">Sizes above three positions per axis are computed in the browser from the same matrices; the values for three positions are the Lean values.</p>
   <p class="pager"><span></span><a href="./">Theorem atlas</a><a href="02-light-dark.html">B2 →</a></p>
   <footer>NRS Noncommercial License 1.0.0 · Lean: <a href="https://github.com/naype888-cloud/nrs3-tritoro">nrs3-tritoro</a> and the repositories listed in the <a href="./">atlas</a></footer>
 </main>
 <script src="../shared/js/t3-draw.js?v=20261022b"></script>
 <script src="../shared/js/t3-box.js?v=20261022b"></script>
+<script src="../shared/js/site-flow.js?v=20261022d"></script>
 </body>
 </html>

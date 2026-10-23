@@ -112,7 +112,7 @@
   .card.full .minis canvas { height: auto; aspect-ratio: 1 / 1; }
 </style>
 <link rel="stylesheet" href="../shared/css/didactic-page.css?v=20261022b">
-<link rel="stylesheet" href="../shared/css/site.css?v=20261022c">
+<link rel="stylesheet" href="../shared/css/site.css?v=20261022d">
 </head>
 <body>
 <main>
@@ -202,14 +202,22 @@
       <th>1/cos θ at c</th><th>σ<sub>T</sub></th><th>σ<sub>P</sub>(t)</th><th>⟨P⟩(t)</th></tr></thead>
     <tbody id="rows"></tbody>
   </table></div>
+  <div class="card bandcard" id="flowcard"><h2>Position by position: where does the probability go?</h2>
+    <p class="sub">Ask a yes/no question: "is the excitation at position <code>j</code>?" Its chance is <code>p_j</code> (the violet disc). When the transport
+      runs, that chance can only change by flowing through the two links of <code>j</code> (the orange arrows), like water between neighbouring tanks:
+      what one position loses, its neighbour gains, and the total never changes. And there is a speed limit for each question: a position that is
+      surely full, or surely empty, is not changing at that moment (the dashed frames). Press Transport; then try a state of definite energy.</p>
+    <div id="sflow"></div></div>
+
   <section class="exactcard"><h2>What is exact here</h2>
-    <ul><li><span class="tag lean">Lean</span> For every state on the torus, <code>det Σ ≥ |det Ω|</code>.</li><li><span class="tag lean">Lean</span> With the three axes in their band the inequality is strict, for every unit state, entangled or not.</li><li><span class="tag lean">Lean</span> At the maximal current state with three positions per axis, <code>det Σ = (5/4)³ |det Ω| = 125/64 |det Ω|</code>; the ladder open cube 1, box 5/4, T³ 125/64, T⁴ 625/256.</li><li><span class="tag browser">Browser</span> With four or more positions per axis the numbers on this page are numerical, computed from the same matrices.</li></ul>
-    <details><summary>Theorem trail</summary><div class="trail"><table><tr><th>Statement</th><th>Name</th></tr><tr><td>Robertson 1934 on the torus, every state</td><td><code class="lean">Torus.robertson_det_torus</code></td></tr><tr><td>strict with every axis in its band</td><td><code class="lean">TorusStrict.robertson_det_torus_lt</code></td></tr><tr><td>on every axis, tension above 1 forces a positive defect</td><td><code class="lean">Torus.gramDefect_pos</code></td></tr><tr><td><code>(5/4)^k</code> at the maximal current state; <code>125/64</code>; the ladder</td><td><code class="lean">Torus.det_covMatrix_maxState</code>, <code class="lean">Torus.three_torus</code>, <code class="lean">Torus.ladder</code></td></tr><tr><td>different axes commute</td><td><code class="lean">TorusCommute.torusPairs_comm</code></td></tr></table></div></details>
+    <ul><li><span class="tag lean">Lean</span> For every state on the torus, <code>det Σ ≥ |det Ω|</code>.</li><li><span class="tag lean">Lean</span> With the three axes in their band the inequality is strict, for every unit state, entangled or not.</li><li><span class="tag lean">Lean</span> At the maximal current state with three positions per axis, <code>det Σ = (5/4)³ |det Ω| = 125/64 |det Ω|</code>; the ladder open cube 1, box 5/4, T³ 125/64, T⁴ 625/256.</li><li><span class="tag lean">Lean</span> Position by position: the rate of each position is the flow through its links, the rates add up to zero, the flows add up to the velocity, and each rate is bounded by Robertson for a yes/no question, on <code>R³</code>, <code>T³</code>, the fibred box and <code>T³ × w</code>.</li><li><span class="tag browser">Browser</span> With four or more positions per axis the numbers on this page are numerical, computed from the same matrices; the ring of positions is computed from its modes.</li></ul>
+    <details><summary>Theorem trail</summary><div class="trail"><table><tr><th>Statement</th><th>Name</th></tr><tr><td>Robertson 1934 on the torus, every state</td><td><code class="lean">Torus.robertson_det_torus</code></td></tr><tr><td>strict with every axis in its band</td><td><code class="lean">TorusStrict.robertson_det_torus_lt</code></td></tr><tr><td>on every axis, tension above 1 forces a positive defect</td><td><code class="lean">Torus.gramDefect_pos</code></td></tr><tr><td><code>(5/4)^k</code> at the maximal current state; <code>125/64</code>; the ladder</td><td><code class="lean">Torus.det_covMatrix_maxState</code>, <code class="lean">Torus.three_torus</code>, <code class="lean">Torus.ladder</code></td></tr><tr><td>different axes commute</td><td><code class="lean">TorusCommute.torusPairs_comm</code></td></tr><tr><td>continuity on a closed axis; nothing is lost; velocity = sum of flows</td><td><code class="lean">EventsTopology.rate_siteEvent</code>, <code class="lean">EventsTopology.sum_rate_siteEvent</code>, <code class="lean">EventsTopology.velocity_eq_sum_flow</code></td></tr><tr><td>Robertson for each position; a decided position does not change</td><td><code class="lean">EventsTopology.flow_sq_le</code>, <code class="lean">SiteEvents.rate_site_sq_le</code>, <code class="lean">SiteEvents.rate_eq_zero_of_decided</code></td></tr><tr><td>the four topologies</td><td><code class="lean">SiteEventsTopologies.rate_openCube</code>, <code class="lean">SiteEventsTopologies.rate_torus</code>, <code class="lean">SiteEventsTopologies.rate_box</code>, <code class="lean">TorusFiberDirac.rate_torusFiber</code></td></tr></table></div></details>
   </section>
   <p class="pager"><span></span><a href="./">The path</a><a href="light-dark.html">Stop 2 →</a></p>
   <footer>NRS Noncommercial License 1.0.0 · Lean: <a href="https://github.com/naype888-cloud/nrs3-tritoro">nrs3-tritoro</a></footer>
 </main>
 <script src="../shared/js/t3-draw.js?v=20261022b"></script>
 <script src="../shared/js/t3-box.js?v=20261022b"></script>
+<script src="../shared/js/site-flow.js?v=20261022d"></script>
 </body>
 </html>
