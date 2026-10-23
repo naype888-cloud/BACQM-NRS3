@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BACQM-NRS³</title>
 <meta name="description" content="Uncertainty on the three-torus: nine results on R³, T³ and the fibred box, each with its Lean 4 theorem, in a scientific and a didactic version.">
+<meta name="theme-color" content="#06080b">
 <link rel="icon" href="media/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="BACQM-NRS³">
@@ -13,27 +14,58 @@
 <meta property="og:url" content="https://naype888-cloud.github.io/BACQM-NRS3/">
 <meta property="og:image" content="https://naype888-cloud.github.io/BACQM-NRS3/media/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="media/fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="shared/css/tokens.css">
-<link rel="stylesheet" href="shared/css/landing.css">
+<link rel="stylesheet" href="shared/css/landing.css?v=20261022">
+<script>document.documentElement.classList.add("js")</script>
 </head>
 <body class="landing">
 <main class="stage">
-  <video class="intro" id="intro" autoplay muted playsinline preload="auto"
-         poster="media/intro-poster.svg" aria-label="Introduction to BACQM-NRS³: the lattice, its hopping and its transparent quanta">
-    <source src="media/intro.webm" type="video/webm">
-    <source src="media/intro.mp4" type="video/mp4">
-  </video>
+  <section class="hero" aria-labelledby="title">
+    <figure class="scene">
+      <canvas id="lattice" role="img" aria-label="The 3 × 3 × 3 lattice of positions and links; quanta of light hop along each axis, leave through one face and return through the opposite one."></canvas>
+      <noscript><img class="fallback" src="media/intro.svg" alt=""></noscript>
+      <figcaption>T³ · every axis closed<span class="hint"> · drag to turn</span></figcaption>
+    </figure>
+
+    <div class="copy">
+      <p class="kicker">Lean 4 · standard axioms</p>
+      <h1 id="title">BACQM-NRS<sup>3</sup></h1>
+      <p class="sub">Uncertainty on the three-torus</p>
+      <div class="rule" aria-hidden="true"><span></span></div>
+
+      <ol class="ticker" aria-label="The nine results">
+        <li><a href="scientific/01-uncertainty.html"><span class="n">01 / 09</span><span class="name">Uncertainty relation</span><code>Torus.robertson_det_torus</code></a></li>
+        <li><a href="scientific/02-light-dark.html"><span class="n">02 / 09</span><span class="name">Light share / dark share</span><code>TorusDark.lightShare_add_darkShare</code></a></li>
+        <li><a href="scientific/03-boundary-entropy.html"><span class="n">03 / 09</span><span class="name">Boundary entropy · area law</span><code>TorusBekenstein.bekenstein_bound</code></a></li>
+        <li><a href="scientific/04-saturation.html"><span class="n">04 / 09</span><span class="name">Saturation · uniform field</span><code>TorusSaturation.saturated_iff_uniform</code></a></li>
+        <li><a href="scientific/05-curvature.html"><span class="n">05 / 09</span><span class="name">Bakry–Émery curvature</span><code>TorusBochner.not_curvature_pos</code></a></li>
+        <li><a href="scientific/06-lorentz-cone.html"><span class="n">06 / 09</span><span class="name">Lorentz cone</span><code>TorusCone.axisVector_mem_futureCone</code></a></li>
+        <li><a href="scientific/07-dirac.html"><span class="n">07 / 09</span><span class="name">Dirac operator · doublers</span><code>TorusDirac3.dirac3_sq</code></a></li>
+        <li><a href="scientific/08-einstein-unruh.html"><span class="n">08 / 09</span><span class="name">Einstein / Unruh flow</span><code>CutEinstein.clausius_torus</code></a></li>
+        <li><a href="scientific/09-white-ball.html"><span class="n">09 / 09</span><span class="name">Layered boundaries</span><code>TorusStack.dark_torus</code></a></li>
+      </ol>
+      <div class="progress" aria-hidden="true"><span></span></div>
+
+      <p class="spaces">R³ · T³ · fibred box · T³ × w</p>
+    </div>
+  </section>
+
   <nav class="doors" aria-label="Choose a version">
-    <a class="door" href="scientific/">Scientific</a>
-    <a class="door" href="didactic/">Didactic</a>
+    <a class="door" href="scientific/">
+      <span class="k">Scientific</span>
+      <span class="t">Theorem atlas</span>
+      <span class="d">Each result as the source states it, with definitions, hypotheses and its Lean declaration.</span>
+      <span class="go" aria-hidden="true"></span>
+    </a>
+    <a class="door" href="didactic/">
+      <span class="k">Didactic</span>
+      <span class="t">The path, in nine stops</span>
+      <span class="d">The same nine results, drawn and explained, one idea at a time.</span>
+      <span class="go" aria-hidden="true"></span>
+    </a>
   </nav>
 </main>
-<script>
-  // The intro plays once and rests on its last frame, the poster; a click plays it again.
-  // With reduced motion it does not start on its own.
-  const v = document.getElementById("intro");
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { v.removeAttribute("autoplay"); v.pause(); }
-  v.addEventListener("click", () => { v.currentTime = 0; v.play().catch(() => {}); });
-</script>
+<script src="shared/js/intro-lattice.js?v=20261022" defer></script>
 </body>
 </html>
