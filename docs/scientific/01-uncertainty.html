@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>B1 · Uncertainty relation / covariance determinant — BACQM-NRS³</title>
+<title>B1 · Uncertainty relation / covariance determinant — BACQM-RS^N³</title>
 <meta name="description" content="Uncertainty relation / covariance determinant on the three-torus: definitions, results and Lean declarations.">
 <link rel="icon" href="../media/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="BACQM-NRS³">
-<meta property="og:title" content="B1 · Uncertainty relation / covariance determinant — BACQM-NRS³">
+<meta property="og:site_name" content="BACQM-RS^N³">
+<meta property="og:title" content="B1 · Uncertainty relation / covariance determinant — BACQM-RS^N³">
 <meta property="og:description" content="Uncertainty relation / covariance determinant on the three-torus: definitions, results and Lean declarations.">
 <meta property="og:url" content="https://naype888-cloud.github.io/BACQM-NRS3/scientific/01-uncertainty.html">
 <meta property="og:image" content="https://naype888-cloud.github.io/BACQM-NRS3/media/og.jpg">
@@ -117,7 +117,7 @@
 <body data-tone="formal">
 <main>
   <nav class="navbar" aria-label="Site">
-    <a class="brand" href="./">BACQM-NRS³<span class="sect"> · Theorem atlas</span></a>
+    <a class="brand" href="./">BACQM-RS^N³<span class="sect"> · Theorem atlas</span></a>
     <a class="pill" href="../didactic/uncertainty.html">Guided version ↗</a>
     <button class="pill" id="theme" type="button" aria-label="Toggle dark mode">Theme</button>
   </nav>
@@ -192,7 +192,7 @@
   <div class="card bandcard"><h3>Tension and the angle</h3>
     <span class="hint">|t(t)| against θ(t), one panel per axis</span>
     <p class="sub">The tension of an axis is <code>t = ⟨K⟩</code>, <code>K = i[T°, P]</code>. In the band <code>|t| &gt; 1</code> every state
-      keeps a positive dark share (<code>TorusDark.darkShare_pos_of_band</code>) and det|NRS³| is strict on <code>T³</code> for every
+      keeps a positive dark share (<code>TorusDark.darkShare_pos_of_band</code>) and det|RS^N³| is strict on <code>T³</code> for every
       state with the three axes in the band (<code>TorusStrict.robertson_det_torus_lt</code>). The maximal tension is the state
       <code>c</code>: <code>√6/2</code> with 3 positions (<code>ClosedThree.tension_maxState</code>); for every <code>d</code> it lies in
       <code>[1, 1 + 2/(d − 1)]</code> and tends to 1 as the ring grows (<code>ClosedAxis.one_le_cMax</code>,
